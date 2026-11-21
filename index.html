@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#07070b">
+<meta name="theme-color" content="#060A13">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://connect.trezor.io; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; connect-src https://connect.trezor.io https://api.coingecko.com; frame-src https://connect.trezor.io; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Kapsa — bitcoin mezi přáteli</title>
@@ -16,46 +16,26 @@
 @font-face{font-family:Onest;src:url(fonts/onest-latin-ext-700-normal.woff2) format("woff2");font-weight:600 700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:Mono;src:url(fonts/JetBrainsMono_500Medium.woff2) format("woff2");font-weight:500;font-display:swap}
 
-/* Kapsa · klidná peněženka
-   Jedna věc na obrazovku. Jedno písmo (Onest), jeden akcent (bitcoinová oranžová) jen pro hlavní akci.
-   Plné plochy místo skla, jemné linky místo stínů, mřížka po 8 bodech. */
+/* Kapsa · Steel & Bronze
+   Futuristická krypto peněženka: hluboká námořnická modř, broušená ocel, bronzový akcent jen pro hlavní akci.
+   Jedno písmo (Onest), technické popisky verzálkami, jemná mřížka v pozadí. */
 :root{
-  color-scheme:light;
-  --bg:#F4F4F6; --surface:#FFFFFF; --surface-2:#F0F0F3;
-  --ink:#111114; --ink-2:#5E616B; --ink-3:#9A9CA5;
-  --line:#E6E6EB;
-  --accent:#F7931A; --accent-ink:#B45F00; --on-accent:#111114;
-  --btc:#B45F00; --btc-2:#B45F00;
-  --ln:#6B4EE6; --ok:#0F8F5F; --bad:#D6334A;
-  --t-ok:#E5F5EE; --t-ln:#EEEAFD; --t-btc:#FFF1DF; --t-bad:#FCE9EC;
-  --scrim:rgba(17,17,20,.32);
-  --shadow-pop:0 10px 30px -12px rgba(17,17,20,.25);
-  --r:20px;
+  color-scheme:dark;
+  --bg:#060A13; --bg-2:#0A1222;
+  --surface:#0D1627; --surface-2:#142039;
+  --ink:#E7EDF6; --ink-2:#9BA9BF; --ink-3:#5E6D86;
+  --line:rgba(150,175,215,.14);
+  --steel:linear-gradient(180deg,#F5F8FC 0%,#C3CDDA 45%,#8492A8 100%);
+  --steel-edge:linear-gradient(160deg,rgba(220,232,250,.45),rgba(150,175,215,.08) 40%,rgba(150,175,215,.04) 70%,rgba(220,232,250,.22));
+  --accent:#7A4E2D; --accent-ink:#D2A274; --on-accent:#F7E9DC;
+  --bronze:linear-gradient(180deg,#9A673E 0%,#744A2B 55%,#5A3920 100%);
+  --btc:#D2A274; --btc-2:#D2A274;
+  --ln:#8FB2FF; --ok:#56DDB7; --bad:#FF6E80;
+  --t-ok:rgba(86,221,183,.12); --t-ln:rgba(143,178,255,.13); --t-btc:rgba(210,162,116,.14); --t-bad:rgba(255,110,128,.12);
+  --scrim:rgba(2,5,12,.66);
+  --shadow-pop:0 14px 36px -14px rgba(0,0,0,.9);
+  --r:18px;
   --font:Onest,system-ui,-apple-system,"Segoe UI",sans-serif;
-}
-@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-  color-scheme:dark;
-  --bg:#0B0B0D; --surface:#161619; --surface-2:#1E1E22;
-  --ink:#F2F2F4; --ink-2:#A3A5AE; --ink-3:#6C6E77;
-  --line:#26262B;
-  --accent:#F7931A; --accent-ink:#FFB35C; --on-accent:#111114;
-  --btc:#FFB35C; --btc-2:#FFB35C;
-  --ln:#A592FF; --ok:#3FD49B; --bad:#FF6B7F;
-  --t-ok:#12291F; --t-ln:#1F1A33; --t-btc:#2B1F0E; --t-bad:#2E1519;
-  --scrim:rgba(0,0,0,.6);
-  --shadow-pop:0 10px 30px -12px rgba(0,0,0,.8);
-}}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#0B0B0D; --surface:#161619; --surface-2:#1E1E22;
-  --ink:#F2F2F4; --ink-2:#A3A5AE; --ink-3:#6C6E77;
-  --line:#26262B;
-  --accent:#F7931A; --accent-ink:#FFB35C; --on-accent:#111114;
-  --btc:#FFB35C; --btc-2:#FFB35C;
-  --ln:#A592FF; --ok:#3FD49B; --bad:#FF6B7F;
-  --t-ok:#12291F; --t-ln:#1F1A33; --t-btc:#2B1F0E; --t-bad:#2E1519;
-  --scrim:rgba(0,0,0,.6);
-  --shadow-pop:0 10px 30px -12px rgba(0,0,0,.8);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -138,8 +118,6 @@ button.rowi:active{background:var(--surface-2)}
 .fr.add .av{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink-2);font-size:22px}
 .av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:19px;flex:none;background:var(--surface-2);color:var(--ink-2);transition:transform .15s}
 .av[style*="--h"]{background:hsl(var(--h) 70% 92%)}
-:root[data-theme="dark"] .av[style*="--h"]{background:hsl(var(--h) 30% 20%)}
-@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .av[style*="--h"]{background:hsl(var(--h) 30% 20%)} }
 .av svg{width:18px;height:18px}
 .av.in{background:var(--t-ok);color:var(--ok)}
 .av.out{background:var(--surface-2);color:var(--ink-2)}
@@ -286,18 +264,78 @@ body[data-view="send"] nav.tabs,body[data-view="receive"] nav.tabs,body[data-vie
 body[data-view="send"] .app,body[data-view="receive"] .app,body[data-view="topup"] .app,body[data-view="settings"] .app{padding-bottom:calc(env(safe-area-inset-bottom) + 24px)}
 .amt-row::before{content:"";width:56px;flex:none}
 .amt-row .unit-btn{width:56px;padding:6px 0}
+
+/* ---------- Steel & Bronze: futuristické vrstvy ---------- */
+html,body{background:var(--bg)}
+body{background:radial-gradient(120% 70% at 50% -10%,#16264A 0%,var(--bg-2) 38%,var(--bg) 75%) fixed}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(150,175,215,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(150,175,215,.06) 1px,transparent 1px);
+  background-size:32px 32px;-webkit-mask-image:linear-gradient(#000,transparent 70%);mask-image:linear-gradient(#000,transparent 70%)}
+.app{position:relative;z-index:1}
+.logo .word{background:var(--steel);-webkit-background-clip:text;background-clip:text;color:transparent}
+.net{background:transparent;color:var(--ok);box-shadow:inset 0 0 0 1px rgba(86,221,183,.35);letter-spacing:.12em;font-size:10px;text-transform:uppercase}
+.label,.sec,.card h3{text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:600;color:var(--ink-3)}
+.sec button,.link{text-transform:none;letter-spacing:0;font-size:13px}
+.card h3 span{letter-spacing:.08em}
+.big{background:var(--steel);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600;filter:drop-shadow(0 6px 22px rgba(120,160,230,.18))}
+.big small{-webkit-text-fill-color:var(--ink-3);color:var(--ink-3)}
+.fiat{color:var(--ink-2)}
+/* broušená ocelová hrana pro plochy */
+.group,.card{position:relative;background:linear-gradient(180deg,rgba(20,32,57,.92),rgba(13,22,39,.92));box-shadow:0 18px 40px -24px rgba(0,0,0,.9),inset 0 1px 0 rgba(220,232,250,.07)}
+.group::before,.card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:var(--steel-edge);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.group > *,.card > *{position:relative}
+.rowi + .rowi,.tx{border-color:var(--line)}
+/* bronzové hlavní tlačítko, ocelová vedlejší */
+.btn.primary{background:var(--bronze);color:var(--on-accent);box-shadow:0 12px 28px -14px rgba(154,103,62,.8),inset 0 1px 0 rgba(255,220,190,.35),inset 0 0 0 1px rgba(255,210,170,.18)}
+.btn.ghost{background:linear-gradient(180deg,#1A2844,#121D33);color:var(--ink);box-shadow:inset 0 1px 0 rgba(220,232,250,.1),inset 0 0 0 1px var(--line)}
+.chipb,.pill,.unit-btn{background:#16233D;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+button.chipb:active,.pill:active{background:#1C2B49}
+.unitsw,.seg{background:#0B1322;box-shadow:inset 0 0 0 1px var(--line)}
+.unitsw button.on,.seg button.on{background:linear-gradient(180deg,#22324F,#18243C);color:var(--ink);box-shadow:inset 0 1px 0 rgba(220,232,250,.14),0 2px 8px rgba(0,0,0,.4)}
+.inp{background:#0A1220;box-shadow:inset 0 0 0 1px var(--line)}
+.inp:focus{box-shadow:inset 0 0 0 1px rgba(143,178,255,.6),0 0 0 3px rgba(143,178,255,.15)}
+.amount-inp{background:transparent;box-shadow:none!important}
+.ic.vault{background:var(--t-btc);color:var(--accent-ink);box-shadow:inset 0 0 0 1px rgba(210,162,116,.25)}
+.ic.ln{background:var(--t-ln);color:var(--ln);box-shadow:inset 0 0 0 1px rgba(143,178,255,.25)}
+.av{background:#16233D;box-shadow:inset 0 0 0 1px var(--line)}
+.av[style*="--h"]{background:hsl(var(--h) 30% 20%);box-shadow:inset 0 0 0 1px hsl(var(--h) 40% 45% / .4)}
+.fr.add .av{background:transparent;box-shadow:inset 0 0 0 1px rgba(150,175,215,.35)}
+.addr,.chunks span,.flow .node,.arow,.emojis button{background:#0A1220;box-shadow:inset 0 0 0 1px var(--line)}
+.arow .inp{background:#0D1627}
+.chunks span.k{background:var(--t-btc);color:var(--accent-ink);box-shadow:inset 0 0 0 1px rgba(210,162,116,.3)}
+.qr{box-shadow:0 0 0 1px rgba(220,232,250,.25),0 20px 50px -20px rgba(120,160,230,.35)}
+/* spodní lišta: tmavá s ocelovou linkou, skenování jako broušený kov */
+nav.tabs{background:rgba(7,12,22,.86);box-shadow:0 -1px 0 rgba(150,175,215,.16)}
+nav.tabs button.on{color:var(--ink)}
+nav.tabs button.on svg{color:var(--accent-ink)}
+nav.tabs .scanb{background:var(--steel);color:#0A1222;box-shadow:0 10px 30px -10px rgba(120,160,230,.45),inset 0 1px 0 #fff,inset 0 -2px 4px rgba(0,0,0,.25)}
+.toast{background:linear-gradient(180deg,#E9EEF6,#B9C4D3);color:#0A1222}
+.sheet{background:linear-gradient(180deg,#121E35,#0B1424);box-shadow:inset 0 1px 0 rgba(220,232,250,.12)}
+.grab{background:rgba(150,175,215,.3)}
+.scan-ui{background:#0D1627;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.lock{background:radial-gradient(120% 70% at 50% -10%,#16264A 0%,var(--bg-2) 38%,var(--bg) 75%)}
+.pad button{background:linear-gradient(180deg,#1A2844,#111B30);box-shadow:inset 0 1px 0 rgba(220,232,250,.12),inset 0 0 0 1px var(--line)}
+.pad button:active{background:#22324F}
+.pad button.ghost{background:none;box-shadow:none}
+.dots i{box-shadow:inset 0 0 0 1.5px rgba(150,175,215,.45)}
+.dots i.f{background:var(--steel);box-shadow:0 0 12px rgba(150,190,255,.35)}
+.gear,.back{color:var(--ink-2)}
+.gear:active,.back:active{background:#16233D}
+.warn{background:var(--t-bad);box-shadow:inset 0 0 0 1px rgba(255,110,128,.28)}
+.tag{background:var(--t-ln);color:var(--ln)}
 @media (max-width:360px){ .big{font-size:40px} .pad{grid-template-columns:repeat(3,68px);gap:12px 18px} .pad button{width:68px;height:68px} }
 @media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none!important;transition:none!important} }
 </style>
 </head>
 <body data-view="home">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="kapsaGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFAA4D"/><stop offset="1" stop-color="#FF5F2E"/></linearGradient></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="kapsaGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9EEF6"/><stop offset="1" stop-color="#7E8CA3"/></linearGradient></defs></svg>
 <div class="aura"><i></i><i></i><i></i></div>
 <div class="grain"></div>
 
 <main class="app">
   <header class="top">
-    <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#FFD488"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#B05600" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><button type="button" class="net" id="netBadge" hidden title="Co je beta?">TESTNET</button></div>
+    <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#B98352"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#2A1A0E" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#0A1222" stroke-opacity=".55" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><button type="button" class="net" id="netBadge" hidden title="Co je beta?">TESTNET</button></div>
     <div class="top-right">
       <button class="gear glass" data-go="settings" title="Nastavení" aria-label="Nastavení"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </div>
@@ -446,7 +484,7 @@ body[data-view="send"] .app,body[data-view="receive"] .app,body[data-view="topup
 <div class="lock" id="lock">
   <div class="aura"><i></i><i></i><i></i></div>
   <div class="box glass">
-    <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#FFD488"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#B05600" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><span class="net" hidden>TESTNET</span></div>
+    <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#B98352"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#2A1A0E" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#0A1222" stroke-opacity=".55" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><span class="net" hidden>TESTNET</span></div>
     <p class="hint" style="margin:0 0 16px">Zadej svůj kód</p>
     <div id="lockPad"></div>
     <p class="hint" id="lockMsg" style="min-height:18px"></p>
