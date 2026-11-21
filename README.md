@@ -64,6 +64,6 @@ python3 -m http.server 8080   # ve složce aplikace, pak http://localhost:8080/
 
 ## Ochrana
 - **Kontrola před odesláním:** adresa rozdělená po 4 znacích. U Trezoru výzva porovnat celou adresu a částku s displejem zařízení. Displej Trezoru je jediné místo, kterému se dá věřit.
-- **Šifrování dat heslem:** PBKDF2-SHA256 s 600 000 iteracemi, AES-256-GCM. V zařízení je jen šifrovaný blob, heslo ani klíč se neukládají. Při špatném hesle se čekání mezi pokusy prodlužuje.
+- **Zámek 6místným kódem:** PBKDF2-SHA256 s 600 000 iteracemi, AES-256-GCM. Kód ani klíč se neukládají. Od 3. chybného pokusu roste čekání, po 10 chybných pokusech se data smažou. Pozor: 6 číslic je jen milion kombinací. Kdo zkopíruje data zařízení, prolomí je mimo aplikaci. Kód chrání před zvědavci, ne před forenzní analýzou. V datech ale nejsou klíče k penězům.
 - **Smazání všech dat** jedním tlačítkem.
 - Seed ani soukromé klíče Trezoru aplikace nikdy nevidí. Zůstatek a adresy Trezoru drží jen v paměti, neukládá je.
