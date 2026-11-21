@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07070b">
+<title>Kapsa — bitcoin mezi přáteli</title>
+<style>
+@font-face{font-family:Geologica;src:url(../Geologica_400Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Geologica;src:url(../Geologica_700Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Geologica;src:url(../Geologica_800ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Mono;src:url(../JetBrainsMono_500Medium.woff2) format("woff2");font-weight:500}
+
+:root{
+  --bg:#07070b;
+  --ink:#f6f4ef;
+  --ink-2:rgba(246,244,239,.62);
+  --ink-3:rgba(246,244,239,.38);
+  --btc:#f7931a;
+  --btc-2:#ffb547;
+  --ln:#a98bff;
+  --ok:#5ee6a8;
+  --bad:#ff6b6b;
+  --glass:rgba(255,255,255,.07);
+  --glass-2:rgba(255,255,255,.12);
+  --edge:rgba(255,255,255,.18);
+  --edge-hi:rgba(255,255,255,.55);
+  --shadow:0 20px 60px -20px rgba(0,0,0,.7);
+  --r:30px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:Geologica,system-ui,sans-serif;font-size:15px;line-height:1.4;
+  overflow-x:hidden;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.mono{font-family:Mono,ui-monospace,monospace}
+
+/* ---------- živé pozadí ---------- */
+.aura{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aura i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.75;animation:drift 22s ease-in-out infinite alternate}
+.aura i:nth-child(1){width:60vmax;height:60vmax;left:-20vmax;top:-25vmax;background:radial-gradient(circle,#f7931a 0,#f7931a00 65%)}
+.aura i:nth-child(2){width:55vmax;height:55vmax;right:-25vmax;top:10vmax;background:radial-gradient(circle,#7c4dff 0,#7c4dff00 65%);animation-duration:28s}
+.aura i:nth-child(3){width:50vmax;height:50vmax;left:10vmax;bottom:-30vmax;background:radial-gradient(circle,#ff3d71 0,#ff3d7100 65%);animation-duration:34s;opacity:.45}
+@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15)}}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- liquid glass ---------- */
+.glass{
+  position:relative;isolation:isolate;
+  background:linear-gradient(160deg,rgba(255,255,255,.13),rgba(255,255,255,.03) 45%,rgba(255,255,255,.06));
+  backdrop-filter:blur(26px) saturate(180%);
+  -webkit-backdrop-filter:blur(26px) saturate(180%);
+  border-radius:var(--r);
+  box-shadow:var(--shadow),
+    inset 0 1px 0 rgba(255,255,255,.35),
+    inset 0 -1px 0 rgba(255,255,255,.06),
+    inset 0 0 0 1px rgba(255,255,255,.08);
+}
+/* lom světla na hraně */
+.glass::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;z-index:-1;pointer-events:none;
+  background:linear-gradient(135deg,var(--edge-hi),rgba(255,255,255,.04) 35%,rgba(255,255,255,.02) 65%,rgba(255,255,255,.3));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+}
+/* odlesk, který sleduje prst/myš */
+.glass::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:radial-gradient(420px circle at var(--mx,30%) var(--my,0%),rgba(255,255,255,.14),transparent 45%);
+  transition:opacity .3s;
+}
+
+/* ---------- layout ---------- */
+.app{position:relative;z-index:2;max-width:460px;margin:0 auto;min-height:100%;
+  padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 120px)}
+header.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:-.02em}
+.logo b{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(145deg,var(--btc-2),var(--btc));color:#1a0f00;font-size:19px;
+  box-shadow:0 8px 24px -6px #f7931a99, inset 0 1px 0 #fff8}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;font-size:13px;font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
+.dot.on{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+
+.view{display:none;animation:rise .45s cubic-bezier(.2,.9,.25,1.1)}
+.view.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.985)}}
+
+/* zůstatek */
+.hero{padding:26px 24px 22px;margin-bottom:14px;text-align:center}
+.label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.big{font-size:46px;font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:10px 0 4px;cursor:pointer;user-select:none}
+.big small{font-size:18px;font-weight:700;color:var(--ink-2);margin-left:6px;letter-spacing:0}
+.fiat{color:var(--ink-2);font-size:14px}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.act{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px;border-radius:22px;font-size:13px;font-weight:700;transition:transform .2s}
+.act:active{transform:scale(.94)}
+.act svg{width:22px;height:22px}
+
+/* dvě peněženky */
+.wallets{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.wal{padding:16px;border-radius:24px;text-align:left}
+.wal .nm{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
+.wal .ic{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;font-size:14px}
+.wal .amt{font-size:20px;font-weight:800;margin-top:12px;letter-spacing:-.02em}
+.wal .sub{font-size:12px;color:var(--ink-3);margin-top:2px}
+.ic.vault{background:linear-gradient(145deg,#ffb547,#f7931a);color:#241400}
+.ic.ln{background:linear-gradient(145deg,#c8b6ff,#7c4dff);color:#14072e}
+.tag{font-size:9px;font-weight:800;letter-spacing:.1em;padding:3px 6px;border-radius:6px;background:rgba(169,139,255,.2);color:var(--ln);margin-left:auto}
+
+.card{padding:18px;margin-bottom:14px}
+.card h3{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.card h3 span{font-size:12px;color:var(--ink-3);font-weight:400}
+
+.tx{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
+.tx:first-of-type{border-top:0}
+.av{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;font-size:19px;background:var(--glass-2);flex:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.tx .t{flex:1;min-width:0}
+.tx .t b{display:block;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx .t em{font-style:normal;font-size:12px;color:var(--ink-3)}
+.tx .v{font-weight:700;font-size:14px;text-align:right}
+.in{color:var(--ok)}
+.empty{color:var(--ink-3);font-size:13px;text-align:center;padding:14px 0}
+
+/* kámoši */
+.friends{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 6px;scrollbar-width:none}
+.friends::-webkit-scrollbar{display:none}
+.fr{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:700;flex:none;width:62px}
+.fr .av{width:56px;height:56px;border-radius:20px;font-size:26px}
+.fr.add .av{border:1.5px dashed rgba(255,255,255,.3);background:transparent;font-size:24px;color:var(--ink-2)}
+
+/* formuláře */
+.field{display:block;margin-bottom:12px}
+.field span{display:block;font-size:12px;color:var(--ink-3);margin:0 0 6px 6px;font-weight:700}
+.inp{width:100%;padding:15px 16px;border-radius:18px;border:0;outline:0;background:rgba(0,0,0,.25);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.08);font-size:15px}
+.inp:focus{box-shadow:inset 0 1px 2px rgba(0,0,0,.4),inset 0 0 0 1.5px var(--btc)}
+.amount-inp{font-size:40px;font-weight:800;text-align:center;background:transparent;box-shadow:none;letter-spacing:-.03em;padding:8px}
+.amount-inp:focus{box-shadow:none}
+.seg{display:flex;padding:4px;border-radius:999px;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);margin-bottom:14px}
+.seg button{flex:1;padding:10px 8px;border-radius:999px;font-size:13px;font-weight:700;color:var(--ink-2);transition:.25s}
+.seg button.on{color:var(--ink);background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.08));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 4px 14px rgba(0,0,0,.3)}
+.btn{width:100%;padding:17px;border-radius:22px;font-weight:800;font-size:16px;transition:transform .15s,filter .2s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(160deg,#ffc266,var(--btc) 55%,#e57a00);color:#1f1100;
+  box-shadow:0 14px 34px -10px #f7931aaa,inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 0 rgba(0,0,0,.15)}
+.btn.ghost{background:var(--glass);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.btn:disabled{filter:grayscale(.8) brightness(.6)}
+.hint{font-size:12px;color:var(--ink-3);margin:10px 4px 0;line-height:1.5}
+.row{display:flex;gap:10px}
+.row > *{flex:1}
+
+/* příjem */
+.qr{width:220px;height:220px;margin:6px auto 16px;padding:14px;border-radius:26px;background:#fff;display:grid;place-items:center;
+  box-shadow:0 20px 50px -14px rgba(247,147,26,.5)}
+.qr svg{width:100%;height:100%}
+.addr{word-break:break-all;text-align:center;font-size:13px;padding:12px 14px;border-radius:16px;background:rgba(0,0,0,.25);color:var(--ink-2)}
+
+/* flow nabití */
+.flow{display:flex;align-items:center;gap:10px;margin:6px 0 18px}
+.flow .node{flex:1;padding:14px;border-radius:20px;text-align:center;font-size:12px;font-weight:700;background:rgba(0,0,0,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.flow .node .ic{margin:0 auto 6px;width:34px;height:34px;font-size:17px;border-radius:12px;display:grid;place-items:center}
+.flow .arrow{font-size:20px;color:var(--btc);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{transform:translateX(4px);opacity:.5}}
+
+/* tab bar */
+nav.tabs{position:fixed;z-index:10;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 14px);
+  width:min(428px,calc(100% - 32px));display:flex;padding:7px;border-radius:999px}
+nav.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;border-radius:999px;font-size:11px;font-weight:700;color:var(--ink-3);transition:.3s}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button.on{color:var(--ink);background:linear-gradient(160deg,rgba(255,255,255,.2),rgba(255,255,255,.05));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 6px 18px rgba(0,0,0,.35)}
+nav.tabs button.on svg{color:var(--btc-2)}
+
+/* sheet + toast */
+.scrim{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
+.scrim.on{display:flex}
+.sheet{width:min(460px,100%);padding:22px 18px calc(env(safe-area-inset-bottom) + 22px);border-radius:34px 34px 0 0;animation:up .4s cubic-bezier(.2,.9,.25,1.05)}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet h2{font-size:20px;font-weight:800;margin-bottom:16px}
+.grab{width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.25);margin:-8px auto 16px}
+.toast{position:fixed;z-index:30;left:50%;top:calc(env(safe-area-inset-top) + 16px);transform:translate(-50%,calc(-100% - 60px));
+  padding:13px 18px;border-radius:20px;font-weight:700;font-size:14px;transition:transform .45s cubic-bezier(.2,.9,.25,1.2);max-width:calc(100% - 32px)}
+.toast.on{transform:translate(-50%,0)}
+.emojis{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.emojis button{width:42px;height:42px;border-radius:14px;font-size:21px;background:var(--glass)}
+.emojis button.on{box-shadow:inset 0 0 0 2px var(--btc)}
+</style>
+</head>
+<body>
+<div class="aura"><i></i><i></i><i></i></div>
+<div class="grain"></div>
+
+<main class="app">
+  <header class="top">
+    <div class="logo"><b>₿</b>Kapsa</div>
+    <button class="pill glass" id="trezorBtn"><span class="dot" id="trezorDot"></span><span id="trezorTxt">Připojit Trezor</span></button>
+  </header>
+
+  <!-- PŘEHLED -->
+  <section class="view on" id="v-home">
+    <div class="hero glass">
+      <div class="label">Celkem</div>
+      <div class="big" id="total" title="Klepni pro přepnutí sats / BTC">0</div>
+      <div class="fiat" id="totalFiat">—</div>
+      <div class="actions">
+        <button class="act glass" data-go="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>Poslat</button>
+        <button class="act glass" data-go="receive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 7 7 17M15 17H7V9"/></svg>Přijmout</button>
+        <button class="act glass" data-go="topup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Nabít</button>
+      </div>
+    </div>
+
+    <div class="wallets">
+      <div class="wal glass">
+        <div class="nm"><span class="ic vault">🔒</span>Trezor</div>
+        <div class="amt" id="vaultAmt">—</div>
+        <div class="sub">Trezor Safe 7 · on-chain</div>
+      </div>
+      <div class="wal glass">
+        <div class="nm"><span class="ic ln">⚡</span>Kapsa<span class="tag">DEMO</span></div>
+        <div class="amt" id="lnAmt">0</div>
+        <div class="sub">Lightning · na útratu</div>
+      </div>
+    </div>
+
+    <div class="card glass">
+      <h3>Kámoši <span>klepni a pošli</span></h3>
+      <div class="friends" id="friendsRow"></div>
+    </div>
+
+    <div class="card glass">
+      <h3>Pohyby <span id="txSrc"></span></h3>
+      <div id="txList"></div>
+    </div>
+  </section>
+
+  <!-- POSLAT -->
+  <section class="view" id="v-send">
+    <div class="card glass">
+      <h3>Poslat bitcoin</h3>
+      <div class="seg" id="sendFrom">
+        <button data-v="ln" class="on">⚡ Z Kapsy</button>
+        <button data-v="vault">🔒 Z Trezoru</button>
+      </div>
+      <input class="inp amount-inp mono" id="sendAmt" inputmode="numeric" placeholder="0">
+      <div class="fiat" style="text-align:center;margin:-4px 0 16px" id="sendFiat">sats</div>
+      <label class="field"><span>Komu</span>
+        <input class="inp mono" id="sendTo" placeholder="kamos@walletofsatoshi.com nebo bc1…" autocomplete="off">
+      </label>
+      <label class="field"><span>Zpráva (nepovinné)</span>
+        <input class="inp" id="sendNote" placeholder="Za pivo 🍺">
+      </label>
+      <button class="btn primary" id="sendGo">Poslat</button>
+      <p class="hint" id="sendHint">Z Kapsy jde platba okamžitě přes Lightning. Z Trezoru jde on-chain a potvrdíš ji tlačítkem na zařízení.</p>
+    </div>
+  </section>
+
+  <!-- PŘIJMOUT -->
+  <section class="view" id="v-receive">
+    <div class="card glass" style="text-align:center">
+      <h3>Přijmout</h3>
+      <div class="seg" id="recvTo">
+        <button data-v="vault" class="on">🔒 Na Trezor</button>
+        <button data-v="ln">⚡ Do Kapsy</button>
+      </div>
+      <div class="qr" id="qr"></div>
+      <div class="addr mono" id="recvAddr">Připoj Trezor pro tvou adresu</div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn ghost" id="copyAddr">Kopírovat</button>
+        <button class="btn ghost" id="verifyAddr">Ověřit na Trezoru</button>
+      </div>
+      <p class="hint">Adresu vždy ověř na displeji Trezoru. Tak máš jistotu, že ti ji nepodvrhl malware.</p>
+    </div>
+  </section>
+
+  <!-- NABÍT -->
+  <section class="view" id="v-topup">
+    <div class="card glass">
+      <h3>Nabít Kapsu</h3>
+      <div class="flow">
+        <div class="node"><div class="ic vault">🔒</div>Trezor<br><span class="mono" style="color:var(--ink-3)" id="flowVault">—</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="ic ln">⚡</div>Kapsa<br><span class="mono" style="color:var(--ink-3)" id="flowLn">—</span></div>
+      </div>
+      <input class="inp amount-inp mono" id="topAmt" inputmode="numeric" placeholder="50 000">
+      <div class="fiat" style="text-align:center;margin:-4px 0 14px" id="topFiat">sats</div>
+      <div class="row" style="margin-bottom:14px">
+        <button class="btn ghost" data-top="21000">21k</button>
+        <button class="btn ghost" data-top="100000">100k</button>
+        <button class="btn ghost" data-top="500000">500k</button>
+      </div>
+      <button class="btn primary" id="topGo">Nabít z Trezoru</button>
+      <p class="hint">Jako převod ze spořáku na běžný účet. Trezor pošle sats na vkladovou adresu tvé Lightning Kapsy a ty pak platíš kámošům okamžitě. Na útratu drž jen malé částky, úspory nech na Trezoru.</p>
+    </div>
+  </section>
+
+  <!-- KÁMOŠI -->
+  <section class="view" id="v-friends">
+    <div class="card glass">
+      <h3>Kámoši <span id="frCount"></span></h3>
+      <div id="frList"></div>
+      <button class="btn ghost" style="margin-top:12px" id="addFriend">+ Přidat kámoše</button>
+    </div>
+    <div class="card glass">
+      <h3>Moje platební adresa</h3>
+      <div class="addr mono" id="myLn">tomas@kapsa.btc</div>
+      <p class="hint">Tuhle adresu dej kámošům, ať ti můžou posílat sats do Kapsy. Funguje jako e-mail, jen pro peníze.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs glass">
+  <button data-go="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Přehled</button>
+  <button data-go="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>Poslat</button>
+  <button data-go="receive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 7 7 17M15 17H7V9"/></svg>Přijmout</button>
+  <button data-go="topup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Nabít</button>
+  <button data-go="friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .6 3.2 2.5 3.5 5.5"/></svg>Kámoši</button>
+</nav>
+
+<div class="scrim" id="scrim"><div class="sheet glass" id="sheet"></div></div>
+<div class="toast glass" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://connect.trezor.io/9/trezor-connect.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const ACCOUNT_PATH = "m/84'/0'/0'";      // Native SegWit (bc1q…) účet #1
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem('kapsa.'+k); return v ? JSON.parse(v) : d }catch{ return d } },
+  set(k, v){ try{ localStorage.setItem('kapsa.'+k, JSON.stringify(v)) }catch{} }
+};
+
+/* ---------- stav ---------- */
+const S = {
+  unit: store.get('unit','sats'),
+  czk: null,
+  trezor: null,                 // {balance, address, path, txs}
+  ln: store.get('ln', { balance: 0, txs: [] }),   // DEMO Lightning kapsa
+  friends: store.get('friends', [
+    { name:'Honza', emoji:'🦊', addr:'honza@walletofsatoshi.com' },
+    { name:'Petra', emoji:'🌸', addr:'petra@getalby.com' },
+    { name:'Marek', emoji:'🏔️', addr:'marek@strike.me' },
+  ]),
+  sendFrom:'ln', recvTo:'vault'
+};
+const saveLn = () => store.set('ln', S.ln);
+
+/* ---------- formát ---------- */
+const nf = new Intl.NumberFormat('cs-CZ');
+const fmt = sats => S.unit === 'btc'
+  ? (sats/1e8).toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:8}) + ' BTC'
+  : nf.format(Math.round(sats)) + ' sats';
+const fmtBig = sats => S.unit === 'btc'
+  ? `${(sats/1e8).toLocaleString('cs-CZ',{maximumFractionDigits:8})}<small>BTC</small>`
+  : `${nf.format(Math.round(sats))}<small>sats</small>`;
+const czk = sats => S.czk ? (sats/1e8*S.czk).toLocaleString('cs-CZ',{style:'currency',currency:'CZK',maximumFractionDigits:0}) : '—';
+const short = a => a && a.length > 22 ? a.slice(0,10)+'…'+a.slice(-8) : a;
+const ago = t => { const d=(Date.now()/1000 - t); if(d<3600) return Math.max(1,Math.round(d/60))+' min'; if(d<86400) return Math.round(d/3600)+' h'; return new Date(t*1000).toLocaleDateString('cs-CZ') };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function toast(msg, ok=true){
+  const t=$('#toast'); t.textContent=(ok?'✓ ':'⚠ ')+msg; t.classList.add('on');
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),3200);
+}
+
+/* ---------- validace adres ---------- */
+const isBtcAddr = a => /^(bc1[02-9ac-hj-np-z]{11,71}|[13][a-km-zA-HJ-NP-Z1-9]{25,34})$/i.test(a);
+const isLnAddr  = a => /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(a);
+const isInvoice = a => /^(lightning:)?ln(bc|tb)[0-9a-z]+$/i.test(a);
+
+/* ---------- kurz ---------- */
+async function loadPrice(){
+  try{
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=czk');
+    S.czk = (await r.json()).bitcoin.czk; render();
+  }catch{}
+}
+
+/* ---------- Trezor Connect ---------- */
+let trezorReady = false;
+async function initTrezor(){
+  if(!window.TrezorConnect) return false;
+  if(trezorReady) return true;
+  try{
+    await TrezorConnect.init({
+      lazyLoad:true,
+      manifest:{ appName:'Kapsa', appUrl: location.origin, email:'kapsa@example.com' }
+    });
+    trezorReady = true;
+  }catch(e){ if(!String(e).includes('already')) { console.warn(e); return false } trezorReady = true }
+  return true;
+}
+
+async function connectTrezor(){
+  if(!(await initTrezor())){ toast('Trezor Connect se nenačetl, zkus HTTPS a Chrome/Edge', false); return }
+  $('#trezorTxt').textContent='Připojuji…';
+  const r = await TrezorConnect.getAccountInfo({ coin:'btc', path:ACCOUNT_PATH, details:'txs', pageSize:15 });
+  if(!r.success){ $('#trezorTxt').textContent='Připojit Trezor'; toast(r.payload.error || 'Připojení selhalo', false); return }
+  const p = r.payload;
+  const unused = p.addresses?.unused?.[0];
+  S.trezor = {
+    balance: Number(p.availableBalance ?? p.balance ?? 0),
+    address: unused?.address, path: unused?.path,
+    txs: (p.history?.transactions || []).map(t => ({
+      dir: t.type === 'recv' ? 'in' : 'out', amount: Number(t.amount), time: t.blockTime || Date.now()/1000,
+      label: t.type === 'recv' ? 'Přijato na Trezor' : 'Odesláno z Trezoru', id:t.txid
+    }))
+  };
+  toast('Trezor připojen');
+  render();
+}
+
+async function verifyAddress(){
+  if(!S.trezor?.address){ return connectTrezor() }
+  const r = await TrezorConnect.getAddress({ coin:'btc', path:S.trezor.path, address:S.trezor.address, showOnTrezor:true });
+  toast(r.success ? 'Adresa souhlasí s Trezorem' : (r.payload.error||'Ověření zrušeno'), r.success);
+}
+
+async function trezorSend(address, sats){
+  if(!S.trezor) { await connectTrezor(); if(!S.trezor) return null }
+  // Trezor Suite popup: výběr poplatku, kontrola na displeji, podpis, odeslání do sítě
+  const r = await TrezorConnect.composeTransaction({
+    coin:'btc', outputs:[{ address, amount:String(sats) }], push:true
+  });
+  if(!r.success){ toast(r.payload.error || 'Transakce zrušena', false); return null }
+  return r.payload.txid;
+}
+
+/* ---------- DEMO Lightning kapsa ----------
+   Ve finální verzi: Breez SDK / Spark (self-custodial), klíče v zařízení,
+   vkladová on-chain adresa pro nabíjení z Trezoru, Lightning adresa pro přátele. */
+const LN_DEPOSIT_DEMO = 'bc1qkapsa0demo0deposit0address0xx0yyy0zzz';
+function lnPay(to, sats, note){
+  if(sats > S.ln.balance){ toast('V Kapse není dost sats. Nabij ji z Trezoru.', false); return false }
+  S.ln.balance -= sats;
+  S.ln.txs.unshift({ dir:'out', amount:sats, time:Date.now()/1000, label: note || ('Pro '+nameFor(to)), to });
+  saveLn(); return true;
+}
+function lnReceive(sats, label){
+  S.ln.balance += sats;
+  S.ln.txs.unshift({ dir:'in', amount:sats, time:Date.now()/1000, label });
+  saveLn();
+}
+const nameFor = a => (S.friends.find(f=>f.addr===a)?.name) || short(a);
+
+/* ---------- render ---------- */
+function render(){
+  const vault = S.trezor?.balance ?? 0;
+  const total = vault + S.ln.balance;
+  $('#total').innerHTML = fmtBig(total);
+  $('#totalFiat').textContent = czk(total);
+  $('#vaultAmt').textContent = S.trezor ? fmt(vault) : 'nepřipojen';
+  $('#lnAmt').textContent = fmt(S.ln.balance);
+  $('#flowVault').textContent = S.trezor ? fmt(vault) : '—';
+  $('#flowLn').textContent = fmt(S.ln.balance);
+  $('#trezorDot').classList.toggle('on', !!S.trezor);
+  $('#trezorTxt').textContent = S.trezor ? 'Trezor Safe 7' : 'Připojit Trezor';
+
+  // kámoši
+  $('#friendsRow').innerHTML = S.friends.map((f,i)=>`<button class="fr" data-pay="${i}"><span class="av">${esc(f.emoji)}</span>${esc(f.name)}</button>`).join('')
+    + `<button class="fr add" id="addFriend2"><span class="av">+</span>Přidat</button>`;
+  $('#frCount').textContent = S.friends.length;
+  $('#frList').innerHTML = S.friends.map((f,i)=>`
+    <div class="tx"><span class="av">${esc(f.emoji)}</span>
+      <div class="t"><b>${esc(f.name)}</b><em class="mono">${esc(short(f.addr))}</em></div>
+      <button class="pill glass" data-pay="${i}">Poslat</button></div>`).join('') || '<div class="empty">Zatím nikdo</div>';
+
+  // pohyby
+  const txs = [...S.ln.txs.map(t=>({...t,src:'⚡'})), ...(S.trezor?.txs||[]).map(t=>({...t,src:'🔒'}))]
+    .sort((a,b)=>b.time-a.time).slice(0,12);
+  $('#txSrc').textContent = S.trezor ? 'Trezor + Kapsa' : 'Kapsa';
+  $('#txList').innerHTML = txs.length ? txs.map(t=>`
+    <div class="tx"><span class="av">${t.src}</span>
+      <div class="t"><b>${esc(t.label)}</b><em>${ago(t.time)}</em></div>
+      <div class="v ${t.dir==='in'?'in':''}">${t.dir==='in'?'+':'−'}${fmt(t.amount)}<br><em style="font-style:normal;font-size:11px;color:var(--ink-3);font-weight:400">${czk(t.amount)}</em></div>
+    </div>`).join('') : '<div class="empty">Zatím žádné pohyby. Připoj Trezor nebo nabij Kapsu.</div>';
+
+  renderReceive();
+  $('#myLn').textContent = store.get('myLn','tomas@kapsa.btc');
+}
+
+function renderReceive(){
+  let data, text;
+  if(S.recvTo === 'vault'){
+    data = S.trezor?.address; text = data || 'Připoj Trezor pro tvou adresu';
+    $('#verifyAddr').style.display='';
+  } else {
+    data = store.get('myLn','tomas@kapsa.btc'); text = data + '  (demo)';
+    $('#verifyAddr').style.display='none';
+  }
+  $('#recvAddr').textContent = text;
+  const box = $('#qr');
+  if(data && window.qrcode){
+    const q = qrcode(0,'M'); if(S.recvTo==='vault') q.addData('BITCOIN:'+data.toUpperCase(), 'Alphanumeric'); else q.addData('lightning:'+data, 'Byte'); q.make();
+    box.innerHTML = q.createSvgTag({cellSize:4, margin:0, scalable:true});
+  } else box.innerHTML = '<span style="color:#999;font-size:13px">QR se zobrazí po připojení</span>';
+}
+
+/* ---------- navigace ---------- */
+function go(v){
+  $$('.view').forEach(x=>x.classList.toggle('on', x.id==='v-'+v));
+  $$('nav.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.go===v));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click', e=>{
+  const g = e.target.closest('[data-go]'); if(g) go(g.dataset.go);
+  const p = e.target.closest('[data-pay]'); if(p){ const f=S.friends[+p.dataset.pay]; $('#sendTo').value=f.addr; go('send'); setTimeout(()=>$('#sendAmt').focus(),300) }
+  if(e.target.closest('#addFriend,#addFriend2')) openAddFriend();
+  const t = e.target.closest('[data-top]'); if(t){ $('#topAmt').value=nf.format(+t.dataset.top); updFiat('#topAmt','#topFiat') }
+});
+function seg(id, key, cb){
+  $(id).addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return;
+    $$(id+' button').forEach(x=>x.classList.toggle('on',x===b)); S[key]=b.dataset.v; cb&&cb() });
+}
+seg('#sendFrom','sendFrom', ()=>{ $('#sendTo').placeholder = S.sendFrom==='ln' ? 'kamos@walletofsatoshi.com nebo lnbc…' : 'bc1q…' });
+seg('#recvTo','recvTo', renderReceive);
+
+$('#total').addEventListener('click', ()=>{ S.unit = S.unit==='sats'?'btc':'sats'; store.set('unit',S.unit); render() });
+$('#trezorBtn').addEventListener('click', ()=> S.trezor ? verifyAddress() : connectTrezor());
+$('#verifyAddr').addEventListener('click', verifyAddress);
+$('#copyAddr').addEventListener('click', async ()=>{
+  const a = S.recvTo==='vault' ? S.trezor?.address : store.get('myLn','tomas@kapsa.btc');
+  if(!a) return toast('Nejdřív připoj Trezor', false);
+  try{ await navigator.clipboard.writeText(a); toast('Zkopírováno') }catch{ toast('Kopírování nejde', false) }
+});
+
+/* částky */
+const parseSats = s => Math.round(Number(String(s).replace(/[^\d]/g,'')) || 0);
+function updFiat(inp, out){ const v=parseSats($(inp).value); $(out).textContent = v ? `${nf.format(v)} sats · ${czk(v)}` : 'sats' }
+['#sendAmt','#topAmt'].forEach(id=> $(id).addEventListener('input', e=>{
+  const v=parseSats(e.target.value); e.target.value = v ? nf.format(v) : '';
+  updFiat(id, id==='#sendAmt'?'#sendFiat':'#topFiat');
+}));
+
+/* poslat */
+$('#sendGo').addEventListener('click', async ()=>{
+  const sats = parseSats($('#sendAmt').value), to = $('#sendTo').value.trim(), note=$('#sendNote').value.trim();
+  if(!sats) return toast('Zadej částku', false);
+  if(!to) return toast('Komu to posíláš?', false);
+  if(S.sendFrom==='vault'){
+    if(!isBtcAddr(to)) return toast('Z Trezoru jde poslat jen na bitcoinovou adresu (bc1…)', false);
+    if(sats < 546) return toast('Minimum on-chain je 546 sats', false);
+    const txid = await trezorSend(to, sats);
+    if(txid){ toast('Odesláno · '+txid.slice(0,10)+'…'); clearSend(); setTimeout(connectTrezor, 2500) }
+  } else {
+    if(!(isLnAddr(to) || isInvoice(to))) return toast('Pro Kapsu zadej Lightning adresu (jmeno@domena) nebo fakturu lnbc…', false);
+    if(lnPay(to, sats, note)){ toast(`Posláno ${nameFor(to)} · ${fmt(sats)}`); clearSend(); render(); go('home') }
+  }
+});
+const clearSend = ()=>{ ['#sendAmt','#sendTo','#sendNote'].forEach(i=>$(i).value=''); updFiat('#sendAmt','#sendFiat') };
+
+/* nabít */
+$('#topGo').addEventListener('click', async ()=>{
+  const sats = parseSats($('#topAmt').value);
+  if(!sats) return toast('Kolik chceš nabít?', false);
+  if(S.trezor){
+    if(sats > S.trezor.balance) return toast('Na Trezoru není dost', false);
+    // Ve finále: vkladová adresa z Lightning peněženky (Breez/Spark)
+    const txid = await trezorSend(LN_DEPOSIT_DEMO, sats);
+    if(txid){ lnReceive(sats,'Nabití z Trezoru'); toast('Kapsa se nabíjí, peníze dorazí po potvrzení'); render(); go('home') }
+  } else {
+    // čisté demo bez Trezoru
+    lnReceive(sats,'Nabití (demo)'); toast('Demo: Kapsa nabita o '+fmt(sats)); $('#topAmt').value=''; render(); go('home');
+  }
+});
+
+/* přidat kámoše */
+function openAddFriend(){
+  const emojis=['🦊','🐻','🐼','🦁','🐸','🐙','🦄','🌸','🔥','🏔️','⚡','🍺','🎸','🚀'];
+  let pick = emojis[Math.floor(Math.random()*emojis.length)];
+  $('#sheet').innerHTML = `<div class="grab"></div><h2>Nový kámoš</h2>
+    <div class="emojis">${emojis.map(e=>`<button data-e="${e}" class="${e===pick?'on':''}">${e}</button>`).join('')}</div>
+    <label class="field"><span>Jméno</span><input class="inp" id="fName" placeholder="Jirka"></label>
+    <label class="field"><span>Lightning nebo BTC adresa</span><input class="inp mono" id="fAddr" placeholder="jirka@getalby.com"></label>
+    <button class="btn primary" id="fSave">Uložit</button>`;
+  $('#scrim').classList.add('on');
+  $('#sheet').querySelector('.emojis').onclick = e=>{ const b=e.target.closest('button'); if(!b) return; pick=b.dataset.e;
+    $$('.emojis button').forEach(x=>x.classList.toggle('on',x===b)) };
+  $('#fSave').onclick = ()=>{
+    const name=$('#fName').value.trim(), addr=$('#fAddr').value.trim();
+    if(!name) return toast('Doplň jméno', false);
+    if(!(isLnAddr(addr)||isBtcAddr(addr))) return toast('Neplatná adresa', false);
+    S.friends.push({name, emoji:pick, addr}); store.set('friends', S.friends);
+    $('#scrim').classList.remove('on'); toast(name+' přidán'); render();
+  };
+}
+$('#scrim').addEventListener('click', e=>{ if(e.target.id==='scrim') e.currentTarget.classList.remove('on') });
+
+/* odlesk skla podle pohybu */
+document.addEventListener('pointermove', e=>{
+  for(const el of $$('.glass')){ const r=el.getBoundingClientRect();
+    el.style.setProperty('--mx', (e.clientX-r.left)+'px'); el.style.setProperty('--my', (e.clientY-r.top)+'px') }
+}, {passive:true});
+
+/* start */
+if(!S.ln.txs.length && !store.get('seeded')){
+  S.ln = { balance: 42000, txs:[
+    {dir:'in', amount:15000, time:Date.now()/1000-3600*5, label:'Od Honzy · lístky na koncert'},
+    {dir:'out', amount:3500, time:Date.now()/1000-3600*26, label:'Pro Petru · káva ☕'},
+    {dir:'in', amount:30500, time:Date.now()/1000-3600*50, label:'Nabití (demo)'},
+  ]};
+  saveLn(); store.set('seeded', true);
+}
+render(); loadPrice();
+})();
+</script>
+</body>
+</html>
