@@ -224,6 +224,14 @@ nav.tabs button.on svg{color:var(--btc-2)}
 .scan-ui{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 20px);padding:18px;text-align:center}
 .scan-ui h2{font-size:18px;font-weight:800;margin-bottom:4px}
 .sheet{max-height:90vh;overflow-y:auto}
+.lock{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px}
+.lock.on{display:flex}
+.lock .box{width:min(380px,100%);padding:28px 22px;text-align:center}
+.lock .logo{justify-content:center;margin-bottom:18px}
+.chunks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0 14px;font-size:15px}
+.chunks span{padding:6px 7px;border-radius:9px;background:rgba(0,0,0,.3)}
+.chunks span.k{background:rgba(247,147,26,.22);color:var(--btc-2);font-weight:700}
+.warn{padding:12px 14px;border-radius:16px;background:rgba(255,107,107,.1);box-shadow:inset 0 0 0 1px rgba(255,107,107,.3);font-size:13px;line-height:1.5;margin-bottom:14px;text-align:left}
 .emojis{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .emojis button{width:42px;height:42px;border-radius:14px;font-size:21px;background:var(--glass)}
 .emojis button.on{box-shadow:inset 0 0 0 2px var(--btc)}
@@ -360,6 +368,10 @@ nav.tabs button.on svg{color:var(--btc-2)}
       <h3>Soukromí</h3>
       <label class="tx" style="cursor:pointer"><div class="t"><b>Kurz v CZK</b><em>Dotaz na CoinGecko. Nesděluje adresy ani zůstatky, jen tvou IP.</em></div>
         <input type="checkbox" id="priceToggle" style="width:22px;height:22px;accent-color:var(--btc)"></label>
+      <label class="tx" style="cursor:pointer"><div class="t"><b>Zašifrovat heslem</b><em>Kontakty, adresy a historie budou v zařízení jen zašifrované (AES-256).</em></div>
+        <input type="checkbox" id="lockToggle" style="width:22px;height:22px;accent-color:var(--btc)"></label>
+      <button class="btn ghost" id="lockNow" style="display:none;margin-top:6px">Zamknout teď</button>
+      <button class="btn ghost" id="wipeAll" style="margin-top:10px;color:var(--bad)">Smazat všechna data z tohoto zařízení</button>
       <p class="hint">Kapsa nemá žádný server ani účet. Kontakty a nastavení jsou jen v tomhle zařízení. Klíče k Trezoru jsou jen v Trezoru.</p>
     </div>
   </section>
@@ -375,6 +387,16 @@ nav.tabs button.on svg{color:var(--btc-2)}
 
 <div class="scrim" id="scrim"><div class="sheet glass" id="sheet"></div></div>
 <div class="toast glass" id="toast"></div>
+<div class="lock" id="lock">
+  <div class="aura"><i></i><i></i><i></i></div>
+  <form class="box glass" id="lockForm" autocomplete="off">
+    <div class="logo"><b>₿</b>Kapsa</div>
+    <p class="hint" style="margin:0 0 14px">Data aplikace jsou zašifrovaná. Zadej heslo.</p>
+    <input class="inp" type="password" id="lockPass" placeholder="Heslo" autocomplete="current-password" style="text-align:center;margin-bottom:12px">
+    <button class="btn primary" type="submit" id="lockGo">Odemknout</button>
+    <p class="hint" id="lockMsg"></p>
+  </form>
+</div>
 <div class="scanner" id="scanner">
   <video id="scanVid" playsinline muted></video>
   <div class="scan-frame"></div>
@@ -392,14 +414,72 @@ nav.tabs button.on svg{color:var(--btc-2)}
 <script src="vendor/jsQR.js"></script>
 <script src="https://connect.trezor.io/9/trezor-connect.js"></script>
 <script>
-(() => {
+/* ---------- šifrování dat v zařízení ----------
+   PBKDF2-SHA256 (600 000 iterací) → AES-256-GCM. Heslo ani klíč se nikam neukládají. */
+window.KapsaCrypto = (() => {
+  const te = new TextEncoder(), td = new TextDecoder();
+  const b64 = u => btoa(String.fromCharCode(...u)), unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  async function derive(pass, salt){
+    const base = await crypto.subtle.importKey('raw', te.encode(pass), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name:'PBKDF2', salt, iterations:600000, hash:'SHA-256' }, base,
+      { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']);
+  }
+  async function seal(key, salt, obj){
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, te.encode(JSON.stringify(obj))));
+    return JSON.stringify({ v:1, salt:b64(salt), iv:b64(iv), ct:b64(ct) });
+  }
+  async function open(pass, blob){
+    const j = JSON.parse(blob), salt = unb64(j.salt), key = await derive(pass, salt);
+    const pt = await crypto.subtle.decrypt({ name:'AES-GCM', iv:unb64(j.iv) }, key, unb64(j.ct)); // špatné heslo → výjimka
+    return { key, salt, data: JSON.parse(td.decode(pt)) };
+  }
+  return { derive, seal, open, newSalt: () => crypto.getRandomValues(new Uint8Array(16)) };
+})();
+
+/* brána: když jsou data zašifrovaná, nejdřív heslo, pak teprve aplikace */
+window.addEventListener('DOMContentLoaded', () => {
+  let blob = null; try{ blob = localStorage.getItem('kapsa.vault') }catch{}
+  if(!blob) return window.__kapsaMain(null);
+  const lock = document.getElementById('lock'), msg = document.getElementById('lockMsg'), btn = document.getElementById('lockGo');
+  lock.classList.add('on'); document.getElementById('lockPass').focus();
+  let fails = 0;
+  document.getElementById('lockForm').addEventListener('submit', async e => {
+    e.preventDefault(); const pass = document.getElementById('lockPass').value; if(!pass) return;
+    btn.disabled = true; msg.textContent = 'Ověřuji…';
+    try{
+      const v = await KapsaCrypto.open(pass, blob);
+      document.getElementById('lockPass').value = ''; lock.classList.remove('on'); msg.textContent = '';
+      window.__kapsaMain(v);
+    }catch{
+      fails++; const wait = Math.min(2 ** fails, 60);
+      msg.textContent = `Špatné heslo. Další pokus za ${wait} s.`;
+      setTimeout(() => { btn.disabled = false; msg.textContent = '' }, wait * 1000);
+    }
+  });
+});
+</script>
+<script>
+window.__kapsaMain = (VAULT) => {
 'use strict';
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const ACCOUNT_PATH = "m/84'/0'/0'";      // Native SegWit (bc1q…) účet #1
+// citlivá data (kontakty, adresy, historie) jdou při zapnutém zámku jen zašifrovaně
+const SECURE = ['friends','ln','myLn','seeded'];
+let persistT = 0;
+const persistVault = () => { clearTimeout(persistT); persistT = setTimeout(async () => {
+  try{ localStorage.setItem('kapsa.vault', await KapsaCrypto.seal(VAULT.key, VAULT.salt, VAULT.data)) }catch(e){ console.warn(e) }
+}, 150) };
 const store = {
-  get(k, d){ try{ const v = localStorage.getItem('kapsa.'+k); return v ? JSON.parse(v) : d }catch{ return d } },
-  set(k, v){ try{ localStorage.setItem('kapsa.'+k, JSON.stringify(v)) }catch{} }
+  get(k, d){
+    if(VAULT && SECURE.includes(k)) return k in VAULT.data ? VAULT.data[k] : d;
+    try{ const v = localStorage.getItem('kapsa.'+k); return v ? JSON.parse(v) : d }catch{ return d }
+  },
+  set(k, v){
+    if(VAULT && SECURE.includes(k)){ VAULT.data[k] = v; return persistVault() }
+    try{ localStorage.setItem('kapsa.'+k, JSON.stringify(v)) }catch{}
+  }
 };
 
 /* ---------- stav ---------- */
@@ -758,6 +838,30 @@ function updFiat(inp, out){ const v=parseSats($(inp).value); $(out).textContent 
   updFiat(id, id==='#sendAmt'?'#sendFiat':'#topFiat');
 }));
 
+/* kontrola adresy před odesláním (ochrana proti podvržení adresy virem ve schránce / QR) */
+function chunks(a){
+  if(!addrType(a) || isLnAddr(a)) return `<div class="addr mono" style="margin:6px 0 14px">${esc(a)}</div>`;
+  const g = a.match(/.{1,4}/g) || [];
+  return `<div class="chunks mono">${g.map((x,i)=>`<span class="${i<2||i>=g.length-2?'k':''}">${esc(x)}</span>`).join('')}</div>`;
+}
+function confirmSend({ to, sats, from }){
+  return new Promise(res => {
+    const f = findByAddr(to);
+    openSheet(`<h2>Zkontroluj platbu</h2>
+      <div style="text-align:center"><div class="big" style="font-size:36px">${fmtBig(sats)}</div><div class="fiat">${czk(sats)}</div></div>
+      <div class="label" style="margin:16px 6px 4px;text-align:center">${f ? esc(f.emoji)+' '+esc(f.name) : 'Neuložená adresa'}</div>
+      ${chunks(to)}
+      ${from==='vault'
+        ? '<div class="warn">🔒 <b>Na displeji Trezoru musí být přesně tato adresa a částka.</b> Porovnej celou adresu, skupinu po skupině, ne jen začátek a konec. Pokud se liší jediný znak, platbu na Trezoru zamítni. Mohl ji podvrhnout virus.</div>'
+        : (!f ? '<div class="warn">Adresu jsi nevybral z kontaktů. Ověř si ji s kámošem (třeba ať ti přečte poslední 4 znaky).</div>' : '')}
+      <div class="row"><button class="btn ghost" data-no>Zpět</button><button class="btn primary" data-yes>${from==='vault'?'Pokračovat na Trezor':'Poslat'}</button></div>`);
+    $('#sheet').onclick = e => {
+      if(e.target.closest('[data-yes]')){ closeSheet(); res(true) }
+      if(e.target.closest('[data-no]')){ closeSheet(); res(false) }
+    };
+  });
+}
+
 /* poslat */
 $('#sendGo').addEventListener('click', async ()=>{
   const sats = parseSats($('#sendAmt').value), to = $('#sendTo').value.trim(), note=$('#sendNote').value.trim();
@@ -766,10 +870,12 @@ $('#sendGo').addEventListener('click', async ()=>{
   if(S.sendFrom==='vault'){
     if(!isBtcAddr(to)) return toast('Z Trezoru jde poslat jen na bitcoinovou adresu (bc1…)', false);
     if(sats < 546) return toast('Minimum on-chain je 546 sats', false);
+    if(!(await confirmSend({ to, sats, from:'vault' }))) return;
     const txid = await trezorSend(to, sats);
     if(txid){ toast('Odesláno · '+txid.slice(0,10)+'…'); clearSend(); offerSave(to); setTimeout(connectTrezor, 2500) }
   } else {
     if(!(isLnAddr(to) || isInvoice(to))) return toast('Pro Kapsu zadej Lightning adresu (jmeno@domena) nebo fakturu lnbc…', false);
+    if(!(await confirmSend({ to, sats, from:'ln' }))) return;
     if(lnPay(to, sats, note)){ toast(`Posláno ${nameFor(to)} · ${fmt(sats)}`); clearSend(); render(); go('home'); if(!isInvoice(to)) offerSave(to) }
   }
 });
@@ -898,6 +1004,44 @@ document.addEventListener('pointermove', e=>{
     el.style.setProperty('--mx', (e.clientX-r.left)+'px'); el.style.setProperty('--my', (e.clientY-r.top)+'px') }
 }, {passive:true});
 
+/* zámek heslem */
+function initLockUI(){
+  const t = $('#lockToggle'); t.checked = !!VAULT; $('#lockNow').style.display = VAULT ? '' : 'none';
+  t.addEventListener('change', () => { t.checked = !!VAULT; VAULT ? disableLock() : enableLock() });
+  $('#lockNow').addEventListener('click', () => location.reload());   // klíč zmizí z paměti
+  $('#wipeAll').addEventListener('click', () => {
+    if(!confirm('Smazat kontakty, historii a nastavení z tohoto zařízení? Peníze na Trezoru to neovlivní.')) return;
+    try{ Object.keys(localStorage).filter(k=>k.startsWith('kapsa.')).forEach(k=>localStorage.removeItem(k)) }catch{}
+    location.reload();
+  });
+}
+function enableLock(){
+  openSheet(`<h2>Zašifrovat heslem</h2>
+    <p class="hint" style="margin:0 0 14px">Použij dlouhé heslo, ideálně 3–4 náhodná slova. Krátký PIN jde v ukradeném zařízení prolomit hrubou silou. <b>Heslo nikde neukládáme. Když ho zapomeneš, kontakty jsou pryč</b> (peníze na Trezoru ne).</p>
+    <label class="field"><span>Heslo</span><input class="inp" type="password" id="p1" autocomplete="new-password"></label>
+    <label class="field"><span>Znovu</span><input class="inp" type="password" id="p2" autocomplete="new-password"></label>
+    <button class="btn primary" data-lk>Zašifrovat</button>`);
+  $('#sheet').onclick = async e => {
+    if(!e.target.closest('[data-lk]')) return;
+    const a = $('#p1').value, b = $('#p2').value;
+    if(a.length < 10) return toast('Heslo aspoň 10 znaků', false);
+    if(a !== b) return toast('Hesla se neshodují', false);
+    const salt = KapsaCrypto.newSalt(), key = await KapsaCrypto.derive(a, salt), data = {};
+    SECURE.forEach(k => { data[k] = store.get(k, undefined) });
+    VAULT = { key, salt, data };
+    localStorage.setItem('kapsa.vault', await KapsaCrypto.seal(key, salt, data));
+    SECURE.forEach(k => localStorage.removeItem('kapsa.'+k));        // smazat nešifrované kopie
+    closeSheet(); $('#lockToggle').checked = true; $('#lockNow').style.display = ''; toast('Data jsou zašifrovaná');
+  };
+}
+function disableLock(){
+  if(!confirm('Vypnout šifrování? Data budou v zařízení čitelná.')) return;
+  const d = VAULT.data; VAULT = null;
+  SECURE.forEach(k => { if(d[k] !== undefined) store.set(k, d[k]) });
+  localStorage.removeItem('kapsa.vault');
+  $('#lockToggle').checked = false; $('#lockNow').style.display = 'none'; toast('Šifrování vypnuto');
+}
+
 /* start */
 if(!S.ln.txs.length && !store.get('seeded')){
   S.ln = { balance: 42000, txs:[
@@ -910,7 +1054,8 @@ if(!S.ln.txs.length && !store.get('seeded')){
 render(); if(store.get('price',false)) loadPrice();
 $('#priceToggle').checked = store.get('price',false);
 $('#priceToggle').addEventListener('change', e=>{ store.set('price', e.target.checked); if(e.target.checked) loadPrice(); else { S.czk=null; render() } });
-})();
+initLockUI();
+};
 </script>
 </body>
 </html>

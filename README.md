@@ -61,3 +61,9 @@ python3 -m http.server 8080   # ve složce aplikace, pak http://localhost:8080/
 - nabíjení Kapsy přes swap (např. Boltz) místo přímého převodu, aby se Trezor a Kapsa on-chain nespojily
 - výhledově eCash (Cashu/Fedimint) nebo Ark pro platby kámošům se silným soukromím
 - coin control: vybírat, které mince z Trezoru se utrácejí
+
+## Ochrana
+- **Kontrola před odesláním:** adresa rozdělená po 4 znacích. U Trezoru výzva porovnat celou adresu a částku s displejem zařízení. Displej Trezoru je jediné místo, kterému se dá věřit.
+- **Šifrování dat heslem:** PBKDF2-SHA256 s 600 000 iteracemi, AES-256-GCM. V zařízení je jen šifrovaný blob, heslo ani klíč se neukládají. Při špatném hesle se čekání mezi pokusy prodlužuje.
+- **Smazání všech dat** jedním tlačítkem.
+- Seed ani soukromé klíče Trezoru aplikace nikdy nevidí. Zůstatek a adresy Trezoru drží jen v paměti, neukládá je.
