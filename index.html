@@ -4,12 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#07070b">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://connect.trezor.io; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src https://connect.trezor.io https://api.coingecko.com; frame-src https://connect.trezor.io; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Kapsa — bitcoin mezi přáteli</title>
 <style>
-@font-face{font-family:Geologica;src:url(../Geologica_400Regular.woff2) format("woff2");font-weight:400}
-@font-face{font-family:Geologica;src:url(../Geologica_700Bold.woff2) format("woff2");font-weight:700}
-@font-face{font-family:Geologica;src:url(../Geologica_800ExtraBold.woff2) format("woff2");font-weight:800}
-@font-face{font-family:Mono;src:url(../JetBrainsMono_500Medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Geologica;src:url(fonts/Geologica_400Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Geologica;src:url(fonts/Geologica_700Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Geologica;src:url(fonts/Geologica_800ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Mono;src:url(fonts/JetBrainsMono_500Medium.woff2) format("woff2");font-weight:500}
 
 :root{
   --bg:#07070b;
@@ -313,6 +315,12 @@ nav.tabs button.on svg{color:var(--btc-2)}
       <div class="addr mono" id="myLn">tomas@kapsa.btc</div>
       <p class="hint">Tuhle adresu dej kámošům, ať ti můžou posílat sats do Kapsy. Funguje jako e-mail, jen pro peníze.</p>
     </div>
+    <div class="card glass">
+      <h3>Soukromí</h3>
+      <label class="tx" style="cursor:pointer"><div class="t"><b>Kurz v CZK</b><em>Dotaz na CoinGecko. Nesděluje adresy ani zůstatky, jen tvou IP.</em></div>
+        <input type="checkbox" id="priceToggle" style="width:22px;height:22px;accent-color:var(--btc)"></label>
+      <p class="hint">Kapsa nemá žádný server ani účet. Kontakty a nastavení jsou jen v tomhle zařízení. Klíče k Trezoru jsou jen v Trezoru.</p>
+    </div>
   </section>
 </main>
 
@@ -327,7 +335,7 @@ nav.tabs button.on svg{color:var(--btc-2)}
 <div class="scrim" id="scrim"><div class="sheet glass" id="sheet"></div></div>
 <div class="toast glass" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="vendor/qrcode.js"></script>
 <script src="https://connect.trezor.io/9/trezor-connect.js"></script>
 <script>
 (() => {
@@ -611,7 +619,9 @@ if(!S.ln.txs.length && !store.get('seeded')){
   ]};
   saveLn(); store.set('seeded', true);
 }
-render(); loadPrice();
+render(); if(store.get('price',false)) loadPrice();
+$('#priceToggle').checked = store.get('price',false);
+$('#priceToggle').addEventListener('change', e=>{ store.set('price', e.target.checked); if(e.target.checked) loadPrice(); else { S.czk=null; render() } });
 })();
 </script>
 </body>

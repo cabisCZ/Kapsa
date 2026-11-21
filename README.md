@@ -28,8 +28,23 @@ Prototyp self-custodial aplikace jen pro BTC. Bez serveru, bez účtu, bez KYC.
 3. Lightning adresa `jmeno@domena` přes vlastní doménu (LNURL-pay).
 4. Zabalit jako PWA → později nativní iOS/Android (Trezor Safe 7 umí Bluetooth).
 
+## Bezpečnost a decentralizace
+**Už teď:**
+- žádný server, účet ani databáze; kontakty a nastavení jsou jen v zařízení
+- klíče k úsporám jsou jen v Trezoru, každou platbu i adresu potvrzuješ na jeho displeji
+- písma i QR knihovna jsou uložené přímo v aplikaci, nic se nestahuje z cizích CDN
+- přísná Content-Security-Policy: povolen je jen Trezor Connect (a CoinGecko, pokud zapneš kurz)
+- kurz v CZK je vypnutý, dokud ho sám nezapneš (soukromí)
+- vstupy se escapují (ochrana proti XSS), adresy se validují
+
+**Kde je ještě centralizace, kterou odstraníme:**
+1. **Trezor Connect** zatím jde přes `connect.trezor.io` a zůstatky čte z Blockbooku od Trezoru. Plán: přibalit `@trezor/connect-web` přímo do aplikace a připojit vlastní uzel (Bitcoin Core + Electrum/Blockbook, třeba na Umbrelu nebo Start9).
+2. **Lightning:** Breez SDK / Spark je self-custodial (klíče jsou jen u tebe), ale používá jejich infrastrukturu. Alternativa pro plnou suverenitu je vlastní LN uzel.
+3. **Lightning adresa** poběží na tvé vlastní doméně (LNURL-pay server). Bez ní platby fungují přes faktury a QR.
+4. Před ostrým provozem: audit kódu, testy na testnetu/signetu a reproducible build.
+
 ## Spuštění
 Trezor Connect potřebuje HTTPS (nebo `localhost`):
 ```
-python3 -m http.server 8080   # v kořeni repa, pak http://localhost:8080/kapsa/
+python3 -m http.server 8080   # ve složce aplikace, pak http://localhost:8080/
 ```
