@@ -99,7 +99,7 @@ header.top{display:flex;align-items:center;justify-content:space-between;margin-
 .beta{margin:-4px 0 14px;padding:10px 14px;border-radius:18px;font-size:12px;line-height:1.5;color:var(--ink-2);background:rgba(94,230,168,.08);box-shadow:inset 0 0 0 1px rgba(94,230,168,.25)}
 .beta b{color:var(--ok)}
 .label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
-.big{font-size:46px;font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:10px 0 4px;cursor:pointer;user-select:none}
+.big{font-size:46px;font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:10px 0 4px;cursor:pointer;user-select:none;white-space:nowrap;overflow:hidden;max-width:100%}
 .big small{font-size:18px;font-weight:700;color:var(--ink-2);margin-left:6px;letter-spacing:0}
 .fiat{color:var(--ink-2);font-size:14px}
 .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
@@ -108,11 +108,18 @@ header.top{display:flex;align-items:center;justify-content:space-between;margin-
 .act svg{width:22px;height:22px}
 
 /* dvě peněženky */
-.wallets{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.wallets{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-bottom:14px}
+.hero,.card,.wal{min-width:0;overflow:hidden}
+.unitsw{display:inline-flex;margin-top:12px;padding:3px;border-radius:999px;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.unitsw button{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;color:var(--ink-3);transition:.25s}
+.unitsw button.on{color:var(--ink);background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.08));box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.amt-row{display:flex;align-items:center;gap:8px;min-width:0}
+.amt-row .amount-inp{flex:1;min-width:0}
+.unit-btn{flex:none;padding:8px 12px;border-radius:14px;font-size:13px;font-weight:800;color:var(--btc-2);background:rgba(247,147,26,.14);box-shadow:inset 0 0 0 1px rgba(247,147,26,.3)}
 .wal{padding:16px;border-radius:24px;text-align:left}
 .wal .nm{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
 .wal .ic{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;font-size:14px}
-.wal .amt{font-size:20px;font-weight:800;margin-top:12px;letter-spacing:-.02em}
+.wal .amt{font-size:20px;font-weight:800;margin-top:12px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wal .sub{font-size:12px;color:var(--ink-3);margin-top:2px}
 .ic.vault{background:linear-gradient(145deg,#ffb547,#f7931a);color:#241400}
 .ic.ln{background:linear-gradient(145deg,#c8b6ff,#7c4dff);color:#14072e}
@@ -129,7 +136,7 @@ header.top{display:flex;align-items:center;justify-content:space-between;margin-
 .tx .t{flex:1;min-width:0}
 .tx .t b{display:block;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tx .t em{font-style:normal;font-size:12px;color:var(--ink-3)}
-.tx .v{font-weight:700;font-size:14px;text-align:right}
+.tx .v{font-weight:700;font-size:14px;text-align:right;flex:none;max-width:52%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .in{color:var(--ok)}
 .empty{color:var(--ink-3);font-size:13px;text-align:center;padding:14px 0}
 
@@ -146,7 +153,7 @@ header.top{display:flex;align-items:center;justify-content:space-between;margin-
 .inp{width:100%;padding:15px 16px;border-radius:18px;border:0;outline:0;background:rgba(0,0,0,.25);
   box-shadow:inset 0 1px 2px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.08);font-size:15px}
 .inp:focus{box-shadow:inset 0 1px 2px rgba(0,0,0,.4),inset 0 0 0 1.5px var(--btc)}
-.amount-inp{font-size:40px;font-weight:800;text-align:center;background:transparent;box-shadow:none;letter-spacing:-.03em;padding:8px}
+.amount-inp{font-size:clamp(26px,9vw,40px);font-weight:800;text-align:center;background:transparent;box-shadow:none;letter-spacing:-.03em;padding:8px}
 .amount-inp:focus{box-shadow:none}
 .seg{display:flex;padding:4px;border-radius:999px;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);margin-bottom:14px}
 .seg button{flex:1;padding:10px 8px;border-radius:999px;font-size:13px;font-weight:700;color:var(--ink-2);transition:.25s}
@@ -271,6 +278,7 @@ nav.tabs button.on svg{color:var(--btc-2)}
       <div class="label">Celkem</div>
       <div class="big" id="total" title="Klepni pro přepnutí sats / BTC">0</div>
       <div class="fiat" id="totalFiat">—</div>
+      <div class="unitsw" id="unitSw" role="group" aria-label="Jednotka"><button data-u="sats">sats</button><button data-u="btc">BTC</button></div>
       <div class="actions">
         <button class="act glass" data-go="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>Poslat</button>
         <button class="act glass" data-go="receive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 7 7 17M15 17H7V9"/></svg>Přijmout</button>
@@ -310,7 +318,7 @@ nav.tabs button.on svg{color:var(--btc-2)}
         <button data-v="ln" class="on">⚡ Z Kapsy</button>
         <button data-v="vault">🔒 Z Trezoru</button>
       </div>
-      <input class="inp amount-inp mono" id="sendAmt" inputmode="numeric" placeholder="0">
+      <div class="amt-row"><input class="inp amount-inp mono" id="sendAmt" inputmode="decimal" placeholder="0" maxlength="20"><button type="button" class="unit-btn" data-unit-toggle>sats</button></div>
       <div class="fiat" style="text-align:center;margin:-4px 0 16px" id="sendFiat">sats</div>
       <label class="field"><span>Komu</span>
         <div class="inp-wrap">
@@ -354,7 +362,7 @@ nav.tabs button.on svg{color:var(--btc-2)}
         <div class="arrow">→</div>
         <div class="node"><div class="ic ln">⚡</div>Kapsa<br><span class="mono" style="color:var(--ink-3)" id="flowLn">—</span></div>
       </div>
-      <input class="inp amount-inp mono" id="topAmt" inputmode="numeric" placeholder="50 000">
+      <div class="amt-row"><input class="inp amount-inp mono" id="topAmt" inputmode="decimal" placeholder="50 000" maxlength="20"><button type="button" class="unit-btn" data-unit-toggle>sats</button></div>
       <div class="fiat" style="text-align:center;margin:-4px 0 14px" id="topFiat">sats</div>
       <div class="row" style="margin-bottom:14px">
         <button class="btn ghost" data-top="21000">21k</button>
@@ -558,6 +566,9 @@ const saveLn = () => store.set('ln', S.ln);
 
 /* ---------- formát ---------- */
 const nf = new Intl.NumberFormat('cs-CZ');
+const MAX_SATS = 21e14;                  // 21 milionů BTC: víc bitcoinů nikdy nebude
+const btcStr = sats => (sats/1e8).toLocaleString('cs-CZ',{minimumFractionDigits:0,maximumFractionDigits:8}) + ' BTC';
+const satsStr = sats => nf.format(Math.round(sats)) + ' sats';
 const fmt = sats => S.unit === 'btc'
   ? (sats/1e8).toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:8}) + ' BTC'
   : nf.format(Math.round(sats)) + ' sats';
@@ -736,7 +747,10 @@ function render(){
   const vault = S.trezor?.balance ?? 0;
   const total = vault + S.ln.balance;
   $('#total').innerHTML = fmtBig(total);
-  $('#totalFiat').textContent = czk(total);
+  $('#totalFiat').textContent = (S.unit === 'btc' ? satsStr(total) : btcStr(total)) + ' · ' + czk(total);
+  $$('#unitSw button').forEach(b => b.classList.toggle('on', b.dataset.u === S.unit));
+  $$('[data-unit-toggle]').forEach(b => b.textContent = S.unit === 'btc' ? 'BTC' : 'sats');
+  requestAnimationFrame(fitBig);
   $('#vaultAmt').textContent = S.trezor ? fmt(vault) : 'nepřipojen';
   $('#lnAmt').textContent = fmt(S.ln.balance);
   $('#flowVault').textContent = S.trezor ? fmt(vault) : '—';
@@ -812,7 +826,7 @@ document.addEventListener('click', e=>{
   if(e.target.closest('#addFriend,#addFriend2')) openContact(null);
   const n = e.target.closest('[data-newname]'); if(n) openContact(null, { name:n.dataset.newname });
   const sa = e.target.closest('[data-saveaddr]'); if(sa) openSaveAddr(sa.dataset.saveaddr);
-  const t = e.target.closest('[data-top]'); if(t){ $('#topAmt').value=nf.format(+t.dataset.top); updFiat('#topAmt','#topFiat') }
+  const t = e.target.closest('[data-top]'); if(t){ setAmt('#topAmt', +t.dataset.top); updFiat('#topAmt','#topFiat') }
 });
 function seg(id, key, cb){
   $(id).addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return;
@@ -846,7 +860,7 @@ function fillFromPayment(raw){
   if(!t) return toast('QR neobsahuje bitcoinovou ani Lightning adresu', false);
   setSendFrom(t==='ln' ? 'ln' : 'vault');
   $('#sendTo').value = v;
-  if(p.amount){ $('#sendAmt').value = nf.format(p.amount); updFiat('#sendAmt','#sendFiat') }
+  if(p.amount){ setAmt('#sendAmt', p.amount); updFiat('#sendAmt','#sendFiat') }
   if(p.label && !$('#sendNote').value) $('#sendNote').value = p.label;
   updWho(); go('send');
   toast(findByAddr(v) ? 'Adresa patří: ' + findByAddr(v).name : 'Adresa načtena z QR');
@@ -881,7 +895,25 @@ function openPicker(){
 }
 seg('#recvTo','recvTo', renderReceive);
 
-$('#total').addEventListener('click', ()=>{ S.unit = S.unit==='sats'?'btc':'sats'; store.set('unit',S.unit); render() });
+function setUnit(u){
+  // částky v polích přepočítat do nové jednotky
+  const vals = ['#sendAmt','#topAmt'].map(id => parseAmt($(id).value));
+  S.unit = u; store.set('unit', u);
+  ['#sendAmt','#topAmt'].forEach((id,i) => setAmt(id, vals[i]));
+  render(); updFiat('#sendAmt','#sendFiat'); updFiat('#topAmt','#topFiat');
+}
+$('#total').addEventListener('click', ()=> setUnit(S.unit==='sats'?'btc':'sats'));
+$('#unitSw').addEventListener('click', e => { const b = e.target.closest('[data-u]'); if(b) setUnit(b.dataset.u) });
+document.addEventListener('click', e => { if(e.target.closest('[data-unit-toggle]')) setUnit(S.unit==='sats'?'btc':'sats') });
+/* velkou částku zmenšit, aby se vešla do rámečku */
+function fitBig(){
+  for(const el of $$('.big')){
+    el.style.fontSize = '';
+    let size = parseFloat(getComputedStyle(el).fontSize);
+    while(el.scrollWidth > el.clientWidth + 1 && size > 18){ size -= 2; el.style.fontSize = size + 'px' }
+  }
+}
+window.addEventListener('resize', fitBig);
 $('#trezorBtn').addEventListener('click', ()=> S.trezor ? verifyAddress() : connectTrezor());
 $('#verifyAddr').addEventListener('click', verifyAddress);
 $('#copyAddr').addEventListener('click', async ()=>{
@@ -891,12 +923,37 @@ $('#copyAddr').addEventListener('click', async ()=>{
 });
 
 /* částky */
-const parseSats = s => Math.round(Number(String(s).replace(/[^\d]/g,'')) || 0);
-function updFiat(inp, out){ const v=parseSats($(inp).value); $(out).textContent = v ? `${nf.format(v)} sats · ${czk(v)}` : 'sats' }
-['#sendAmt','#topAmt'].forEach(id=> $(id).addEventListener('input', e=>{
-  const v=parseSats(e.target.value); e.target.value = v ? nf.format(v) : '';
-  updFiat(id, id==='#sendAmt'?'#sendFiat':'#topFiat');
-}));
+// vstup je v aktuální jednotce (sats nebo BTC), interně vždy celé sats
+function parseAmt(str){
+  str = String(str).replace(/\s/g,'');
+  if(S.unit === 'btc'){
+    const m = str.replace(',', '.').match(/^\d{0,8}(\.\d{0,8})?/); const n = parseFloat(m ? m[0] : '');
+    return isFinite(n) ? Math.round(n * 1e8) : 0;
+  }
+  const d = str.replace(/\D/g,'').slice(0,16); return d ? Number(d) : 0;
+}
+function setAmt(id, sats){
+  const el = $(id); if(!sats){ el.value = ''; return }
+  el.value = S.unit === 'btc' ? (sats/1e8).toLocaleString('cs-CZ',{maximumFractionDigits:8}) : nf.format(sats);
+}
+function updFiat(inp, out){
+  const v = parseAmt($(inp).value);
+  $(out).textContent = v ? (S.unit === 'btc' ? satsStr(v) : btcStr(v)) + ' · ' + czk(v) : (S.unit === 'btc' ? 'BTC' : 'sats');
+  $(out).style.color = v > MAX_SATS ? 'var(--bad)' : '';
+  if(v > MAX_SATS) $(out).textContent = 'Víc než 21 milionů BTC neexistuje';
+}
+['#sendAmt','#topAmt'].forEach(id => {
+  $(id).placeholder = '0';
+  $(id).addEventListener('input', e => {
+    if(S.unit === 'btc'){                       // BTC: jen číslice a jedna desetinná čárka, max 8 míst
+      let v = e.target.value.replace('.', ',').replace(/[^\d,]/g,''); const i = v.indexOf(',');
+      if(i >= 0) v = v.slice(0, i+1) + v.slice(i+1).replace(/,/g,'').slice(0,8);
+      e.target.value = v;
+    } else { const v = parseAmt(e.target.value); e.target.value = v ? nf.format(v) : '' }
+    updFiat(id, id==='#sendAmt'?'#sendFiat':'#topFiat');
+  });
+});
+const amtOk = sats => { if(sats > MAX_SATS){ toast('Víc než 21 milionů BTC neexistuje', false); return false } return true };
 
 /* kontrola adresy před odesláním (ochrana proti podvržení adresy virem ve schránce / QR) */
 function chunks(a){
@@ -924,8 +981,9 @@ function confirmSend({ to, sats, from }){
 
 /* poslat */
 $('#sendGo').addEventListener('click', async ()=>{
-  const sats = parseSats($('#sendAmt').value), to = $('#sendTo').value.trim(), note=$('#sendNote').value.trim();
+  const sats = parseAmt($('#sendAmt').value), to = $('#sendTo').value.trim(), note=$('#sendNote').value.trim();
   if(!sats) return toast('Zadej částku', false);
+  if(!amtOk(sats)) return;
   if(!to) return toast('Komu to posíláš?', false);
   if(S.sendFrom==='vault'){
     if(!isBtcAddr(to)) return toast('Z Trezoru jde poslat jen na bitcoinovou adresu ('+(TESTNET?'tb1…':'bc1…')+')', false);
@@ -944,8 +1002,10 @@ const offerSave = a => { if(!findByAddr(a)) setTimeout(()=>openSaveAddr(a, true)
 
 /* nabít */
 $('#topGo').addEventListener('click', async ()=>{
-  const sats = parseSats($('#topAmt').value);
+  const sats = parseAmt($('#topAmt').value);
   if(!sats) return toast('Kolik chceš nabít?', false);
+  if(!amtOk(sats)) return;
+  if(BETA && S.ln.balance + sats > 1e8) return toast('V betě jde do Kapsy nabít nejvýš 1 BTC', false);
   if(S.trezor && !BETA){
     if(sats > S.trezor.balance) return toast('Na Trezoru není dost', false);
     // Ve finále: vkladová adresa z Lightning peněženky (Breez/Spark)
@@ -1105,6 +1165,9 @@ function disableLock(){
 }
 
 /* start */
+if(!Number.isSafeInteger(S.ln.balance) || S.ln.balance < 0 || S.ln.balance > MAX_SATS || S.ln.txs.some(t => !(t.amount <= MAX_SATS))){
+  S.ln = { balance:0, txs:[] }; store.set('seeded', false);   // nesmyslné částky ze starší verze → začít znovu
+}
 if(!S.ln.txs.length && !store.get('seeded')){
   S.ln = { balance: 42000, txs:[
     {dir:'in', amount:15000, time:Date.now()/1000-3600*5, label:'Od Honzy · lístky na koncert'},
