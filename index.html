@@ -95,6 +95,9 @@ header.top{display:flex;align-items:center;justify-content:space-between;margin-
 
 /* zůstatek */
 .hero{padding:26px 24px 22px;margin-bottom:14px;text-align:center}
+.net{font-size:10px;font-weight:800;letter-spacing:.12em;padding:4px 8px;border-radius:8px;background:rgba(94,230,168,.16);color:var(--ok);box-shadow:inset 0 0 0 1px rgba(94,230,168,.35);margin-left:2px}
+.beta{margin:-4px 0 14px;padding:10px 14px;border-radius:18px;font-size:12px;line-height:1.5;color:var(--ink-2);background:rgba(94,230,168,.08);box-shadow:inset 0 0 0 1px rgba(94,230,168,.25)}
+.beta b{color:var(--ok)}
 .label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
 .big{font-size:46px;font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:10px 0 4px;cursor:pointer;user-select:none}
 .big small{font-size:18px;font-weight:700;color:var(--ink-2);margin-left:6px;letter-spacing:0}
@@ -256,9 +259,11 @@ nav.tabs button.on svg{color:var(--btc-2)}
 
 <main class="app">
   <header class="top">
-    <div class="logo"><b>₿</b>Kapsa</div>
+    <div class="logo"><b>₿</b>Kapsa<span class="net" hidden>TESTNET</span></div>
     <button class="pill glass" id="trezorBtn"><span class="dot" id="trezorDot"></span><span id="trezorTxt">Připojit Trezor</span></button>
   </header>
+
+  <div class="beta" id="betaNote" hidden><b>Beta · testnet.</b> Testovací bitcoiny bez hodnoty. Neposílej sem skutečné BTC. Kapsa (Lightning) je zatím simulace.</div>
 
   <!-- PŘEHLED -->
   <section class="view on" id="v-home">
@@ -403,7 +408,7 @@ nav.tabs button.on svg{color:var(--btc-2)}
 <div class="lock" id="lock">
   <div class="aura"><i></i><i></i><i></i></div>
   <div class="box glass">
-    <div class="logo"><b>₿</b>Kapsa</div>
+    <div class="logo"><b>₿</b>Kapsa<span class="net" hidden>TESTNET</span></div>
     <p class="hint" style="margin:0 0 16px">Zadej svůj kód</p>
     <div id="lockPad"></div>
     <p class="hint" id="lockMsg" style="min-height:18px"></p>
@@ -480,6 +485,7 @@ window.KapsaPin = {
 
 /* brána: když jsou data zašifrovaná, nejdřív kód, pak teprve aplikace */
 window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#lock .net').forEach(e=>e.hidden=false);   // beta = testnet
   let blob = null; try{ blob = localStorage.getItem('kapsa.vault') }catch{}
   if(!blob) return window.__kapsaMain(null);
   const MAX = 10, lock = document.getElementById('lock'), msg = document.getElementById('lockMsg');
@@ -510,7 +516,13 @@ window.__kapsaMain = (VAULT) => {
 'use strict';
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
-const ACCOUNT_PATH = "m/84'/0'/0'";      // Native SegWit (bc1q…) účet #1
+/* ---------- síť ----------
+   BETA = jen testnet. Testovací bitcoiny nemají hodnotu, testeři nemůžou přijít o peníze. */
+const BETA = true;
+const NET = BETA ? 'test' : 'btc';
+const TESTNET = NET === 'test';
+const COIN = NET;                                            // Trezor Connect: 'btc' | 'test'
+const ACCOUNT_PATH = TESTNET ? "m/84'/1'/0'" : "m/84'/0'/0'"; // Native SegWit účet #1
 // citlivá data (kontakty, adresy, historie) jdou při zapnutém zámku jen zašifrovaně
 const SECURE = ['friends','ln','myLn','seeded'];
 let persistT = 0;
@@ -552,7 +564,7 @@ const fmt = sats => S.unit === 'btc'
 const fmtBig = sats => S.unit === 'btc'
   ? `${(sats/1e8).toLocaleString('cs-CZ',{maximumFractionDigits:8})}<small>BTC</small>`
   : `${nf.format(Math.round(sats))}<small>sats</small>`;
-const czk = sats => S.czk ? (sats/1e8*S.czk).toLocaleString('cs-CZ',{style:'currency',currency:'CZK',maximumFractionDigits:0}) : '—';
+const czk = sats => TESTNET ? 'testovací' : S.czk ? (sats/1e8*S.czk).toLocaleString('cs-CZ',{style:'currency',currency:'CZK',maximumFractionDigits:0}) : '—';
 const short = a => a && a.length > 22 ? a.slice(0,10)+'…'+a.slice(-8) : a;
 const ago = t => { const d=(Date.now()/1000 - t); if(d<3600) return Math.max(1,Math.round(d/60))+' min'; if(d<86400) return Math.round(d/3600)+' h'; return new Date(t*1000).toLocaleDateString('cs-CZ') };
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -563,9 +575,11 @@ function toast(msg, ok=true){
 }
 
 /* ---------- validace adres ---------- */
-const isBtcAddr = a => /^(bc1[02-9ac-hj-np-z]{11,71}|[13][a-km-zA-HJ-NP-Z1-9]{25,34})$/i.test(a);
+const isBtcAddr = a => TESTNET
+  ? /^(tb1[02-9ac-hj-np-z]{11,71}|[mn2][a-km-zA-HJ-NP-Z1-9]{25,34})$/i.test(a)
+  : /^(bc1[02-9ac-hj-np-z]{11,71}|[13][a-km-zA-HJ-NP-Z1-9]{25,34})$/i.test(a);
 const isLnAddr  = a => /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(a);
-const isInvoice = a => /^(lightning:)?ln(bc|tb)[0-9a-z]+$/i.test(a);
+const isInvoice = a => (TESTNET ? /^(lightning:)?lntb[0-9a-z]+$/i : /^(lightning:)?lnbc[0-9a-z]+$/i).test(a);
 
 /* ---------- kurz ---------- */
 async function loadPrice(){
@@ -593,7 +607,7 @@ async function initTrezor(){
 async function connectTrezor(){
   if(!(await initTrezor())){ toast('Trezor Connect se nenačetl, zkus HTTPS a Chrome/Edge', false); return }
   $('#trezorTxt').textContent='Připojuji…';
-  const r = await TrezorConnect.getAccountInfo({ coin:'btc', path:ACCOUNT_PATH, details:'txs', pageSize:15 });
+  const r = await TrezorConnect.getAccountInfo({ coin:COIN, path:ACCOUNT_PATH, details:'txs', pageSize:15 });
   if(!r.success){ $('#trezorTxt').textContent='Připojit Trezor'; toast(r.payload.error || 'Připojení selhalo', false); return }
   const p = r.payload;
   const unused = p.addresses?.unused?.[0];
@@ -611,7 +625,7 @@ async function connectTrezor(){
 
 async function verifyAddress(){
   if(!S.trezor?.address){ return connectTrezor() }
-  const r = await TrezorConnect.getAddress({ coin:'btc', path:S.trezor.path, address:S.trezor.address, showOnTrezor:true });
+  const r = await TrezorConnect.getAddress({ coin:COIN, path:S.trezor.path, address:S.trezor.address, showOnTrezor:true });
   toast(r.success ? 'Adresa souhlasí s Trezorem' : (r.payload.error||'Ověření zrušeno'), r.success);
 }
 
@@ -619,7 +633,7 @@ async function trezorSend(address, sats){
   if(!S.trezor) { await connectTrezor(); if(!S.trezor) return null }
   // Trezor Suite popup: výběr poplatku, kontrola na displeji, podpis, odeslání do sítě
   const r = await TrezorConnect.composeTransaction({
-    coin:'btc', outputs:[{ address, amount:String(sats) }], push:true
+    coin:COIN, outputs:[{ address, amount:String(sats) }], push:true
   });
   if(!r.success){ toast(r.payload.error || 'Transakce zrušena', false); return null }
   return r.payload.txid;
@@ -628,7 +642,7 @@ async function trezorSend(address, sats){
 /* ---------- DEMO Lightning kapsa ----------
    Ve finální verzi: Breez SDK / Spark (self-custodial), klíče v zařízení,
    vkladová on-chain adresa pro nabíjení z Trezoru, Lightning adresa pro přátele. */
-const LN_DEPOSIT_DEMO = 'bc1qkapsa0demo0deposit0address0xx0yyy0zzz';
+const LN_DEPOSIT_DEMO = 'bc1qkapsa0demo0deposit0address0xx0yyy0zzz'; // jen mimo betu
 function lnPay(to, sats, note){
   if(sats > S.ln.balance){ toast('V Kapse není dost sats. Nabij ji z Trezoru.', false); return false }
   S.ln.balance -= sats;
@@ -914,7 +928,7 @@ $('#sendGo').addEventListener('click', async ()=>{
   if(!sats) return toast('Zadej částku', false);
   if(!to) return toast('Komu to posíláš?', false);
   if(S.sendFrom==='vault'){
-    if(!isBtcAddr(to)) return toast('Z Trezoru jde poslat jen na bitcoinovou adresu (bc1…)', false);
+    if(!isBtcAddr(to)) return toast('Z Trezoru jde poslat jen na bitcoinovou adresu ('+(TESTNET?'tb1…':'bc1…')+')', false);
     if(sats < 546) return toast('Minimum on-chain je 546 sats', false);
     if(!(await confirmSend({ to, sats, from:'vault' }))) return;
     const txid = await trezorSend(to, sats);
@@ -932,7 +946,7 @@ const offerSave = a => { if(!findByAddr(a)) setTimeout(()=>openSaveAddr(a, true)
 $('#topGo').addEventListener('click', async ()=>{
   const sats = parseSats($('#topAmt').value);
   if(!sats) return toast('Kolik chceš nabít?', false);
-  if(S.trezor){
+  if(S.trezor && !BETA){
     if(sats > S.trezor.balance) return toast('Na Trezoru není dost', false);
     // Ve finále: vkladová adresa z Lightning peněženky (Breez/Spark)
     const txid = await trezorSend(LN_DEPOSIT_DEMO, sats);
@@ -964,7 +978,7 @@ function openContact(id, preset = {}){
           <button class="ib danger" data-del="${i}" title="Smazat adresu">✕</button>
         </div>
         <div class="inp-wrap one">
-          <input class="inp mono" data-k="value" data-i="${i}" value="${esc(a.value)}" placeholder="jmeno@getalby.com nebo bc1…" autocapitalize="off" spellcheck="false">
+          <input class="inp mono" data-k="value" data-i="${i}" value="${esc(a.value)}" placeholder="jmeno@getalby.com nebo tb1…" autocapitalize="off" spellcheck="false">
           <div class="ibs"><button class="ib" data-scan="${i}" title="Přepsat z QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg></button></div>
         </div>
       </div>`).join('')}
@@ -1099,10 +1113,12 @@ if(!S.ln.txs.length && !store.get('seeded')){
   ]};
   saveLn(); store.set('seeded', true);
 }
-render(); if(store.get('price',false)) loadPrice();
+render(); if(!TESTNET && store.get('price',false)) loadPrice();
 $('#priceToggle').checked = store.get('price',false);
 $('#priceToggle').addEventListener('change', e=>{ store.set('price', e.target.checked); if(e.target.checked) loadPrice(); else { S.czk=null; render() } });
 initLockUI();
+if(TESTNET){ $$('.net').forEach(e=>e.hidden=false); $('#betaNote').hidden=false; document.title='Kapsa · testnet beta';
+  $('#priceToggle').disabled=true; $('#priceToggle').closest('label').style.opacity=.45 }
 };
 </script>
 </body>

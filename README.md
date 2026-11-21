@@ -67,3 +67,16 @@ python3 -m http.server 8080   # ve složce aplikace, pak http://localhost:8080/
 - **Zámek 6místným kódem:** PBKDF2-SHA256 s 600 000 iteracemi, AES-256-GCM. Kód ani klíč se neukládají. Od 3. chybného pokusu roste čekání, po 10 chybných pokusech se data smažou. Pozor: 6 číslic je jen milion kombinací. Kdo zkopíruje data zařízení, prolomí je mimo aplikaci. Kód chrání před zvědavci, ne před forenzní analýzou. V datech ale nejsou klíče k penězům.
 - **Smazání všech dat** jedním tlačítkem.
 - Seed ani soukromé klíče Trezoru aplikace nikdy nevidí. Zůstatek a adresy Trezoru drží jen v paměti, neukládá je.
+
+## Beta (testnet)
+Beta běží **jen na testnetu** (`BETA = true` v `index.html`):
+- Trezor Connect s `coin: 'test'`, účet `m/84'/1'/0'`, adresy `tb1…`
+- mainnetové adresy (`bc1…`) aplikace odmítne
+- odznak TESTNET a upozornění na přehledu, místo kurzu v CZK nápis „testovací“
+- nabití Kapsy je v betě vždy simulace, nic se z Trezoru neposílá
+- na Trezoru je potřeba povolit testnet (Trezor Suite → Nastavení → Mince → Testnet)
+- testovací BTC jdou získat z veřejných testnet faucetů
+
+## Nasazení
+GitHub Actions (`.github/workflows/pages.yml`) po každém pushi do `main` nasadí na GitHub Pages jen `index.html`, `fonts/` a `vendor/`.
+Jednorázově: Settings → Pages → Build and deployment → Source: **GitHub Actions**.
