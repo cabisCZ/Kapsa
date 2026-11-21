@@ -12,334 +12,285 @@
 @font-face{font-family:Onest;src:url(fonts/onest-latin-ext-400-normal.woff2) format("woff2");font-weight:400;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:Onest;src:url(fonts/onest-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:Onest;src:url(fonts/onest-latin-ext-500-normal.woff2) format("woff2");font-weight:500;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
-@font-face{font-family:Onest;src:url(fonts/onest-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:Onest;src:url(fonts/onest-latin-ext-700-normal.woff2) format("woff2");font-weight:700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
-@font-face{font-family:Unbounded;src:url(fonts/unbounded-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:Unbounded;src:url(fonts/unbounded-latin-ext-600-normal.woff2) format("woff2");font-weight:600;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
-@font-face{font-family:Unbounded;src:url(fonts/unbounded-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:Unbounded;src:url(fonts/unbounded-latin-ext-700-normal.woff2) format("woff2");font-weight:700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Onest;src:url(fonts/onest-latin-700-normal.woff2) format("woff2");font-weight:600 700;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Onest;src:url(fonts/onest-latin-ext-700-normal.woff2) format("woff2");font-weight:600 700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:Mono;src:url(fonts/JetBrainsMono_500Medium.woff2) format("woff2");font-weight:500;font-display:swap}
 
-/* Kapsa · Liquid Pocket
-   Světlé tekuté sklo nad pomalu proudícím barevným pozadím, tmavý režim podle systému.
-   Jedna obrazovka = jedna věc, hlavní akce u palce. Display: Unbounded (čísla), text: Onest. */
+/* Kapsa · klidná peněženka
+   Jedna věc na obrazovku. Jedno písmo (Onest), jeden akcent (bitcoinová oranžová) jen pro hlavní akci.
+   Plné plochy místo skla, jemné linky místo stínů, mřížka po 8 bodech. */
 :root{
   color-scheme:light;
-  --bg:#ECEEF6; --bg-2:#F7F8FC;
-  --ink:#15121F; --ink-2:rgba(21,18,31,.64); --ink-3:rgba(21,18,31,.42);
-  --line:rgba(21,18,31,.07);
-  --glass:rgba(255,255,255,.56); --glass-strong:rgba(255,255,255,.78);
-  --rim:rgba(255,255,255,.95); --spec:rgba(255,255,255,.55);
-  --shadow:0 22px 48px -22px rgba(58,36,120,.32),0 2px 6px rgba(58,36,120,.06);
-  --field:rgba(255,255,255,.62); --field-line:rgba(21,18,31,.08); --chip:rgba(21,18,31,.05);
-  --btc:#E57C08; --btc-2:#D86F00;
-  --ember-1:#FFAA4D; --ember-2:#FF6A2B; --on-ember:#fff;
-  --ln:#6A47F5; --ok:#0B9E77; --bad:#E0364D;
-  --t-ok:rgba(11,158,119,.12); --t-ln:rgba(106,71,245,.12); --t-btc:rgba(247,147,26,.15); --t-bad:rgba(224,54,77,.09);
-  --blob-1:#FFB061; --blob-2:#AE93FF; --blob-3:#79E6D2; --blob-o:.62;
-  --scrim:rgba(28,20,52,.26);
-  --r:28px;
-  --display:Unbounded,Onest,system-ui,sans-serif;
-  --text:Onest,system-ui,-apple-system,sans-serif;
+  --bg:#F4F4F6; --surface:#FFFFFF; --surface-2:#F0F0F3;
+  --ink:#111114; --ink-2:#5E616B; --ink-3:#9A9CA5;
+  --line:#E6E6EB;
+  --accent:#F7931A; --accent-ink:#B45F00; --on-accent:#111114;
+  --btc:#B45F00; --btc-2:#B45F00;
+  --ln:#6B4EE6; --ok:#0F8F5F; --bad:#D6334A;
+  --t-ok:#E5F5EE; --t-ln:#EEEAFD; --t-btc:#FFF1DF; --t-bad:#FCE9EC;
+  --scrim:rgba(17,17,20,.32);
+  --shadow-pop:0 10px 30px -12px rgba(17,17,20,.25);
+  --r:20px;
+  --font:Onest,system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
   color-scheme:dark;
-  --bg:#08080E; --bg-2:#12111B;
-  --ink:#F5F3FB; --ink-2:rgba(245,243,251,.66); --ink-3:rgba(245,243,251,.4);
-  --line:rgba(255,255,255,.08);
-  --glass:rgba(30,28,44,.52); --glass-strong:rgba(42,40,58,.8);
-  --rim:rgba(255,255,255,.22); --spec:rgba(255,255,255,.1);
-  --shadow:0 24px 60px -24px rgba(0,0,0,.85);
-  --field:rgba(0,0,0,.28); --field-line:rgba(255,255,255,.09); --chip:rgba(255,255,255,.07);
-  --btc:#FFA63D; --btc-2:#FFB85F;
-  --ln:#AE93FF; --ok:#43DEAE; --bad:#FF6B7F;
-  --t-ok:rgba(67,222,174,.14); --t-ln:rgba(174,147,255,.16); --t-btc:rgba(255,166,61,.16); --t-bad:rgba(255,107,127,.12);
-  --blob-1:#FF7A1A; --blob-2:#6440FF; --blob-3:#00A88F; --blob-o:.5;
-  --scrim:rgba(0,0,0,.5);
+  --bg:#0B0B0D; --surface:#161619; --surface-2:#1E1E22;
+  --ink:#F2F2F4; --ink-2:#A3A5AE; --ink-3:#6C6E77;
+  --line:#26262B;
+  --accent:#F7931A; --accent-ink:#FFB35C; --on-accent:#111114;
+  --btc:#FFB35C; --btc-2:#FFB35C;
+  --ln:#A592FF; --ok:#3FD49B; --bad:#FF6B7F;
+  --t-ok:#12291F; --t-ln:#1F1A33; --t-btc:#2B1F0E; --t-bad:#2E1519;
+  --scrim:rgba(0,0,0,.6);
+  --shadow-pop:0 10px 30px -12px rgba(0,0,0,.8);
 }}
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#08080E; --bg-2:#12111B;
-  --ink:#F5F3FB; --ink-2:rgba(245,243,251,.66); --ink-3:rgba(245,243,251,.4);
-  --line:rgba(255,255,255,.08);
-  --glass:rgba(30,28,44,.52); --glass-strong:rgba(42,40,58,.8);
-  --rim:rgba(255,255,255,.22); --spec:rgba(255,255,255,.1);
-  --shadow:0 24px 60px -24px rgba(0,0,0,.85);
-  --field:rgba(0,0,0,.28); --field-line:rgba(255,255,255,.09); --chip:rgba(255,255,255,.07);
-  --btc:#FFA63D; --btc-2:#FFB85F;
-  --ln:#AE93FF; --ok:#43DEAE; --bad:#FF6B7F;
-  --t-ok:rgba(67,222,174,.14); --t-ln:rgba(174,147,255,.16); --t-btc:rgba(255,166,61,.16); --t-bad:rgba(255,107,127,.12);
-  --blob-1:#FF7A1A; --blob-2:#6440FF; --blob-3:#00A88F; --blob-o:.5;
-  --scrim:rgba(0,0,0,.5);
+  --bg:#0B0B0D; --surface:#161619; --surface-2:#1E1E22;
+  --ink:#F2F2F4; --ink-2:#A3A5AE; --ink-3:#6C6E77;
+  --line:#26262B;
+  --accent:#F7931A; --accent-ink:#FFB35C; --on-accent:#111114;
+  --btc:#FFB35C; --btc-2:#FFB35C;
+  --ln:#A592FF; --ok:#3FD49B; --bad:#FF6B7F;
+  --t-ok:#12291F; --t-ln:#1F1A33; --t-btc:#2B1F0E; --t-bad:#2E1519;
+  --scrim:rgba(0,0,0,.6);
+  --shadow-pop:0 10px 30px -12px rgba(0,0,0,.8);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--ink);font-family:var(--text);font-size:15px;line-height:1.4;font-feature-settings:"tnum" 1}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;font-feature-settings:"tnum" 1;-webkit-font-smoothing:antialiased;min-height:100%}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none}
-button:focus-visible,input:focus-visible{outline:2px solid var(--btc);outline-offset:2px}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:12px}
 .mono{font-family:Mono,ui-monospace,monospace}
+.aura,.grain{display:none}
+svg{flex:none}
 
-/* ---------- tekuté pozadí ---------- */
-.aura{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(120% 80% at 50% 0%,var(--bg-2),var(--bg))}
-.aura i{position:absolute;border-radius:50%;filter:blur(60px);opacity:var(--blob-o);animation:drift 26s ease-in-out infinite alternate}
-.aura i:nth-child(1){width:70vmax;height:70vmax;left:-30vmax;top:-34vmax;background:radial-gradient(circle,var(--blob-1),transparent 62%)}
-.aura i:nth-child(2){width:62vmax;height:62vmax;right:-30vmax;top:8vmax;background:radial-gradient(circle,var(--blob-2),transparent 62%);animation-duration:32s;animation-delay:-8s}
-.aura i:nth-child(3){width:58vmax;height:58vmax;left:-4vmax;bottom:-34vmax;background:radial-gradient(circle,var(--blob-3),transparent 62%);animation-duration:38s;animation-delay:-14s}
-@keyframes drift{50%{transform:translate(6vmax,4vmax) scale(1.08)}100%{transform:translate(-4vmax,7vmax) scale(.96)}}
-.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-
-/* ---------- tekuté sklo ---------- */
-.glass{position:relative;isolation:isolate;background:var(--glass);
-  -webkit-backdrop-filter:blur(28px) saturate(190%);backdrop-filter:blur(28px) saturate(190%);
-  border-radius:var(--r);box-shadow:var(--shadow),inset 0 1px 0 var(--rim),inset 0 0 0 1px var(--line)}
-.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;z-index:-1;pointer-events:none;
-  background:linear-gradient(150deg,var(--rim),transparent 38%,transparent 70%,var(--rim));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
-  background:radial-gradient(360px circle at var(--mx,20%) var(--my,-10%),var(--spec),transparent 55%)}
-
-/* ---------- kostra: přesně výška displeje ---------- */
-.app{position:relative;z-index:2;max-width:460px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;overflow:hidden;
-  padding:calc(env(safe-area-inset-top) + 10px) max(16px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 96px) max(16px,env(safe-area-inset-left))}
-header.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex:none}
-.logo{display:flex;align-items:center;gap:9px;min-width:0}
-.logo .mark{width:34px;height:34px;flex:none;filter:drop-shadow(0 6px 12px rgba(255,106,43,.35))}
-.logo .word{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.02em}
-.net{font-family:var(--text);font-size:9px;font-weight:700;letter-spacing:.12em;padding:4px 7px;border-radius:999px;background:var(--t-ok);color:var(--ok);box-shadow:inset 0 0 0 1px var(--t-ok)}
+/* ---------- kostra ---------- */
+.app{max-width:480px;margin:0 auto;min-height:100dvh;
+  padding:calc(env(safe-area-inset-top) + 12px) max(20px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 104px) max(20px,env(safe-area-inset-left))}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;height:48px;margin-bottom:8px}
+.logo{display:flex;align-items:center;gap:8px;min-width:0}
+.logo .mark{width:28px;height:28px}
+.logo .word{font-weight:700;font-size:18px;letter-spacing:-.02em}
+.net{font-size:11px;font-weight:600;color:var(--ok);background:var(--t-ok);padding:3px 8px;border-radius:999px}
 button.net{cursor:pointer}
-.top-right{display:flex;align-items:center;gap:8px;flex:none}
-.pill{display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border-radius:999px;font-size:13px;font-weight:600}
-.pill svg{width:16px;height:16px}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--ink-3)}
-.dot.on{background:var(--ok);box-shadow:0 0 0 3px var(--t-ok)}
+.top-right{display:flex;align-items:center;gap:4px}
 .gear{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2)}
-.gear svg{width:19px;height:19px}
-.back{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink-2);padding:4px 2px;align-self:flex-start}
+.gear svg{width:22px;height:22px}
+.gear:active{background:var(--surface-2)}
 
 .view{display:none}
-.view.on{display:flex;flex-direction:column;gap:12px;flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;animation:rise .5s cubic-bezier(.2,.9,.25,1.05)}
-.view.on::-webkit-scrollbar{display:none}
-.view > *{flex:none}
-.view > .fill{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none}
-@keyframes rise{from{opacity:0;transform:translateY(10px) scale(.99)}}
-.scroll{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent);padding-bottom:20px}
-.scroll::-webkit-scrollbar{display:none}
-.push{margin-top:auto;padding-top:12px}
-.push .hint{margin:0 4px 10px;text-align:center}
+.view.on{display:block;animation:fade .25s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}}
+.view > * + *{margin-top:16px}
+
+/* hlavička podobrazovek */
+.vhead{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;height:44px}
+.vhead h2{text-align:center;font-size:17px;font-weight:600}
+.vhead h2 span{color:var(--ink-3);font-weight:500;margin-left:4px}
+.back{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.back svg{width:22px;height:22px}
+.back:active{background:var(--surface-2)}
 
 /* ---------- přehled ---------- */
-.hero{padding:18px 20px 18px;text-align:center;min-width:0;overflow:hidden}
-.hero-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.label{font-size:12px;font-weight:600;color:var(--ink-3)}
-.big{font-family:var(--display);font-weight:600;font-size:44px;letter-spacing:-.04em;line-height:1.05;margin:12px 0 4px;cursor:pointer;user-select:none;white-space:nowrap;overflow:hidden;max-width:100%}
-.big small{font-family:var(--text);font-size:17px;font-weight:600;color:var(--ink-3);margin-left:6px;letter-spacing:0}
-.fiat{color:var(--ink-2);font-size:13px}
-.unitsw{display:inline-flex;padding:3px;border-radius:999px;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line)}
-.unitsw button{padding:5px 12px;border-radius:999px;font-size:12px;font-weight:600;color:var(--ink-3);transition:color .25s,background .25s}
-.unitsw button.on{color:var(--ink);background:var(--glass-strong);box-shadow:0 2px 8px -2px rgba(0,0,0,.18),inset 0 1px 0 var(--rim)}
-.split{display:flex;gap:3px;height:10px;margin:16px 0 10px;border-radius:999px;overflow:hidden;background:var(--chip);position:relative}
-.split i{flex:1 1 0;min-width:6px;border-radius:999px;transition:flex-grow .8s cubic-bezier(.3,1.3,.5,1)}
-.split i:first-child{background:linear-gradient(90deg,var(--ember-1),var(--ember-2))}
-.split i:last-child{background:linear-gradient(90deg,#9B7BFF,#6A47F5)}
-.split::after{content:"";position:absolute;left:0;right:0;top:1px;height:40%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none}
-.split.empty i{background:var(--line)}
-.legend{display:flex;justify-content:space-between;gap:12px;text-align:left}
-.lg{display:flex;flex-direction:column;gap:1px;min-width:0}
-.lg:last-child{align-items:flex-end;text-align:right}
-.lg-h{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);font-weight:500}
-.lg b{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.sw{width:8px;height:8px;border-radius:50%}
-.sw.vault{background:var(--ember-2)} .sw.ln{background:#7C5CFF}
-.tag{font-size:9px;font-weight:700;letter-spacing:.08em;padding:2px 6px;border-radius:999px;background:var(--t-ln);color:var(--ln);text-transform:uppercase}
+.balance{padding:28px 0 8px;text-align:center}
+.label{font-size:13px;font-weight:500;color:var(--ink-2)}
+.big{font-weight:600;font-size:48px;letter-spacing:-.035em;line-height:1.1;margin:6px 0 4px;cursor:pointer;user-select:none;white-space:nowrap;overflow:hidden}
+.big small{font-size:20px;font-weight:500;color:var(--ink-3);margin-left:6px;letter-spacing:-.01em}
+.fiat{font-size:14px;color:var(--ink-2)}
+.unitsw{display:inline-flex;margin-top:14px;padding:3px;border-radius:999px;background:var(--surface-2)}
+.unitsw button{padding:5px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-3)}
+.unitsw button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.cta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px!important}
+.cta .btn{display:flex;align-items:center;justify-content:center;gap:8px}
+.cta svg{width:20px;height:20px}
 
-.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.act{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--ink-2);padding:2px 0}
-.orb{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:var(--ink);position:relative;isolation:isolate;
-  background:var(--glass-strong);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);
-  box-shadow:var(--shadow),inset 0 1px 0 var(--rim),inset 0 0 0 1px var(--line);transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
-.orb svg{width:22px;height:22px}
-.act:active .orb{transform:scale(.9)}
-.act.primary{color:var(--ink)}
-.act.primary .orb{color:var(--on-ember);background:linear-gradient(160deg,var(--ember-1),var(--ember-2));box-shadow:0 14px 28px -10px rgba(255,106,43,.6),inset 0 1px 0 rgba(255,255,255,.6)}
-.act.primary .orb::after{content:"";position:absolute;left:18%;right:18%;top:6%;height:38%;border-radius:50%;background:linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none}
+.sec{font-size:13px;font-weight:600;color:var(--ink-2);display:flex;justify-content:space-between;align-items:center;margin:28px 4px 8px!important}
+.sec button,.link{font-size:13px;font-weight:600;color:var(--accent-ink)}
 
-.card{padding:16px 18px;min-width:0;overflow:hidden}
-.card h3{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.card h3 span{font-size:12px;color:var(--ink-3);font-weight:500}
-.strip{padding:12px 14px}
+/* seskupené řádky (peněženky, nastavení) */
+.group{background:var(--surface);border-radius:var(--r);box-shadow:0 0 0 1px var(--line);overflow:hidden;margin-top:0!important}
+.sec + .group{margin-top:0!important}
+.rowi{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;text-align:left;min-height:64px}
+.rowi + .rowi{border-top:1px solid var(--line)}
+.rowi .ic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:16px}
+.rowi .ic svg{width:18px;height:18px}
+.rowi .tt{flex:1;min-width:0;display:flex;flex-direction:column}
+.rowi .tt b{font-size:15px;font-weight:600;display:flex;align-items:center;gap:6px}
+.rowi .tt em{font-style:normal;font-size:13px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+button.rowi:active{background:var(--surface-2)}
+.ic.vault{background:var(--t-btc);color:var(--accent-ink)}
+.ic.ln{background:var(--t-ln);color:var(--ln)}
+.chipb{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:600;background:var(--surface-2);color:var(--ink);flex:none}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ink-3)}
+.dot.on{background:var(--ok)}
+.tag{font-size:10px;font-weight:600;letter-spacing:.04em;padding:2px 6px;border-radius:999px;background:var(--t-ln);color:var(--ln);text-transform:uppercase}
 
-.friends{display:flex;gap:12px;overflow-x:auto;padding:2px;scrollbar-width:none}
+/* kámoši */
+.friends{display:flex;gap:16px;overflow-x:auto;padding:4px 4px 2px;scrollbar-width:none}
 .friends::-webkit-scrollbar{display:none}
-.fr{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;font-weight:600;flex:none;width:54px;color:var(--ink-2)}
-.fr .av{width:50px;height:50px;font-size:23px;transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
-.fr:active .av{transform:scale(.9)}
-.fr.add .av{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink-3);color:var(--ink-2);font-size:22px;border:0}
-.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:19px;flex:none;background:var(--chip);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
-.av[style*="--h"]{background:radial-gradient(circle at 32% 28%,hsl(var(--h) 95% 86%),hsl(calc(var(--h) + 35) 85% 66%));box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 6px 14px -8px hsl(var(--h) 80% 40% / .6)}
+.fr{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--ink-2);flex:none;width:56px}
+.fr .av{width:52px;height:52px;font-size:24px}
+.fr:active .av{transform:scale(.94)}
+.fr.add .av{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink-2);font-size:22px}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:19px;flex:none;background:var(--surface-2);color:var(--ink-2);transition:transform .15s}
+.av[style*="--h"]{background:hsl(var(--h) 70% 92%)}
+:root[data-theme="dark"] .av[style*="--h"]{background:hsl(var(--h) 30% 20%)}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .av[style*="--h"]{background:hsl(var(--h) 30% 20%)} }
 .av svg{width:18px;height:18px}
 .av.in{background:var(--t-ok);color:var(--ok)}
-.av.out{background:var(--chip);color:var(--ink-2)}
+.av.out{background:var(--surface-2);color:var(--ink-2)}
 
-.tx{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
-.tx:first-child,.tx:first-of-type{border-top:0}
+/* pohyby */
+.card{background:var(--surface);border-radius:var(--r);box-shadow:0 0 0 1px var(--line);padding:4px 16px}
+.card h3{font-size:13px;font-weight:600;color:var(--ink-2);display:flex;justify-content:space-between;align-items:center;padding:14px 0 6px}
+.card h3 span{font-weight:500;color:var(--ink-3)}
+.tx{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.tx:first-child,h3 + .scroll > .tx:first-child,.scroll > .tx:first-child{border-top:0}
 .tx .t{flex:1;min-width:0}
-.tx .t b{display:block;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tx .t em{font-style:normal;font-size:12px;color:var(--ink-3)}
-.tx .v{font-weight:700;font-size:14px;text-align:right;flex:none;max-width:52%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tx .v em{font-style:normal;font-size:11px;color:var(--ink-3);font-weight:500}
+.tx .t b{display:block;font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx .t em{font-style:normal;font-size:13px;color:var(--ink-3)}
+.tx .v{font-weight:600;font-size:15px;text-align:right;flex:none;max-width:50%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx .v em{font-style:normal;font-size:12px;color:var(--ink-3);font-weight:400}
 .v.in{color:var(--ok)}
-.empty{color:var(--ink-3);font-size:13px;text-align:center;padding:16px 0}
-.click{cursor:pointer;border-radius:16px;transition:background .2s}
-.click:active{background:var(--chip)}
+.empty{color:var(--ink-3);font-size:14px;text-align:center;padding:24px 0}
+.click{cursor:pointer}
+.click:active{opacity:.7}
 .pick{width:100%;text-align:left}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;background:var(--surface-2)}
+.pill .dot{display:none}
 
 /* ---------- formuláře ---------- */
+.sheetcard,.card.form{padding:20px}
 .field{display:block;margin-bottom:12px}
-.field span{display:block;font-size:12px;color:var(--ink-3);margin:0 0 6px 6px;font-weight:600}
-.inp{width:100%;padding:15px 16px;border-radius:18px;border:0;outline:0;background:var(--field);box-shadow:inset 0 0 0 1px var(--field-line);font-size:15px;transition:box-shadow .2s}
+.field span{display:block;font-size:13px;color:var(--ink-2);margin:0 0 6px 4px;font-weight:500}
+.inp{width:100%;padding:14px 16px;border-radius:14px;border:0;outline:0;background:var(--surface-2);font-size:16px;transition:box-shadow .15s}
 .inp::placeholder{color:var(--ink-3)}
-.inp:focus{box-shadow:inset 0 0 0 1.5px var(--btc),0 0 0 4px var(--t-btc)}
-.amt-row{display:flex;align-items:center;gap:8px;min-width:0}
+.inp:focus{box-shadow:0 0 0 2px var(--accent)}
+.amt-row{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0}
 .amt-row .amount-inp{flex:1;min-width:0}
-.amount-inp{font-family:var(--display);font-size:clamp(26px,9vw,40px);font-weight:600;text-align:center;background:transparent;box-shadow:none;letter-spacing:-.04em;padding:8px}
-.amount-inp:focus{box-shadow:none}
-.unit-btn{flex:none;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;color:var(--btc);background:var(--t-btc)}
-.seg{display:flex;padding:4px;border-radius:999px;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line);margin-bottom:14px}
-.seg button{flex:1;padding:10px 8px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-2);transition:color .25s,background .25s}
-.seg button.on{color:var(--ink);background:var(--glass-strong);box-shadow:0 4px 14px -4px rgba(0,0,0,.2),inset 0 1px 0 var(--rim)}
-.btn{position:relative;overflow:hidden;width:100%;padding:16px;border-radius:20px;font-weight:700;font-size:16px;transition:transform .2s cubic-bezier(.3,1.5,.5,1),filter .2s}
-.btn:active{transform:scale(.97)}
-.btn.primary{color:var(--on-ember);background:linear-gradient(160deg,var(--ember-1),var(--ember-2));box-shadow:0 16px 30px -14px rgba(255,106,43,.75),inset 0 1px 0 rgba(255,255,255,.55)}
-.btn.primary::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(120% 70% at 50% -10%,rgba(255,255,255,.38),rgba(255,255,255,0) 60%);pointer-events:none}
-.btn.ghost{background:var(--glass-strong);box-shadow:inset 0 0 0 1px var(--line),inset 0 1px 0 var(--rim)}
-.btn:disabled{filter:grayscale(.8);opacity:.6}
-.hint{font-size:12px;color:var(--ink-3);margin:10px 4px 0;line-height:1.5}
+.amount-inp{font-size:44px;font-weight:600;text-align:center;background:transparent;letter-spacing:-.035em;padding:4px;box-shadow:none!important}
+.unit-btn{flex:none;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-2);background:var(--surface-2)}
+.seg{display:flex;padding:3px;border-radius:12px;background:var(--surface-2);margin-bottom:16px}
+.seg button{flex:1;padding:9px 8px;border-radius:10px;font-size:14px;font-weight:500;color:var(--ink-2)}
+.seg button.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.btn{width:100%;padding:15px 16px;border-radius:14px;font-weight:600;font-size:16px;transition:transform .12s,opacity .15s}
+.btn:active{transform:scale(.98);opacity:.9}
+.btn.primary{background:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:var(--surface-2);color:var(--ink)}
+.btn.dark{background:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.45}
+.hint{font-size:13px;color:var(--ink-3);margin:12px 4px 0;line-height:1.5}
 .row{display:flex;gap:10px}
-.row > *{flex:1}
+.row > *{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.push{margin-top:20px}
+.push .hint{margin:0 4px 12px;text-align:center}
 .inp-wrap{position:relative}
-.inp-wrap .inp{padding-right:100px}
-.inp-wrap.one .inp{padding-right:56px}
-.ibs{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:flex;gap:4px}
-.ib{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:var(--ink);background:var(--glass-strong);box-shadow:inset 0 0 0 1px var(--line),inset 0 1px 0 var(--rim)}
-.ib svg{width:19px;height:19px}
+.inp-wrap .inp{padding-right:96px}
+.inp-wrap.one .inp{padding-right:54px}
+.ibs{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:flex;gap:2px}
+.ib{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--ink-2)}
+.ib:active{background:var(--line)}
+.ib svg{width:20px;height:20px}
 .ib.danger{color:var(--bad)}
-.who{min-height:20px;font-size:13px;margin:-4px 6px 12px;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.who{font-size:13px;margin:-4px 4px 12px;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .who:empty{display:none}
-.who button{color:var(--btc);font-weight:700;font-size:13px;text-decoration:underline;text-underline-offset:3px}
-.badge{font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:999px;text-transform:uppercase}
+.who button{color:var(--accent-ink);font-weight:600;font-size:13px}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px}
 .badge.ln{background:var(--t-ln);color:var(--ln)}
-.badge.btc{background:var(--t-btc);color:var(--btc)}
-.search{margin-bottom:12px}
+.badge.btc{background:var(--t-btc);color:var(--accent-ink)}
+.search{margin:4px 0 4px}
+.fiat.sub{text-align:center;margin:0 0 20px!important}
 
 /* ---------- příjem, nabití ---------- */
-.qr{--qr:min(220px,30dvh);width:var(--qr);height:var(--qr);margin:6px auto 14px;padding:14px;border-radius:26px;background:#fff;display:grid;place-items:center;
-  box-shadow:0 22px 44px -18px rgba(255,106,43,.45),inset 0 0 0 1px rgba(0,0,0,.04)}
+.qr{width:min(232px,62vw);aspect-ratio:1;margin:8px auto 16px;padding:14px;border-radius:20px;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 1px var(--line)}
 .qr svg{width:100%;height:100%}
-.addr{word-break:break-all;text-align:center;font-size:13px;padding:12px 14px;border-radius:16px;background:var(--field);box-shadow:inset 0 0 0 1px var(--field-line);color:var(--ink-2)}
-.flow{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
-.flow .node{flex:1;padding:12px;border-radius:20px;text-align:center;font-size:12px;font-weight:600;background:var(--field);box-shadow:inset 0 0 0 1px var(--field-line)}
-.flow .node .ic{margin:0 auto 6px;width:34px;height:34px;font-size:16px;border-radius:50%;display:grid;place-items:center}
-.ic.vault{background:linear-gradient(150deg,var(--ember-1),var(--ember-2));color:#fff}
-.ic.ln{background:linear-gradient(150deg,#B49CFF,#6A47F5);color:#fff}
-.flow .arrow{font-size:20px;color:var(--btc);animation:pulse 1.6s infinite}
-@keyframes pulse{50%{transform:translateX(4px);opacity:.5}}
+.addr{word-break:break-all;text-align:center;font-size:13px;line-height:1.6;padding:12px 14px;border-radius:14px;background:var(--surface-2);color:var(--ink-2)}
+.flow{display:flex;align-items:center;gap:10px;margin:0 0 16px}
+.flow .node{flex:1;padding:14px 10px;border-radius:14px;text-align:center;font-size:13px;font-weight:600;background:var(--surface-2)}
+.flow .node .ic{margin:0 auto 6px;width:32px;height:32px;font-size:15px;border-radius:50%;display:grid;place-items:center}
+.flow .node .mono{font-size:12px;font-weight:500}
+.flow .arrow{color:var(--ink-3);font-size:18px}
 
-/* ---------- lišta s tekutou kapkou ---------- */
-nav.tabs{position:fixed;z-index:10;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 14px);
-  width:min(428px,calc(100% - 32px));display:flex;padding:6px;border-radius:999px;background:var(--glass-strong)}
-nav.tabs .ind{position:absolute;left:0;top:6px;bottom:6px;width:60px;border-radius:999px;z-index:-1;opacity:0;
-  background:var(--bg-2);box-shadow:0 6px 16px -6px rgba(0,0,0,.25),inset 0 1px 0 var(--rim),inset 0 0 0 1px var(--line);
-  transition:transform .55s cubic-bezier(.3,1.35,.45,1),width .55s cubic-bezier(.3,1.35,.45,1),opacity .2s}
-nav.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:999px;font-size:11px;font-weight:600;color:var(--ink-3);transition:color .3s}
-nav.tabs button svg{width:22px;height:22px;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+/* ---------- spodní lišta ---------- */
+nav.tabs{position:fixed;z-index:10;left:0;right:0;bottom:0;display:grid;grid-template-columns:1fr 72px 1fr;align-items:center;
+  padding:8px max(24px,env(safe-area-inset-left)) calc(env(safe-area-inset-bottom) + 8px) max(24px,env(safe-area-inset-right));
+  background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 -1px 0 var(--line)}
+nav.tabs .ind{display:none}
+nav.tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;font-size:11px;font-weight:500;color:var(--ink-3)}
+nav.tabs button svg{width:24px;height:24px}
 nav.tabs button.on{color:var(--ink)}
-nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
+nav.tabs .scanb{width:56px;height:56px;margin:-22px auto 0;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;box-shadow:var(--shadow-pop)}
+nav.tabs .scanb svg{width:24px;height:24px}
+nav.tabs .scanb:active{transform:scale(.94)}
 
 /* ---------- vrstvy ---------- */
-.scrim{position:fixed;inset:0;z-index:20;background:var(--scrim);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
-.scrim.on{display:flex}
-.sheet{width:min(460px,100%);max-height:90vh;overflow-y:auto;padding:22px 18px calc(env(safe-area-inset-bottom) + 22px);border-radius:32px 32px 0 0;background:var(--glass-strong);animation:up .45s cubic-bezier(.2,1,.3,1)}
+.scrim{position:fixed;inset:0;z-index:20;background:var(--scrim);display:none;align-items:flex-end;justify-content:center}
+.scrim.on{display:flex;animation:fade .2s}
+.sheet{width:min(480px,100%);max-height:90vh;overflow-y:auto;padding:12px 20px calc(env(safe-area-inset-bottom) + 24px);border-radius:24px 24px 0 0;background:var(--surface);animation:up .3s cubic-bezier(.2,.9,.3,1)}
 @keyframes up{from{transform:translateY(100%)}}
-.sheet h2{font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:16px}
-.grab{width:38px;height:5px;border-radius:3px;background:var(--ink-3);opacity:.5;margin:-8px auto 16px}
-.toast{position:fixed;z-index:30;left:50%;top:calc(env(safe-area-inset-top) + 14px);transform:translate(-50%,calc(-100% - 60px));
-  padding:12px 18px;border-radius:999px;font-weight:600;font-size:14px;background:var(--glass-strong);transition:transform .5s cubic-bezier(.2,1,.3,1.25);max-width:calc(100% - 32px)}
+.sheet h2{font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:16px}
+.grab{width:36px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 16px}
+.toast{position:fixed;z-index:30;left:50%;top:calc(env(safe-area-inset-top) + 12px);transform:translate(-50%,calc(-100% - 40px));
+  padding:11px 16px;border-radius:14px;font-weight:500;font-size:14px;background:var(--ink);color:var(--bg);box-shadow:var(--shadow-pop);transition:transform .35s cubic-bezier(.2,.9,.3,1.15);max-width:calc(100% - 40px)}
 .toast.on{transform:translate(-50%,0)}
-.warn{padding:12px 14px;border-radius:16px;background:var(--t-bad);box-shadow:inset 0 0 0 1px var(--t-bad);font-size:13px;line-height:1.5;margin-bottom:14px;text-align:left}
-.chunks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0 14px;font-size:15px}
-.chunks span{padding:6px 7px;border-radius:9px;background:var(--field);box-shadow:inset 0 0 0 1px var(--field-line)}
-.chunks span.k{background:var(--t-btc);color:var(--btc);font-weight:700;box-shadow:none}
-.arow{padding:12px;border-radius:20px;background:var(--field);box-shadow:inset 0 0 0 1px var(--field-line);margin-bottom:10px}
-.arow.def{box-shadow:inset 0 0 0 1.5px var(--btc)}
+.warn{padding:12px 14px;border-radius:14px;background:var(--t-bad);color:var(--ink);font-size:13px;line-height:1.5;margin-bottom:16px;text-align:left}
+.chunks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0 16px;font-size:15px}
+.chunks span{padding:6px 7px;border-radius:8px;background:var(--surface-2)}
+.chunks span.k{background:var(--t-btc);color:var(--accent-ink);font-weight:600}
+.arow{padding:12px;border-radius:16px;background:var(--surface-2);margin-bottom:10px}
+.arow .inp{background:var(--surface)}
+.arow.def{box-shadow:inset 0 0 0 1.5px var(--accent)}
 .arow-top{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.arow-top .inp{padding:10px 14px;font-size:13px;flex:1}
-.star{font-size:20px;width:38px;height:38px;border-radius:12px;color:var(--ink-3)}
-.arow.def .star{color:var(--btc)}
-.emojis{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.emojis button{width:42px;height:42px;border-radius:50%;font-size:21px;background:var(--chip)}
-.emojis button.on{box-shadow:inset 0 0 0 2px var(--btc);background:var(--t-btc)}
+.arow-top .inp{padding:10px 12px;font-size:14px;flex:1}
+.star{font-size:20px;width:36px;height:36px;border-radius:10px;color:var(--ink-3)}
+.arow.def .star{color:var(--accent)}
+.emojis{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.emojis button{width:42px;height:42px;border-radius:50%;font-size:21px;background:var(--surface-2)}
+.emojis button.on{box-shadow:inset 0 0 0 2px var(--accent)}
+.sheet .tx{border-top:1px solid var(--line)}
 
 /* ---------- skener ---------- */
 .scanner{position:fixed;inset:0;z-index:40;background:#000;display:none}
 .scanner.on{display:block}
 .scanner video{width:100%;height:100%;object-fit:cover}
-.scan-frame{position:absolute;left:50%;top:40%;width:min(68vw,290px);aspect-ratio:1;max-width:100%;transform:translate(-50%,-50%);border-radius:36px;
-  box-shadow:0 0 0 200vmax rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.9);overflow:hidden}
-.scan-frame::after{content:"";position:absolute;left:8%;right:8%;height:2px;top:10%;background:#FF8A3D;box-shadow:0 0 16px #FF8A3D;animation:scanl 2s ease-in-out infinite alternate}
-@keyframes scanl{to{top:88%}}
-.scan-ui{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 20px);padding:18px;text-align:center}
-.scan-ui h2{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:4px}
+.scan-frame{position:absolute;left:50%;top:40%;width:min(68vw,280px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:28px;
+  box-shadow:0 0 0 200vmax rgba(0,0,0,.6),inset 0 0 0 2px #fff}
+.scan-frame::after{display:none}
+.scan-ui{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 16px);padding:20px;text-align:center;background:var(--surface);color:var(--ink);border-radius:20px}
+.scan-ui h2{font-size:17px;font-weight:600;margin-bottom:4px}
 
 /* ---------- zámek ---------- */
-.lock{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;align-items:center;justify-content:center;padding:16px}
+.lock{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px}
 .lock.on{display:flex}
-.lock .box{width:min(380px,100%);padding:28px 22px;text-align:center}
-.lock .logo{justify-content:center;margin-bottom:18px}
-.dots{display:flex;gap:14px;justify-content:center;margin:6px 0 24px}
-.dots i{width:13px;height:13px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--ink-3);transition:transform .2s cubic-bezier(.3,1.6,.5,1),background .2s}
-.dots i.f{background:linear-gradient(150deg,var(--ember-1),var(--ember-2));box-shadow:0 0 0 4px var(--t-btc);transform:scale(1.15)}
+.lock .box{width:min(360px,100%);text-align:center}
+.lock .logo{justify-content:center;margin-bottom:20px}
+.dots{display:flex;gap:16px;justify-content:center;margin:8px 0 32px}
+.dots i{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--ink-3);transition:background .15s,box-shadow .15s}
+.dots i.f{background:var(--ink);box-shadow:none}
 .dots.shake{animation:shake .4s}
-@keyframes shake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
-.pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px;justify-content:center}
-.pad button{width:72px;height:72px;border-radius:50%;font-family:var(--display);font-size:24px;font-weight:600;color:var(--ink);
-  background:var(--glass-strong);box-shadow:inset 0 1px 0 var(--rim),inset 0 0 0 1px var(--line),0 8px 18px -12px rgba(0,0,0,.3);transition:transform .15s,background .2s}
-.pad button:active{transform:scale(.9);background:var(--t-btc)}
-.pad button.ghost{background:none;box-shadow:none;font-family:var(--text);font-size:20px}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.pad{display:grid;grid-template-columns:repeat(3,76px);gap:14px 24px;justify-content:center}
+.pad button{width:76px;height:76px;border-radius:50%;font-size:28px;font-weight:500;color:var(--ink);background:var(--surface-2);transition:background .1s}
+.pad button:active{background:var(--line)}
+.pad button.ghost{background:none;font-size:22px}
 .pad button.blank{visibility:hidden}
 .pad.off{opacity:.4;pointer-events:none}
 
-/* ---------- menší displeje ---------- */
-@media (max-height:760px){
-  .hero{padding:14px 18px}
-  .big{font-size:38px;margin:8px 0 2px}
-  .split{margin:12px 0 8px}
-  .orb{width:52px;height:52px}
-  .fr .av{width:46px;height:46px;font-size:21px}
-  .push .hint,.card > .hint{display:none}
-  .amount-inp{font-size:30px;padding:4px}
-  .card .qr{--qr:min(200px,26dvh)}
-}
-@media (max-height:700px){
-  .field > span{display:none}
-  .seg{margin-bottom:10px} .seg button{padding:8px}
-  .amount-inp{font-size:28px}
-  .card h3{margin-bottom:8px}
-  .push{padding-top:8px}
-  .act{font-size:11px;gap:5px}
-}
-@media (max-height:640px){ .legend{display:none} .split{margin:10px 0 2px} .card{padding:14px} }
-@media (max-width:360px){ .logo .word{display:none} }
+/* podobrazovky: bez horního loga; úkolové obrazovky bez spodní lišty (soustředění, tlačítko akce nic nepřekrývá) */
+body:not([data-view="home"]) header.top{display:none}
+body[data-view="send"] nav.tabs,body[data-view="receive"] nav.tabs,body[data-view="topup"] nav.tabs,body[data-view="settings"] nav.tabs{display:none}
+body[data-view="send"] .app,body[data-view="receive"] .app,body[data-view="topup"] .app,body[data-view="settings"] .app{padding-bottom:calc(env(safe-area-inset-bottom) + 24px)}
+.amt-row::before{content:"";width:56px;flex:none}
+.amt-row .unit-btn{width:56px;padding:6px 0}
+@media (max-width:360px){ .big{font-size:40px} .pad{grid-template-columns:repeat(3,68px);gap:12px 18px} .pad button{width:68px;height:68px} }
 @media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none!important;transition:none!important} }
-
-#v-home .fill{min-height:112px}
-#v-home.view.on{gap:10px}
-#v-home .strip{padding:8px 12px}
 </style>
 </head>
-<body>
+<body data-view="home">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="kapsaGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFAA4D"/><stop offset="1" stop-color="#FF5F2E"/></linearGradient></defs></svg>
 <div class="aura"><i></i><i></i><i></i></div>
 <div class="grain"></div>
@@ -348,38 +299,33 @@ nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
   <header class="top">
     <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#FFD488"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#B05600" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><button type="button" class="net" id="netBadge" hidden title="Co je beta?">TESTNET</button></div>
     <div class="top-right">
-      <button class="pill glass" id="trezorBtn" title="Trezor Safe 7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><rect x="9" y="5.5" width="6" height="5" rx="1"/></svg><span class="dot" id="trezorDot"></span><span id="trezorTxt">Připojit</span></button>
       <button class="gear glass" data-go="settings" title="Nastavení" aria-label="Nastavení"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </div>
   </header>
 
   <!-- PŘEHLED -->
   <section class="view on" id="v-home">
-    <div class="hero glass">
-      <div class="hero-top">
-        <div class="label">V kapse celkem</div>
-        <div class="unitsw" id="unitSw" role="group" aria-label="Jednotka"><button data-u="sats">sats</button><button data-u="btc">BTC</button></div>
-      </div>
+    <div class="balance">
+      <div class="label">Zůstatek</div>
       <div class="big" id="total" title="Klepni pro přepnutí sats / BTC">0</div>
       <div class="fiat" id="totalFiat">—</div>
-      <div class="split" id="split" aria-hidden="true"><i id="splitVault"></i><i id="splitLn"></i></div>
-      <div class="legend">
-        <div class="lg"><span class="lg-h"><i class="sw vault"></i>Trezor</span><b id="vaultAmt">—</b></div>
-        <div class="lg"><span class="lg-h"><i class="sw ln"></i>Kapsa <span class="tag">demo</span></span><b id="lnAmt">0</b></div>
-      </div>
+      <div class="unitsw" id="unitSw" role="group" aria-label="Jednotka"><button data-u="sats">sats</button><button data-u="btc">BTC</button></div>
+    </div>
+    <div class="cta">
+      <button class="btn primary" data-go="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>Poslat</button>
+      <button class="btn ghost" data-go="receive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17M15 17H7V9"/></svg>Přijmout</button>
     </div>
 
-    <div class="actions">
-      <button class="act primary" data-go="send"><span class="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></span>Poslat</button>
-      <button class="act" data-go="receive"><span class="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17M15 17H7V9"/></svg></span>Přijmout</button>
-      <button class="act" data-go="topup"><span class="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Nabít</button>
+    <div class="sec">Peněženky</div>
+    <div class="group">
+      <button class="rowi" id="trezorBtn" title="Trezor Safe 7"><span class="ic vault"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><rect x="9" y="5.5" width="6" height="5" rx="1"/></svg></span><span class="tt"><b>Trezor</b><em id="vaultAmt">Nepřipojen</em></span><span class="chipb"><span class="dot" id="trezorDot"></span><span id="trezorTxt">Připojit</span></span></button>
+      <div class="rowi"><span class="ic ln"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="tt"><b>Kapsa <span class="tag">demo</span></b><em id="lnAmt">0</em></span><button class="chipb" data-go="topup">Nabít</button></div>
     </div>
 
-    <div class="card glass strip" aria-label="Kámoši: klepni a pošli">
-      <div class="friends" id="friendsRow"></div>
-    </div>
+    <div class="sec">Kámoši <button data-go="friends">Všichni</button></div>
+    <div class="friends" id="friendsRow"></div>
 
-    <div class="card glass fill">
+    <div class="card">
       <h3>Pohyby <span id="txSrc"></span></h3>
       <div id="txList" class="scroll"></div>
     </div>
@@ -387,14 +333,14 @@ nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
 
   <!-- POSLAT -->
   <section class="view" id="v-send">
-    <div class="card glass fill">
-      <h3>Poslat bitcoin</h3>
+    <div class="vhead"><button class="back" data-go="home" aria-label="Zpět"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Poslat</h2><span></span></div>
+    <div class="card form">
       <div class="seg" id="sendFrom">
         <button data-v="ln" class="on">⚡ Z Kapsy</button>
         <button data-v="vault">🔒 Z Trezoru</button>
       </div>
-      <div class="amt-row"><input class="inp amount-inp mono" id="sendAmt" inputmode="decimal" placeholder="0" maxlength="20"><button type="button" class="unit-btn" data-unit-toggle>sats</button></div>
-      <div class="fiat" style="text-align:center;margin:-4px 0 16px" id="sendFiat">sats</div>
+      <div class="amt-row"><input class="inp amount-inp" id="sendAmt" inputmode="decimal" placeholder="0" maxlength="20"><button type="button" class="unit-btn" data-unit-toggle>sats</button></div>
+      <div class="fiat sub" id="sendFiat">sats</div>
       <label class="field"><span>Komu</span>
         <div class="inp-wrap">
           <input class="inp mono" id="sendTo" placeholder="adresa, jméno nebo QR" autocomplete="off" autocapitalize="off" spellcheck="false">
@@ -414,8 +360,8 @@ nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
 
   <!-- PŘIJMOUT -->
   <section class="view" id="v-receive">
-    <div class="card glass fill" style="text-align:center">
-      <h3>Přijmout</h3>
+    <div class="vhead"><button class="back" data-go="home" aria-label="Zpět"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Přijmout</h2><span></span></div>
+    <div class="card form" style="text-align:center">
       <div class="seg" id="recvTo">
         <button data-v="vault" class="on">🔒 Na Trezor</button>
         <button data-v="ln">⚡ Do Kapsy</button>
@@ -426,7 +372,7 @@ nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
         <p class="hint">Adresu vždy ověř na displeji Trezoru</p>
         <div class="row">
           <button class="btn ghost" id="copyAddr">Kopírovat</button>
-          <button class="btn ghost" id="verifyAddr">Ověřit na Trezoru</button>
+          <button class="btn ghost" id="verifyAddr">Ověřit na zařízení</button>
         </div>
       </div>
     </div>
@@ -434,15 +380,15 @@ nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
 
   <!-- NABÍT -->
   <section class="view" id="v-topup">
-    <div class="card glass fill">
-      <h3>Nabít Kapsu</h3>
+    <div class="vhead"><button class="back" data-go="home" aria-label="Zpět"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Nabít Kapsu</h2><span></span></div>
+    <div class="card form">
       <div class="flow">
         <div class="node"><div class="ic vault">🔒</div>Trezor<br><span class="mono" style="color:var(--ink-3)" id="flowVault">—</span></div>
         <div class="arrow">→</div>
         <div class="node"><div class="ic ln">⚡</div>Kapsa<br><span class="mono" style="color:var(--ink-3)" id="flowLn">—</span></div>
       </div>
-      <div class="amt-row"><input class="inp amount-inp mono" id="topAmt" inputmode="decimal" placeholder="50 000" maxlength="20"><button type="button" class="unit-btn" data-unit-toggle>sats</button></div>
-      <div class="fiat" style="text-align:center;margin:-4px 0 14px" id="topFiat">sats</div>
+      <div class="amt-row"><input class="inp amount-inp" id="topAmt" inputmode="decimal" placeholder="50 000" maxlength="20"><button type="button" class="unit-btn" data-unit-toggle>sats</button></div>
+      <div class="fiat sub" id="topFiat">sats</div>
       <div class="row" style="margin-bottom:14px">
         <button class="btn ghost" data-top="21000">21k</button>
         <button class="btn ghost" data-top="100000">100k</button>
@@ -457,8 +403,8 @@ nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
 
   <!-- KÁMOŠI -->
   <section class="view" id="v-friends">
-    <div class="card glass fill">
-      <h3>Kámoši <span id="frCount"></span></h3>
+    <div class="vhead"><button class="back" data-go="home" aria-label="Zpět"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Kámoši <span id="frCount"></span></h2><span></span></div>
+    <div class="card form">
       <div class="inp-wrap one search">
         <input class="inp" id="frSearch" placeholder="Hledat jméno nebo adresu…" autocomplete="off" autocapitalize="off" spellcheck="false">
         <div class="ibs"><button type="button" class="ib" id="frScan" title="Naskenovat QR kámoše"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg></button></div>
@@ -470,13 +416,13 @@ nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
 
   <!-- NASTAVENÍ -->
   <section class="view" id="v-settings">
-    <button class="back" data-go="home">← Zpět</button>
-    <div class="card glass">
+    <div class="vhead"><button class="back" data-go="home" aria-label="Zpět"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Nastavení</h2><span></span></div>
+    <div class="card form">
       <h3>Moje platební adresa</h3>
       <div class="addr mono" id="myLn">tomas@kapsa.btc</div>
       <p class="hint">Tuhle adresu dej kámošům, ať ti můžou posílat sats do Kapsy. Funguje jako e-mail, jen pro peníze.</p>
     </div>
-    <div class="card glass">
+    <div class="card form">
       <h3>Soukromí</h3>
       <label class="tx" style="cursor:pointer"><div class="t"><b>Kurz v CZK</b><em>Dotaz na CoinGecko. Nesděluje adresy ani zůstatky, jen tvou IP.</em></div>
         <input type="checkbox" id="priceToggle" style="width:22px;height:22px;accent-color:var(--btc)"></label>
@@ -489,12 +435,10 @@ nav.tabs button.on svg{color:var(--btc);transform:translateY(-1px) scale(1.06)}
   </section>
 </main>
 
-<nav class="tabs glass"><span class="ind" id="tabInd" aria-hidden="true"></span>
-  <button data-go="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Přehled</button>
-  <button data-go="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>Poslat</button>
-  <button data-go="receive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 7 7 17M15 17H7V9"/></svg>Přijmout</button>
-  <button data-go="topup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Nabít</button>
-  <button data-go="friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .6 3.2 2.5 3.5 5.5"/></svg>Kámoši</button>
+<nav class="tabs" aria-label="Navigace">
+  <button data-go="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Domů</button>
+  <button class="scanb" id="navScan" aria-label="Skenovat QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg></button>
+  <button data-go="friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .6 3.2 2.5 3.5 5.5"/></svg>Kámoši</button>
 </nav>
 
 <div class="scrim" id="scrim"><div class="sheet glass" id="sheet"></div></div>
@@ -853,16 +797,12 @@ function render(){
   $$('#unitSw button').forEach(b => b.classList.toggle('on', b.dataset.u === S.unit));
   $$('[data-unit-toggle]').forEach(b => b.textContent = S.unit === 'btc' ? 'BTC' : 'sats');
   requestAnimationFrame(fitBig);
-  $('#vaultAmt').textContent = S.trezor ? fmt(vault) : 'nepřipojen';
-  // tekutá lišta: poměr Trezor / Kapsa
-  $('#split').classList.toggle('empty', !total);
-  $('#splitVault').style.flexGrow = total ? Math.max(vault / total, .03) : 1;
-  $('#splitLn').style.flexGrow = total ? Math.max(S.ln.balance / total, .03) : 1;
+  $('#vaultAmt').textContent = S.trezor ? fmt(vault) : 'Nepřipojen';
   $('#lnAmt').textContent = fmt(S.ln.balance);
   $('#flowVault').textContent = S.trezor ? fmt(vault) : '—';
   $('#flowLn').textContent = fmt(S.ln.balance);
   $('#trezorDot').classList.toggle('on', !!S.trezor);
-  $('#trezorTxt').textContent = S.trezor ? 'Trezor' : 'Připojit';
+  $('#trezorTxt').textContent = S.trezor ? 'Ověřit' : 'Připojit';
 
   // kámoši
   $('#friendsRow').innerHTML = S.friends.map(f=>`<button class="fr" data-pay="${f.id}"><span class="av" style="--h:${hue(f.name)}">${esc(f.emoji)}</span>${esc(f.name)}</button>`).join('')
@@ -925,6 +865,8 @@ function go(v){
   $$('nav.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.go===v));
   const view = $('#v-'+v); if(view) view.scrollTop = 0;
   placeInd(v);
+  document.body.dataset.view = v;
+  window.scrollTo(0, 0);
 }
 /* tekutá kapka pod vybranou záložkou */
 let curView = 'home';
@@ -982,6 +924,7 @@ function fillFromPayment(raw){
   toast(findByAddr(v) ? 'Adresa patří: ' + findByAddr(v).name : 'Adresa načtena z QR');
 }
 $('#sendScan').addEventListener('click', ()=> openScanner(fillFromPayment));
+$('#navScan').addEventListener('click', ()=> openScanner(fillFromPayment));
 $('#sendPickBtn').addEventListener('click', openPicker);
 
 function payContact(id){
