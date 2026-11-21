@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#07070b">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://connect.trezor.io; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src https://connect.trezor.io https://api.coingecko.com; frame-src https://connect.trezor.io; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://connect.trezor.io; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; connect-src https://connect.trezor.io https://api.coingecko.com; frame-src https://connect.trezor.io; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Kapsa — bitcoin mezi přáteli</title>
 <style>
@@ -191,6 +191,39 @@ nav.tabs button.on svg{color:var(--btc-2)}
 .toast{position:fixed;z-index:30;left:50%;top:calc(env(safe-area-inset-top) + 16px);transform:translate(-50%,calc(-100% - 60px));
   padding:13px 18px;border-radius:20px;font-weight:700;font-size:14px;transition:transform .45s cubic-bezier(.2,.9,.25,1.2);max-width:calc(100% - 32px)}
 .toast.on{transform:translate(-50%,0)}
+.inp-wrap{position:relative}
+.inp-wrap .inp{padding-right:100px}
+.inp-wrap.one .inp{padding-right:56px}
+.ibs{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:flex;gap:4px}
+.ib{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:var(--ink);
+  background:linear-gradient(160deg,rgba(255,255,255,.2),rgba(255,255,255,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.ib svg{width:20px;height:20px}
+.ib.danger{color:var(--bad)}
+.who{min-height:20px;font-size:13px;margin:-4px 6px 12px;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.who button{color:var(--btc-2);font-weight:700;font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.badge{font-size:10px;font-weight:800;letter-spacing:.06em;padding:3px 7px;border-radius:7px;text-transform:uppercase}
+.badge.ln{background:rgba(169,139,255,.2);color:var(--ln)}
+.badge.btc{background:rgba(247,147,26,.18);color:var(--btc-2)}
+.arow{padding:12px;border-radius:20px;background:rgba(0,0,0,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);margin-bottom:10px}
+.arow.def{box-shadow:inset 0 0 0 1.5px rgba(247,147,26,.6)}
+.arow-top{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.arow-top .inp{padding:10px 14px;font-size:13px;flex:1}
+.star{font-size:20px;width:38px;height:38px;border-radius:12px;color:var(--ink-3)}
+.arow.def .star{color:var(--btc)}
+.search{margin-bottom:14px}
+.click{cursor:pointer;border-radius:16px;transition:background .2s}
+.click:active{background:rgba(255,255,255,.05)}
+.pick{width:100%;text-align:left}
+.scanner{position:fixed;inset:0;z-index:40;background:#000;display:none}
+.scanner.on{display:block}
+.scanner video{width:100%;height:100%;object-fit:cover}
+.scan-frame{position:absolute;left:50%;top:40%;width:min(68vw,290px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:34px;
+  box-shadow:0 0 0 200vmax rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.85);overflow:hidden}
+.scan-frame::after{content:"";position:absolute;left:8%;right:8%;height:2px;top:10%;background:var(--btc);box-shadow:0 0 16px var(--btc);animation:scanl 2s ease-in-out infinite alternate}
+@keyframes scanl{to{top:88%}}
+.scan-ui{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 20px);padding:18px;text-align:center}
+.scan-ui h2{font-size:18px;font-weight:800;margin-bottom:4px}
+.sheet{max-height:90vh;overflow-y:auto}
 .emojis{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .emojis button{width:42px;height:42px;border-radius:14px;font-size:21px;background:var(--glass)}
 .emojis button.on{box-shadow:inset 0 0 0 2px var(--btc)}
@@ -254,8 +287,12 @@ nav.tabs button.on svg{color:var(--btc-2)}
       <input class="inp amount-inp mono" id="sendAmt" inputmode="numeric" placeholder="0">
       <div class="fiat" style="text-align:center;margin:-4px 0 16px" id="sendFiat">sats</div>
       <label class="field"><span>Komu</span>
-        <input class="inp mono" id="sendTo" placeholder="kamos@walletofsatoshi.com nebo bc1…" autocomplete="off">
+        <div class="inp-wrap">
+          <input class="inp mono" id="sendTo" placeholder="adresa, jméno nebo QR" autocomplete="off" autocapitalize="off" spellcheck="false">
+          <div class="ibs"><button type="button" class="ib" id="sendPickBtn" title="Vybrat kontakt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></button><button type="button" class="ib" id="sendScan" title="Naskenovat QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg></button></div>
+        </div>
       </label>
+      <div class="who" id="sendWho"></div>
       <label class="field"><span>Zpráva (nepovinné)</span>
         <input class="inp" id="sendNote" placeholder="Za pivo 🍺">
       </label>
@@ -307,6 +344,10 @@ nav.tabs button.on svg{color:var(--btc-2)}
   <section class="view" id="v-friends">
     <div class="card glass">
       <h3>Kámoši <span id="frCount"></span></h3>
+      <div class="inp-wrap one search">
+        <input class="inp" id="frSearch" placeholder="Hledat jméno nebo adresu…" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <div class="ibs"><button type="button" class="ib" id="frScan" title="Naskenovat QR kámoše"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg></button></div>
+      </div>
       <div id="frList"></div>
       <button class="btn ghost" style="margin-top:12px" id="addFriend">+ Přidat kámoše</button>
     </div>
@@ -334,8 +375,21 @@ nav.tabs button.on svg{color:var(--btc-2)}
 
 <div class="scrim" id="scrim"><div class="sheet glass" id="sheet"></div></div>
 <div class="toast glass" id="toast"></div>
+<div class="scanner" id="scanner">
+  <video id="scanVid" playsinline muted></video>
+  <div class="scan-frame"></div>
+  <div class="scan-ui glass">
+    <h2>Naskenuj QR kámoše</h2>
+    <p class="hint" id="scanHint" style="margin:0 0 14px">Namiř kameru na QR kód s adresou nebo fakturou.</p>
+    <div class="row">
+      <label class="btn ghost" style="text-align:center;cursor:pointer">Z obrázku<input type="file" accept="image/*" id="scanFile" hidden></label>
+      <button class="btn ghost" id="scanClose">Zavřít</button>
+    </div>
+  </div>
+</div>
 
 <script src="vendor/qrcode.js"></script>
+<script src="vendor/jsQR.js"></script>
 <script src="https://connect.trezor.io/9/trezor-connect.js"></script>
 <script>
 (() => {
@@ -359,6 +413,7 @@ const S = {
     { name:'Petra', emoji:'🌸', addr:'petra@getalby.com' },
     { name:'Marek', emoji:'🏔️', addr:'marek@strike.me' },
   ]),
+  q:'',
   sendFrom:'ln', recvTo:'vault'
 };
 const saveLn = () => store.set('ln', S.ln);
@@ -459,7 +514,82 @@ function lnReceive(sats, label){
   S.ln.txs.unshift({ dir:'in', amount:sats, time:Date.now()/1000, label });
   saveLn();
 }
-const nameFor = a => (S.friends.find(f=>f.addr===a)?.name) || short(a);
+/* ---------- kontakty (každý může mít víc adres) ---------- */
+const uid = () => Math.random().toString(36).slice(2,10);
+const addrType = a => (isLnAddr(a) || isInvoice(a)) ? 'ln' : isBtcAddr(a) ? 'btc' : null;
+const typeLabel = a => addrType(a)==='ln' ? 'Lightning' : 'Bitcoin';
+S.friends = S.friends.map(f => f.addrs ? f : ({ id:uid(), name:f.name, emoji:f.emoji,
+  addrs: f.addr ? [{ id:uid(), label:typeLabel(f.addr), value:f.addr }] : [] }));
+const saveFriends = () => store.set('friends', S.friends);
+const same = (a,b) => a.trim().toLowerCase() === b.trim().toLowerCase();
+const findByAddr = a => S.friends.find(f => f.addrs.some(x => same(x.value, a)));
+const nameFor = a => findByAddr(a)?.name || short(a);
+// první adresa = výchozí; pro Kapsu preferuj Lightning, pro Trezor bitcoin
+const bestAddr = (f, kind) => f.addrs.find(x => addrType(x.value)===kind) || f.addrs[0];
+const EMOJIS = ['🦊','🐻','🐼','🦁','🐸','🐙','🦄','🌸','🔥','🏔️','⚡','🍺','🎸','🚀','☕','🧡'];
+
+/* ---------- čtení QR / platebních odkazů (BIP21, lightning:) ---------- */
+function parsePayment(raw){
+  let s = String(raw).trim(), amount = 0, label = '', ln = '';
+  const m = s.match(/^(bitcoin|lightning):([^?]*)(?:\?(.*))?$/i);
+  if(m){
+    s = m[2]; const q = new URLSearchParams(m[3] || '');
+    const a = parseFloat(q.get('amount')); if(a > 0) amount = Math.round(a * 1e8);
+    label = q.get('label') || ''; ln = q.get('lightning') || '';
+  }
+  return { value: s || ln, ln, amount, label };
+}
+
+/* ---------- skener ---------- */
+let scanStream = null, scanRAF = 0, scanCb = null;
+async function openScanner(cb){
+  scanCb = cb; $('#scanner').classList.add('on');
+  $('#scanHint').textContent = 'Namiř kameru na QR kód s adresou nebo fakturou.';
+  const vid = $('#scanVid');
+  try{
+    scanStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' }, audio:false });
+  }catch{
+    $('#scanHint').textContent = 'Kamera není dostupná (povol ji, nebo vyber obrázek s QR).'; return;
+  }
+  vid.srcObject = scanStream; await vid.play().catch(()=>{});
+  const det = ('BarcodeDetector' in window) ? new BarcodeDetector({ formats:['qr_code'] }) : null;
+  const cv = document.createElement('canvas'), cx = cv.getContext('2d', { willReadFrequently:true });
+  const tick = async () => {
+    if(!scanStream) return;
+    if(vid.readyState >= 2){
+      let txt = null;
+      if(det){ try{ const r = await det.detect(vid); if(r[0]) txt = r[0].rawValue }catch{} }
+      else if(window.jsQR){
+        const w = cv.width = Math.min(vid.videoWidth, 720), h = cv.height = Math.round(vid.videoHeight * w / vid.videoWidth);
+        cx.drawImage(vid, 0, 0, w, h); const d = cx.getImageData(0, 0, w, h);
+        const r = jsQR(d.data, w, h, { inversionAttempts:'dontInvert' }); if(r) txt = r.data;
+      }
+      if(txt) return scanDone(txt);
+    }
+    scanRAF = requestAnimationFrame(tick);
+  };
+  tick();
+}
+function stopScanner(){
+  cancelAnimationFrame(scanRAF); scanStream?.getTracks().forEach(t=>t.stop()); scanStream = null;
+  $('#scanVid').srcObject = null; $('#scanner').classList.remove('on');
+}
+function scanDone(txt){ navigator.vibrate?.(30); const cb = scanCb; stopScanner(); cb && cb(txt) }
+$('#scanClose').addEventListener('click', stopScanner);
+$('#scanFile').addEventListener('change', async e => {
+  const file = e.target.files[0]; e.target.value = ''; if(!file) return;
+  try{
+    const bmp = await createImageBitmap(file), cv = document.createElement('canvas');
+    const w = cv.width = Math.min(bmp.width, 1200), h = cv.height = Math.round(bmp.height * w / bmp.width);
+    const cx = cv.getContext('2d'); cx.drawImage(bmp, 0, 0, w, h);
+    const d = cx.getImageData(0, 0, w, h), r = window.jsQR && jsQR(d.data, w, h);
+    r ? scanDone(r.data) : toast('Na obrázku jsem QR nenašel', false);
+  }catch{ toast('Obrázek nejde přečíst', false) }
+});
+
+/* ---------- bottom sheet ---------- */
+function openSheet(html){ $('#sheet').innerHTML = '<div class="grab"></div>' + html; $('#scrim').classList.add('on') }
+function closeSheet(){ $('#scrim').classList.remove('on') }
 
 /* ---------- render ---------- */
 function render(){
@@ -475,13 +605,10 @@ function render(){
   $('#trezorTxt').textContent = S.trezor ? 'Trezor Safe 7' : 'Připojit Trezor';
 
   // kámoši
-  $('#friendsRow').innerHTML = S.friends.map((f,i)=>`<button class="fr" data-pay="${i}"><span class="av">${esc(f.emoji)}</span>${esc(f.name)}</button>`).join('')
+  $('#friendsRow').innerHTML = S.friends.map(f=>`<button class="fr" data-pay="${f.id}"><span class="av">${esc(f.emoji)}</span>${esc(f.name)}</button>`).join('')
     + `<button class="fr add" id="addFriend2"><span class="av">+</span>Přidat</button>`;
   $('#frCount').textContent = S.friends.length;
-  $('#frList').innerHTML = S.friends.map((f,i)=>`
-    <div class="tx"><span class="av">${esc(f.emoji)}</span>
-      <div class="t"><b>${esc(f.name)}</b><em class="mono">${esc(short(f.addr))}</em></div>
-      <button class="pill glass" data-pay="${i}">Poslat</button></div>`).join('') || '<div class="empty">Zatím nikdo</div>';
+  renderFriends();
 
   // pohyby
   const txs = [...S.ln.txs.map(t=>({...t,src:'⚡'})), ...(S.trezor?.txs||[]).map(t=>({...t,src:'🔒'}))]
@@ -495,6 +622,24 @@ function render(){
 
   renderReceive();
   $('#myLn').textContent = store.get('myLn','tomas@kapsa.btc');
+}
+
+function renderFriends(){
+  const q = S.q.trim().toLowerCase();
+  const list = S.friends.filter(f => !q || f.name.toLowerCase().includes(q) || f.addrs.some(a => a.value.toLowerCase().includes(q) || (a.label||'').toLowerCase().includes(q)));
+  let html = list.map(f => {
+    const a = f.addrs[0], more = f.addrs.length > 1 ? ` · +${f.addrs.length-1}` : '';
+    return `<div class="tx click" data-open="${f.id}"><span class="av">${esc(f.emoji)}</span>
+      <div class="t"><b>${esc(f.name)}</b><em class="mono">${a ? esc(short(a.value)) + more : 'bez adresy'}</em></div>
+      <button class="pill glass" data-pay="${f.id}">Poslat</button></div>`;
+  }).join('');
+  if(q && !list.length){
+    const raw = S.q.trim(), parsed = parsePayment(raw);
+    html = addrType(parsed.value)
+      ? `<div class="empty">Tuhle adresu ještě neznáš.</div><button class="btn primary" data-saveaddr="${esc(parsed.value)}">Uložit ke kontaktu</button>`
+      : `<button class="btn primary" data-newname="${esc(raw)}">+ Vytvořit kontakt „${esc(raw)}“</button>`;
+  }
+  $('#frList').innerHTML = html || '<div class="empty">Zatím nikdo. Přidej prvního kámoše.</div>';
 }
 
 function renderReceive(){
@@ -522,15 +667,78 @@ function go(v){
 }
 document.addEventListener('click', e=>{
   const g = e.target.closest('[data-go]'); if(g) go(g.dataset.go);
-  const p = e.target.closest('[data-pay]'); if(p){ const f=S.friends[+p.dataset.pay]; $('#sendTo').value=f.addr; go('send'); setTimeout(()=>$('#sendAmt').focus(),300) }
-  if(e.target.closest('#addFriend,#addFriend2')) openAddFriend();
+  const p = e.target.closest('[data-pay]'); if(p){ e.stopPropagation(); payContact(p.dataset.pay); return }
+  const o = e.target.closest('[data-open]'); if(o) openContact(o.dataset.open);
+  if(e.target.closest('#addFriend,#addFriend2')) openContact(null);
+  const n = e.target.closest('[data-newname]'); if(n) openContact(null, { name:n.dataset.newname });
+  const sa = e.target.closest('[data-saveaddr]'); if(sa) openSaveAddr(sa.dataset.saveaddr);
   const t = e.target.closest('[data-top]'); if(t){ $('#topAmt').value=nf.format(+t.dataset.top); updFiat('#topAmt','#topFiat') }
 });
 function seg(id, key, cb){
   $(id).addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return;
     $$(id+' button').forEach(x=>x.classList.toggle('on',x===b)); S[key]=b.dataset.v; cb&&cb() });
 }
-seg('#sendFrom','sendFrom', ()=>{ $('#sendTo').placeholder = S.sendFrom==='ln' ? 'kamos@walletofsatoshi.com nebo lnbc…' : 'bc1q…' });
+seg('#sendFrom','sendFrom', updWho);
+function setSendFrom(v){ S.sendFrom = v; $$('#sendFrom button').forEach(b=>b.classList.toggle('on', b.dataset.v===v)) }
+
+function updWho(){
+  const v = $('#sendTo').value.trim(), w = $('#sendWho');
+  if(!v){ w.innerHTML = ''; return }
+  const t = addrType(v), f = findByAddr(v);
+  if(f){ const a = f.addrs.find(x=>same(x.value,v)); w.innerHTML = `<span>${esc(f.emoji)} <b>${esc(f.name)}</b></span><span class="badge ${t}">${esc(a.label||typeLabel(v))}</span>`; return }
+  if(t){
+    if(t==='btc' && S.sendFrom==='ln') w.innerHTML = '<span>Bitcoinová adresa: pošli z Trezoru</span>';
+    else if(t==='ln' && S.sendFrom==='vault') w.innerHTML = '<span>Lightning: pošli z Kapsy</span>';
+    else w.innerHTML = `<span class="badge ${t}">${typeLabel(v)}</span><span>Nová adresa</span><button type="button" data-saveaddr="${esc(v)}">Uložit ke kontaktu</button>`;
+    return;
+  }
+  // hledání podle jména
+  const hits = S.friends.filter(f=>f.name.toLowerCase().includes(v.toLowerCase())).slice(0,4);
+  w.innerHTML = hits.length ? hits.map(f=>`<button type="button" data-pay="${f.id}">${esc(f.emoji)} ${esc(f.name)}</button>`).join('') : '<span>Neznám, zadej adresu nebo naskenuj QR</span>';
+}
+$('#sendTo').addEventListener('input', updWho);
+
+function fillFromPayment(raw){
+  const p = parsePayment(raw);
+  let v = p.value;
+  if(p.ln && S.sendFrom==='ln') v = p.ln;           // sjednocený QR (BIP21 + lightning)
+  const t = addrType(v);
+  if(!t) return toast('QR neobsahuje bitcoinovou ani Lightning adresu', false);
+  setSendFrom(t==='ln' ? 'ln' : 'vault');
+  $('#sendTo').value = v;
+  if(p.amount){ $('#sendAmt').value = nf.format(p.amount); updFiat('#sendAmt','#sendFiat') }
+  if(p.label && !$('#sendNote').value) $('#sendNote').value = p.label;
+  updWho(); go('send');
+  toast(findByAddr(v) ? 'Adresa patří: ' + findByAddr(v).name : 'Adresa načtena z QR');
+}
+$('#sendScan').addEventListener('click', ()=> openScanner(fillFromPayment));
+$('#sendPickBtn').addEventListener('click', openPicker);
+
+function payContact(id){
+  const f = S.friends.find(x=>x.id===id); if(!f) return;
+  if(!f.addrs.length){ toast(f.name+' nemá adresu, doplň ji', false); return openContact(id) }
+  if(f.addrs.length === 1) return useAddr(f, f.addrs[0]);
+  openSheet(`<h2>Kam poslat ${esc(f.name)}?</h2>` + f.addrs.map(a=>`
+    <button class="tx click pick" data-use="${a.id}"><span class="av">${addrType(a.value)==='ln'?'⚡':'₿'}</span>
+      <div class="t"><b>${esc(a.label||typeLabel(a.value))}</b><em class="mono">${esc(short(a.value))}</em></div>
+      <span class="badge ${addrType(a.value)}">${addrType(a.value)==='ln'?'okamžitě':'on-chain'}</span></button>`).join(''));
+  $('#sheet').onclick = e => { const b = e.target.closest('[data-use]'); if(!b) return; closeSheet(); useAddr(f, f.addrs.find(a=>a.id===b.dataset.use)) };
+}
+function useAddr(f, a){
+  setSendFrom(addrType(a.value)==='ln' ? 'ln' : 'vault');
+  $('#sendTo').value = a.value; updWho(); go('send'); setTimeout(()=>$('#sendAmt').focus(), 300);
+}
+function openPicker(){
+  if(!S.friends.length) return openContact(null);
+  openSheet(`<h2>Komu?</h2>` + S.friends.map(f=>`
+    <button class="tx click pick" data-pk="${f.id}"><span class="av">${esc(f.emoji)}</span>
+      <div class="t"><b>${esc(f.name)}</b><em>${f.addrs.length} ${f.addrs.length===1?'adresa':f.addrs.length<5&&f.addrs.length?'adresy':'adres'}</em></div></button>`).join('')
+    + `<button class="btn ghost" style="margin-top:10px" data-pknew>+ Nový kontakt</button>`);
+  $('#sheet').onclick = e => {
+    const b = e.target.closest('[data-pk]'); if(b){ closeSheet(); payContact(b.dataset.pk) }
+    if(e.target.closest('[data-pknew]')) openContact(null);
+  };
+}
 seg('#recvTo','recvTo', renderReceive);
 
 $('#total').addEventListener('click', ()=>{ S.unit = S.unit==='sats'?'btc':'sats'; store.set('unit',S.unit); render() });
@@ -559,13 +767,14 @@ $('#sendGo').addEventListener('click', async ()=>{
     if(!isBtcAddr(to)) return toast('Z Trezoru jde poslat jen na bitcoinovou adresu (bc1…)', false);
     if(sats < 546) return toast('Minimum on-chain je 546 sats', false);
     const txid = await trezorSend(to, sats);
-    if(txid){ toast('Odesláno · '+txid.slice(0,10)+'…'); clearSend(); setTimeout(connectTrezor, 2500) }
+    if(txid){ toast('Odesláno · '+txid.slice(0,10)+'…'); clearSend(); offerSave(to); setTimeout(connectTrezor, 2500) }
   } else {
     if(!(isLnAddr(to) || isInvoice(to))) return toast('Pro Kapsu zadej Lightning adresu (jmeno@domena) nebo fakturu lnbc…', false);
-    if(lnPay(to, sats, note)){ toast(`Posláno ${nameFor(to)} · ${fmt(sats)}`); clearSend(); render(); go('home') }
+    if(lnPay(to, sats, note)){ toast(`Posláno ${nameFor(to)} · ${fmt(sats)}`); clearSend(); render(); go('home'); if(!isInvoice(to)) offerSave(to) }
   }
 });
-const clearSend = ()=>{ ['#sendAmt','#sendTo','#sendNote'].forEach(i=>$(i).value=''); updFiat('#sendAmt','#sendFiat') };
+const clearSend = ()=>{ ['#sendAmt','#sendTo','#sendNote'].forEach(i=>$(i).value=''); updFiat('#sendAmt','#sendFiat'); updWho() };
+const offerSave = a => { if(!findByAddr(a)) setTimeout(()=>openSaveAddr(a, true), 700) };
 
 /* nabít */
 $('#topGo').addEventListener('click', async ()=>{
@@ -582,27 +791,106 @@ $('#topGo').addEventListener('click', async ()=>{
   }
 });
 
-/* přidat kámoše */
-function openAddFriend(){
-  const emojis=['🦊','🐻','🐼','🦁','🐸','🐙','🦄','🌸','🔥','🏔️','⚡','🍺','🎸','🚀'];
-  let pick = emojis[Math.floor(Math.random()*emojis.length)];
-  $('#sheet').innerHTML = `<div class="grab"></div><h2>Nový kámoš</h2>
-    <div class="emojis">${emojis.map(e=>`<button data-e="${e}" class="${e===pick?'on':''}">${e}</button>`).join('')}</div>
-    <label class="field"><span>Jméno</span><input class="inp" id="fName" placeholder="Jirka"></label>
-    <label class="field"><span>Lightning nebo BTC adresa</span><input class="inp mono" id="fAddr" placeholder="jirka@getalby.com"></label>
-    <button class="btn primary" id="fSave">Uložit</button>`;
-  $('#scrim').classList.add('on');
-  $('#sheet').querySelector('.emojis').onclick = e=>{ const b=e.target.closest('button'); if(!b) return; pick=b.dataset.e;
-    $$('.emojis button').forEach(x=>x.classList.toggle('on',x===b)) };
-  $('#fSave').onclick = ()=>{
-    const name=$('#fName').value.trim(), addr=$('#fAddr').value.trim();
-    if(!name) return toast('Doplň jméno', false);
-    if(!(isLnAddr(addr)||isBtcAddr(addr))) return toast('Neplatná adresa', false);
-    S.friends.push({name, emoji:pick, addr}); store.set('friends', S.friends);
-    $('#scrim').classList.remove('on'); toast(name+' přidán'); render();
+/* ---------- kontakt: vytvořit / upravit / víc adres ---------- */
+function openContact(id, preset = {}){
+  const orig = id && S.friends.find(x=>x.id===id);
+  const f = orig ? JSON.parse(JSON.stringify(orig))
+    : { id:uid(), name:preset.name||'', emoji:EMOJIS[Math.floor(Math.random()*EMOJIS.length)],
+        addrs: preset.addr ? [{ id:uid(), label:typeLabel(preset.addr), value:preset.addr }] : [] };
+  if(!f.addrs.length) f.addrs.push({ id:uid(), label:'', value:'' });
+
+  const draw = () => openSheet(`
+    <h2>${orig ? 'Upravit kontakt' : 'Nový kámoš'}</h2>
+    <div class="emojis">${EMOJIS.map(e=>`<button data-e="${e}" class="${e===f.emoji?'on':''}">${e}</button>`).join('')}</div>
+    <label class="field"><span>Jméno</span><input class="inp" id="cName" value="${esc(f.name)}" placeholder="Jirka"></label>
+    <div class="label" style="margin:8px 6px">Adresy · ★ = výchozí</div>
+    ${f.addrs.map((a,i)=>`
+      <div class="arow ${i===0?'def':''}">
+        <div class="arow-top">
+          <button class="star" data-star="${i}" title="Nastavit jako výchozí">${i===0?'★':'☆'}</button>
+          <input class="inp" data-k="label" data-i="${i}" value="${esc(a.label)}" placeholder="Štítek (Lightning, Trezor, Revolut…)">
+          <button class="ib danger" data-del="${i}" title="Smazat adresu">✕</button>
+        </div>
+        <div class="inp-wrap one">
+          <input class="inp mono" data-k="value" data-i="${i}" value="${esc(a.value)}" placeholder="jmeno@getalby.com nebo bc1…" autocapitalize="off" spellcheck="false">
+          <div class="ibs"><button class="ib" data-scan="${i}" title="Přepsat z QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg></button></div>
+        </div>
+      </div>`).join('')}
+    <div class="row" style="margin-bottom:12px">
+      <button class="btn ghost" data-addaddr>+ Adresa</button>
+      <button class="btn ghost" data-scannew>Naskenovat QR</button>
+    </div>
+    <button class="btn primary" data-csave>Uložit</button>
+    ${orig ? '<button class="btn ghost" style="margin-top:10px;color:var(--bad)" data-cdel>Smazat kontakt</button>' : ''}`);
+
+  const sync = () => {
+    f.name = $('#cName').value;
+    $$('#sheet [data-k]').forEach(el => { f.addrs[+el.dataset.i][el.dataset.k] = el.value });
+  };
+  const fromQR = (i) => openScanner(txt => {
+    const p = parsePayment(txt); const v = p.ln && !addrType(p.value) ? p.ln : p.value;
+    if(!addrType(v)) return toast('QR neobsahuje platnou adresu', false);
+    if(i == null){ f.addrs.push({ id:uid(), label:p.label || typeLabel(v), value:v }) }
+    else { f.addrs[i].value = v; if(!f.addrs[i].label) f.addrs[i].label = typeLabel(v) }
+    draw(); toast(i == null ? 'Adresa přidána z QR' : 'Adresa přepsána z QR');
+  });
+
+  draw();
+  $('#sheet').onclick = e => {
+    const t = e.target;
+    const em = t.closest('[data-e]'); if(em){ sync(); f.emoji = em.dataset.e; draw(); return }
+    if(t.closest('[data-addaddr]')){ sync(); f.addrs.push({ id:uid(), label:'', value:'' }); draw(); return }
+    if(t.closest('[data-scannew]')){ sync(); fromQR(null); return }
+    const sc = t.closest('[data-scan]'); if(sc){ sync(); fromQR(+sc.dataset.scan); return }
+    const st = t.closest('[data-star]'); if(st){ sync(); const [a] = f.addrs.splice(+st.dataset.star,1); f.addrs.unshift(a); draw(); return }
+    const dl = t.closest('[data-del]'); if(dl){ sync(); f.addrs.splice(+dl.dataset.del,1); if(!f.addrs.length) f.addrs.push({id:uid(),label:'',value:''}); draw(); return }
+    if(t.closest('[data-cdel]')){
+      if(!confirm(`Smazat ${orig.name}?`)) return;
+      S.friends = S.friends.filter(x=>x.id!==orig.id); saveFriends(); closeSheet(); render(); toast('Kontakt smazán'); return;
+    }
+    if(t.closest('[data-csave]')){
+      sync();
+      f.name = f.name.trim(); if(!f.name) return toast('Doplň jméno', false);
+      f.addrs = f.addrs.map(a=>({ ...a, value:a.value.trim(), label:a.label.trim() })).filter(a=>a.value);
+      const bad = f.addrs.find(a=>!addrType(a.value)); if(bad) return toast('Neplatná adresa: '+short(bad.value), false);
+      if(!f.addrs.length) return toast('Přidej aspoň jednu adresu', false);
+      const dupe = f.addrs.find(a => { const o = findByAddr(a.value); return o && o.id !== f.id });
+      if(dupe) return toast('Adresa už patří: '+findByAddr(dupe.value).name, false);
+      f.addrs.forEach(a => { if(!a.label) a.label = typeLabel(a.value) });
+      if(orig) Object.assign(orig, f); else S.friends.push(f);
+      saveFriends(); closeSheet(); render(); updWho(); toast(f.name + (orig ? ' upraven' : ' přidán'));
+    }
   };
 }
-$('#scrim').addEventListener('click', e=>{ if(e.target.id==='scrim') e.currentTarget.classList.remove('on') });
+
+/* uložit neznámou adresu: k existujícímu kontaktu, nebo nový */
+function openSaveAddr(addr, afterSend = false){
+  addr = parsePayment(addr).value;
+  if(!addrType(addr)) return toast('Neplatná adresa', false);
+  openSheet(`<h2>${afterSend ? 'Uložit adresu?' : 'Komu adresa patří?'}</h2>
+    <div class="addr mono" style="margin-bottom:14px">${esc(short(addr))}</div>
+    <button class="btn primary" data-sanew>+ Nový kontakt</button>
+    ${S.friends.length ? '<div class="label" style="margin:16px 6px 6px">nebo přidat ke kámošovi</div>' : ''}
+    ${S.friends.map(f=>`<button class="tx click pick" data-sato="${f.id}"><span class="av">${esc(f.emoji)}</span>
+      <div class="t"><b>${esc(f.name)}</b><em>${f.addrs.length} uložen${f.addrs.length===1?'á':'é'}</em></div><span class="badge ${addrType(addr)}">+ přidat</span></button>`).join('')}`);
+  $('#sheet').onclick = e => {
+    if(e.target.closest('[data-sanew]')) return openContact(null, { addr });
+    const b = e.target.closest('[data-sato]'); if(!b) return;
+    const f = S.friends.find(x=>x.id===b.dataset.sato);
+    f.addrs.push({ id:uid(), label:typeLabel(addr), value:addr }); saveFriends(); closeSheet(); render(); updWho();
+    toast('Adresa uložena k: ' + f.name);
+  };
+}
+
+/* kámoši: vyhledávání + skener */
+$('#frSearch').addEventListener('input', e => { S.q = e.target.value; renderFriends() });
+$('#frScan').addEventListener('click', () => openScanner(txt => {
+  const p = parsePayment(txt), v = p.ln && !addrType(p.value) ? p.ln : p.value;
+  if(!addrType(v)) return toast('QR neobsahuje platnou adresu', false);
+  const f = findByAddr(v);
+  if(f){ toast('To je ' + f.name); openContact(f.id) } else openSaveAddr(v);
+}));
+$('#scrim').addEventListener('click', e=>{ if(e.target.id==='scrim') closeSheet() });
 
 /* odlesk skla podle pohybu */
 document.addEventListener('pointermove', e=>{

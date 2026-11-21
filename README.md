@@ -48,3 +48,16 @@ Trezor Connect potřebuje HTTPS (nebo `localhost`):
 ```
 python3 -m http.server 8080   # ve složce aplikace, pak http://localhost:8080/
 ```
+
+## Kontakty
+- kontakt může mít víc adres (Lightning, bitcoin…) se štítkem; ★ = výchozí
+- vytvoření z vyhledávání („Vytvořit kontakt Jirka“), z neznámé adresy, nebo po odeslání
+- adresu jde naskenovat nebo přepsat z QR (kamera, nebo obrázek/screenshot od kámoše)
+- čte BIP21 odkazy (`bitcoin:…?amount=…&label=…&lightning=…`) i `lightning:`
+- skenování běží jen v zařízení (BarcodeDetector / přibalený jsQR), nic se nikam neposílá
+
+## Soukromí (plán)
+- nová adresa pro každou platbu (nikdy znovu nepoužívat adresu)
+- nabíjení Kapsy přes swap (např. Boltz) místo přímého převodu, aby se Trezor a Kapsa on-chain nespojily
+- výhledově eCash (Cashu/Fedimint) nebo Ark pro platby kámošům se silným soukromím
+- coin control: vybírat, které mince z Trezoru se utrácejí
