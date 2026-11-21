@@ -19,54 +19,63 @@
 @font-face{font-family:Onest;src:url(fonts/onest-latin-ext-800-normal.woff2) format("woff2");font-weight:800;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:Mono;src:url(fonts/JetBrainsMono_500Medium.woff2) format("woff2");font-weight:500;font-display:swap}
 
-/* Kapsa · Nerez
-   Světlý výchozí vzhled: kartáčovaná nerezová ocel, bílé karty s ocelovou hranou,
-   modrá pro detaily a stav, měď jen pro hlavní akci. Tmavý režim = tmavá ocel. */
+/* Kapsa · Cobalt
+   Světlý (výchozí): hliník a ocel, kobaltová modrá jako jediný akcent.
+   Tmavý: hluboká námořnická modř, skleněné karty s modrou září na hraně.
+   Podpis: karta zůstatku ze žebrovaného skla, přes které prosvítá světelný proud, a graf vývoje se zářícím bodem. */
 :root{
   color-scheme:light;
-  --bg:#E4E8ED;
+  --bg:#E3E6EA;
   --steel-bg:
-    repeating-linear-gradient(0deg,rgba(255,255,255,.22) 0 1px,rgba(15,27,51,.018) 1px 2px,transparent 2px 3px),
-    linear-gradient(115deg,#F5F7FA 0%,#DCE1E8 28%,#F2F4F7 50%,#D4DAE2 74%,#ECEFF3 100%);
-  --surface:#FFFFFF; --surface-2:#F1F3F6;
-  --ink:#0F1B33; --ink-2:#55627A; --ink-3:#8B95A7;
-  --line:rgba(15,27,51,.10);
-  --edge:linear-gradient(160deg,#FFFFFF,rgba(150,162,182,.55) 50%,#FFFFFF);
-  --card-shadow:0 1px 1px rgba(15,27,51,.04),0 12px 26px -16px rgba(15,27,51,.32);
-  --blue:#1D5AD4; --t-blue:rgba(29,90,212,.10);
-  --copper:linear-gradient(180deg,#D3864F 0%,#B56331 55%,#9C5227 100%); --copper-ink:#A9572A; --t-copper:rgba(181,99,49,.12);
-  --accent:#B56331; --accent-ink:#1D5AD4; --on-accent:#FFFFFF;
-  --btc:#1D5AD4; --btc-2:#1D5AD4;
-  --ln:#1D5AD4; --ok:#0B8F63; --bad:#D3344B;
-  --t-ok:#E2F4EC; --t-ln:rgba(29,90,212,.10); --t-btc:rgba(29,90,212,.10); --t-bad:#FCE8EB;
-  --scrim:rgba(15,27,51,.36);
-  --shadow-pop:0 14px 32px -14px rgba(15,27,51,.45);
+    repeating-linear-gradient(0deg,rgba(255,255,255,.2) 0 1px,rgba(11,21,48,.016) 1px 2px,transparent 2px 3px),
+    linear-gradient(180deg,#EFF1F4 0%,#DFE3E8 55%,#D3D8DF 100%);
+  --surface:#FFFFFF; --surface-2:#F0F2F5;
+  --ink:#0B1530; --ink-2:#4C5772; --ink-3:#8790A5;
+  --line:rgba(11,21,48,.10);
+  --edge:linear-gradient(160deg,#FFFFFF,rgba(150,162,182,.5) 50%,#FFFFFF);
+  --card-shadow:0 1px 1px rgba(11,21,48,.04),0 12px 26px -16px rgba(11,21,48,.3);
+  --blue:#2141D8; --t-blue:rgba(33,65,216,.10);
+  --cta:linear-gradient(180deg,#3B5CF2 0%,#2141D8 55%,#1A33B8 100%); --cta-shadow:0 12px 24px -12px rgba(33,65,216,.7);
+  --accent:#2141D8; --accent-ink:#2141D8; --on-accent:#FFFFFF;
+  --btc:#2141D8; --btc-2:#2141D8; --ln:#2141D8; --ok:#0B8F63; --bad:#D3344B;
+  --t-ok:#E2F4EC; --t-ln:rgba(33,65,216,.10); --t-btc:rgba(33,65,216,.10); --t-bad:#FCE8EB;
+  --t-steel:rgba(11,21,48,.06); --steel-ink:#4C5772;
+  --scrim:rgba(11,21,48,.36);
+  --shadow-pop:0 14px 32px -14px rgba(11,21,48,.45);
   --nav-bg:rgba(255,255,255,.88);
-  --scan-bg:linear-gradient(180deg,#FFFFFF 0%,#DDE2E9 55%,#C4CCD7 100%); --scan-ink:#0F1B33;
+  --scan-bg:linear-gradient(180deg,#3B5CF2,#1A33B8); --scan-ink:#FFFFFF; --scan-glow:0 10px 24px -8px rgba(33,65,216,.65);
+  --hero-bg:linear-gradient(160deg,#F6F8FA 0%,#DCE1E8 45%,#BCC5D2 100%);
+  --glow-1:rgba(36,72,232,.62); --glow-2:rgba(255,255,255,.85);
+  --flute-a:.32; --flute-b:.05; --hero-rim:rgba(255,255,255,.8);
+  --hero-ink:#0B1530; --hero-ink-2:#46526D; --hero-ink-3:rgba(11,21,48,.22);
+  --spark:#2141D8; --hero-shadow:0 22px 44px -26px rgba(11,21,48,.55),0 1px 0 rgba(255,255,255,.9) inset;
   --r:20px;
   --font:Onest,system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#0A0F18;
-  --steel-bg:
-    repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,rgba(0,0,0,.05) 1px 2px,transparent 2px 3px),
-    linear-gradient(115deg,#141C2A 0%,#0B111B 30%,#151E2D 52%,#0A0F18 76%,#111927 100%);
-  --surface:#131C2B; --surface-2:#1A2537;
-  --ink:#E8EDF5; --ink-2:#9BA7BB; --ink-3:#5F6B80;
-  --line:rgba(160,180,210,.13);
-  --edge:linear-gradient(160deg,rgba(215,226,242,.38),rgba(160,180,210,.06) 48%,rgba(215,226,242,.18));
-  --card-shadow:0 18px 36px -22px rgba(0,0,0,.9);
-  --blue:#77A5FF; --t-blue:rgba(119,165,255,.14);
-  --copper:linear-gradient(180deg,#DA9363 0%,#B8693A 55%,#9A532A 100%); --copper-ink:#E39A68; --t-copper:rgba(218,147,99,.14);
-  --accent:#C9773F; --accent-ink:#77A5FF; --on-accent:#FFFFFF;
-  --btc:#77A5FF; --btc-2:#77A5FF;
-  --ln:#77A5FF; --ok:#45D49F; --bad:#FF6E80;
-  --t-ok:rgba(69,212,159,.13); --t-ln:rgba(119,165,255,.14); --t-btc:rgba(119,165,255,.14); --t-bad:rgba(255,110,128,.13);
-  --scrim:rgba(2,5,12,.62);
+  --bg:#03060F;
+  --steel-bg:radial-gradient(120% 60% at 50% -10%,#0F2150 0%,#060C1D 52%,#03060F 100%);
+  --surface:rgba(12,20,42,.88); --surface-2:#111C36;
+  --ink:#EEF2FF; --ink-2:#93A3C6; --ink-3:#56648A;
+  --line:rgba(120,150,230,.14);
+  --edge:linear-gradient(160deg,rgba(150,180,255,.35),rgba(120,150,230,.05) 45%,rgba(90,140,255,.4));
+  --card-shadow:0 18px 40px -22px rgba(0,0,0,.95),inset 0 -1px 0 rgba(90,140,255,.28);
+  --blue:#7AA2FF; --t-blue:rgba(122,162,255,.14);
+  --cta:linear-gradient(180deg,#4A6DFF 0%,#2B4BE6 55%,#2141D8 100%); --cta-shadow:0 0 0 1px rgba(140,170,255,.35) inset,0 14px 30px -10px rgba(50,100,255,.75);
+  --accent:#4A6DFF; --accent-ink:#7AA2FF; --on-accent:#FFFFFF;
+  --btc:#7AA2FF; --btc-2:#7AA2FF; --ln:#7AA2FF; --ok:#45D49F; --bad:#FF6E80;
+  --t-ok:rgba(69,212,159,.13); --t-ln:rgba(122,162,255,.14); --t-btc:rgba(122,162,255,.14); --t-bad:rgba(255,110,128,.13);
+  --t-steel:rgba(200,215,255,.07); --steel-ink:#B9C6E4;
+  --scrim:rgba(2,4,10,.66);
   --shadow-pop:0 14px 32px -14px rgba(0,0,0,.9);
-  --nav-bg:rgba(15,22,35,.9);
-  --scan-bg:linear-gradient(180deg,#34415C 0%,#1E2940 60%,#141C2E 100%); --scan-ink:#E8EDF5;
+  --nav-bg:rgba(5,10,24,.9);
+  --scan-bg:linear-gradient(180deg,#4A6DFF,#2141D8); --scan-ink:#FFFFFF; --scan-glow:0 0 28px -4px rgba(60,110,255,.85);
+  --hero-bg:linear-gradient(180deg,#0B1636 0%,#060C1F 58%,#081330 100%);
+  --glow-1:rgba(40,115,255,.85); --glow-2:rgba(30,85,255,.65);
+  --flute-a:.08; --flute-b:.4; --hero-rim:rgba(120,160,255,.28);
+  --hero-ink:#F2F5FF; --hero-ink-2:#9DB0D8; --hero-ink-3:rgba(200,215,255,.28);
+  --spark:#7DADFF; --hero-shadow:0 34px 60px -34px rgba(30,90,255,.75),inset 0 -2px 0 rgba(100,150,255,.75);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -296,68 +305,87 @@ body[data-view="send"] .app,body[data-view="receive"] .app,body[data-view="topup
 .amt-row::before{content:"";width:56px;flex:none}
 .amt-row .unit-btn{width:56px;padding:6px 0}
 
-/* ---------- Nerez: ocel, bílá, modrá, měď ---------- */
+/* ---------- Cobalt: ocel, sklo, kobalt ---------- */
 html{background:var(--bg)}
 body{background:var(--steel-bg);background-attachment:fixed}
 .ice,.aura,.grain{display:none}
 .app{position:relative;z-index:1}
-.logo .word{font-weight:800;color:var(--ink);letter-spacing:-.035em;font-size:20px}
-.net{color:var(--blue);background:transparent;box-shadow:inset 0 0 0 1px var(--blue);font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.9}
-.label,.sec,.card h3{text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:700;color:var(--ink-3)}
-.sec button,.link{text-transform:none;letter-spacing:0;font-size:13px;font-weight:700;color:var(--blue)}
-.big{font-weight:800;font-size:54px;letter-spacing:-.05em;color:var(--ink)}
-.big small{font-weight:600;color:var(--ink-3);letter-spacing:-.01em}
-.vhead h2{font-weight:800;letter-spacing:-.02em}
-/* bílé karty s ocelovou hranou */
-.group,.card{position:relative;background:var(--surface);box-shadow:var(--card-shadow)}
+.logo .word{font-weight:700;color:var(--ink);letter-spacing:-.03em;font-size:20px}
+.net{color:var(--blue);background:transparent;box-shadow:inset 0 0 0 1px var(--blue);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.label,.sec,.card h3{text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:600;color:var(--ink-3)}
+.sec button,.link{text-transform:none;letter-spacing:0;font-size:13px;font-weight:600;color:var(--blue)}
+.vhead h2{font-weight:600;letter-spacing:-.01em}
+/* karta zůstatku: žebrované sklo + světelný proud */
+.hero{position:relative;overflow:hidden;isolation:isolate;border-radius:28px;padding:18px 20px 16px;text-align:left;margin-top:8px!important;
+  background:var(--hero-bg);box-shadow:var(--hero-shadow)}
+.hero::before{content:"";position:absolute;inset:-25%;z-index:-2;pointer-events:none;
+  background:radial-gradient(28% 55% at 80% 42%,var(--glow-1),transparent 70%),radial-gradient(70% 30% at 40% 108%,var(--glow-2),transparent 70%);filter:blur(12px)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,var(--flute-a)) 0 1px,transparent 1px 13px,rgba(0,0,0,var(--flute-b)) 13px 14px,transparent 14px 26px);
+  box-shadow:inset 0 0 0 1px var(--hero-rim)}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.opill{display:inline-block;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:500;color:var(--hero-ink);box-shadow:inset 0 0 0 1px var(--hero-ink-3)}
+.hero .unitsw{margin-top:0;background:transparent;box-shadow:inset 0 0 0 1px var(--hero-ink-3)}
+.hero .unitsw button{color:var(--hero-ink-2)}
+.hero .unitsw button.on{background:var(--hero-ink);color:var(--surface);box-shadow:none}
+:root[data-theme="dark"] .hero .unitsw button.on{color:#060C1F}
+.hero .big{text-align:left;font-weight:500;font-size:52px;letter-spacing:-.045em;color:var(--hero-ink);margin:18px 0 2px}
+.hero .big small{font-weight:400;color:var(--hero-ink-2)}
+.hero .fiat{color:var(--hero-ink-2)}
+.spark{display:block;width:100%;height:64px;margin-top:12px;color:var(--spark);overflow:visible}
+.hero-foot{display:flex;align-items:center;gap:12px;margin-top:10px;font-size:12px;color:var(--hero-ink-2)}
+.hero-foot i{flex:1;height:1px;background:var(--hero-ink-3)}
+/* ostatní plochy */
+.group,.card{position:relative;background:var(--surface);box-shadow:var(--card-shadow);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 .group::before,.card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:var(--edge);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 .group > *,.card > *{position:relative}
 .strip{padding:12px}
-/* měď = hlavní akce, ostatní tlačítka ocel/bílá */
-.btn.primary{background:var(--copper);color:var(--on-accent);font-weight:700;box-shadow:0 10px 22px -12px rgba(156,82,39,.75),inset 0 1px 0 rgba(255,225,200,.45),inset 0 0 0 1px rgba(120,60,25,.25)}
-.btn.ghost{background:var(--surface);color:var(--ink);font-weight:700;box-shadow:var(--card-shadow),inset 0 0 0 1px var(--line)}
-.chipb,.pill,.unit-btn{background:var(--surface-2);color:var(--blue);font-weight:700}
+.btn.primary{background:var(--cta);color:var(--on-accent);font-weight:600;box-shadow:var(--cta-shadow),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn.ghost{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:var(--card-shadow),inset 0 0 0 1px var(--line)}
+.chipb,.pill,.unit-btn{background:var(--surface-2);color:var(--blue);font-weight:600}
 .unitsw,.seg{background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
-.unitsw button.on,.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(15,27,51,.12),0 4px 10px -6px rgba(15,27,51,.25)}
+.unitsw button.on,.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(11,21,48,.12),0 4px 10px -6px rgba(11,21,48,.25)}
+:root[data-theme="dark"] .seg button.on{background:#1B2950}
 .inp{background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
 .inp:focus{box-shadow:0 0 0 2px var(--blue)}
 .amount-inp,.amount-inp:focus{background:transparent!important;box-shadow:none!important}
-.ic.vault{background:var(--t-copper);color:var(--copper-ink)}
+.amount-inp{font-weight:500}
+.ic.vault{background:var(--t-steel);color:var(--steel-ink)}
 .ic.ln{background:var(--t-blue);color:var(--blue)}
 .tag{background:var(--t-blue);color:var(--blue)}
 .who button{color:var(--blue)}
 .chunks span.k{background:var(--t-blue);color:var(--blue)}
 .qr{box-shadow:0 0 0 1px var(--line),var(--card-shadow)}
 .gear,.back{color:var(--ink)}
-/* lišta: bílá/tmavá s ocelovým tlačítkem skenování */
 nav.tabs{background:var(--nav-bg);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);box-shadow:0 -1px 0 var(--line)}
 nav.tabs button{color:var(--ink-3)}
 nav.tabs button.on{color:var(--blue)}
-nav.tabs .scanb{background:var(--scan-bg);color:var(--scan-ink);box-shadow:0 10px 24px -10px rgba(15,27,51,.5),inset 0 1px 0 rgba(255,255,255,.9),inset 0 -2px 3px rgba(15,27,51,.18),0 0 0 1px var(--line)}
-.toast{background:var(--ink);color:var(--surface)}
-.sheet{background:var(--surface)}
+nav.tabs .scanb{background:var(--scan-bg);color:var(--scan-ink);box-shadow:var(--scan-glow),inset 0 1px 0 rgba(255,255,255,.35)}
+.toast{background:var(--ink);color:var(--bg)}
+.sheet{background:var(--surface);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+:root[data-theme="dark"] .sheet{background:#0A1430}
 .scan-ui{background:var(--surface);color:var(--ink)}
 .lock{background:var(--steel-bg)}
 .lock .box{background:var(--surface);border-radius:24px;padding:28px 20px;box-shadow:var(--card-shadow)}
-.pad button{background:var(--surface-2);color:var(--ink);font-weight:600;box-shadow:inset 0 0 0 1px var(--line)}
+.pad button{background:var(--surface-2);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--line)}
 .pad button:active{background:var(--t-blue)}
 .pad button.ghost{background:none;box-shadow:none}
-.dots i.f{background:var(--blue)}
-.av[style*="--h"]{background:hsl(var(--h) 55% 92%)}
-:root[data-theme="dark"] .av[style*="--h"]{background:hsl(var(--h) 25% 22%)}
+.dots i.f{background:var(--blue);box-shadow:0 0 10px var(--t-blue)}
+.av[style*="--h"]{background:hsl(var(--h) 45% 92%)}
+:root[data-theme="dark"] .av[style*="--h"]{background:hsl(var(--h) 30% 20%)}
 @media (max-width:360px){ .big{font-size:40px} .pad{grid-template-columns:repeat(3,68px);gap:12px 18px} .pad button{width:68px;height:68px} }
 @media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none!important;transition:none!important} }
 </style>
 </head>
 <body data-view="home">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="kapsaGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F6F9"/><stop offset="1" stop-color="#8F9AAD"/></linearGradient></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="kapsaGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F6EF7"/><stop offset="1" stop-color="#1A33B8"/></linearGradient></defs></svg>
 <div class="aura"><i></i><i></i><i></i></div>
 <div class="grain"></div>
 
 <main class="app">
   <header class="top">
-    <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#C2733F"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#FFFFFF" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#0F1B33" stroke-opacity=".45" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><button type="button" class="net" id="netBadge" hidden title="Co je beta?">TESTNET</button></div>
+    <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#DCE1E8"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#1A33B8" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><button type="button" class="net" id="netBadge" hidden title="Co je beta?">TESTNET</button></div>
     <div class="top-right">
       <button class="gear glass" data-go="settings" title="Nastavení" aria-label="Nastavení"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </div>
@@ -365,11 +393,15 @@ nav.tabs .scanb{background:var(--scan-bg);color:var(--scan-ink);box-shadow:0 10p
 
   <!-- PŘEHLED -->
   <section class="view on" id="v-home">
-    <div class="balance">
-      <div class="label">Zůstatek</div>
+    <div class="balance hero">
+      <div class="hero-top">
+        <span class="opill">Zůstatek</span>
+        <div class="unitsw" id="unitSw" role="group" aria-label="Jednotka"><button data-u="sats">sats</button><button data-u="btc">BTC</button></div>
+      </div>
       <div class="big" id="total" title="Klepni pro přepnutí sats / BTC">0</div>
       <div class="fiat" id="totalFiat">—</div>
-      <div class="unitsw" id="unitSw" role="group" aria-label="Jednotka"><button data-u="sats">sats</button><button data-u="btc">BTC</button></div>
+      <svg class="spark" id="spark" viewBox="0 0 320 64" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="hero-foot"><span>Klíče jen u tebe</span><i></i></div>
     </div>
     <div class="cta">
       <button class="btn primary" data-go="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>Poslat</button>
@@ -510,7 +542,7 @@ nav.tabs .scanb{background:var(--scan-bg);color:var(--scan-ink);box-shadow:0 10p
 <div class="lock" id="lock">
   <div class="aura"><i></i><i></i><i></i></div>
   <div class="box glass">
-    <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#C2733F"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#FFFFFF" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#0F1B33" stroke-opacity=".45" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><span class="net" hidden>TESTNET</span></div>
+    <div class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="9.5" r="6.5" fill="#DCE1E8"/><text x="16" y="12.6" text-anchor="middle" font-size="8.6" font-weight="700" fill="#1A33B8" font-family="Onest,system-ui,sans-serif">₿</text><path d="M5 12h22v6.8C27 24.5 22.1 29 16 29S5 24.5 5 18.8z" fill="url(#kapsaGrad)"/><path d="M8.6 15h14.8v3.9c0 3.9-3.3 6.9-7.4 6.9s-7.4-3-7.4-6.9z" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.3" stroke-dasharray="1.8 2" stroke-linecap="round"/></svg><span class="word">kapsa</span><span class="net" hidden>TESTNET</span></div>
     <p class="hint" style="margin:0 0 16px">Zadej svůj kód</p>
     <div id="lockPad"></div>
     <p class="hint" id="lockMsg" style="min-height:18px"></p>
@@ -884,8 +916,32 @@ function render(){
       <div class="v ${t.dir==='in'?'in':''}">${t.dir==='in'?'+':'−'}${fmt(t.amount)}<br><em>${czk(t.amount)}</em></div>
     </div>`).join('') : '<div class="empty">Zatím žádné pohyby. Připoj Trezor nebo nabij Kapsu.</div>';
 
+  renderSpark(total);
   renderReceive();
   $('#myLn').textContent = store.get('myLn','tomas@kapsa.btc');
+}
+
+/* graf vývoje zůstatku: zpětně z pohybů od aktuálního stavu */
+function renderSpark(total){
+  const el = $('#spark'); if(!el) return;
+  const txs = [...S.ln.txs, ...(S.trezor?.txs || [])].sort((a,b) => b.time - a.time).slice(0, 24);
+  const vals = [total]; let b = total;
+  for(const t of txs){ b -= t.dir === 'in' ? t.amount : -t.amount; vals.unshift(Math.max(0, b)) }
+  if(vals.length < 2) vals.unshift(total);
+  const W = 320, H = 64, pad = 6, max = Math.max(...vals), min = Math.min(...vals), span = (max - min) || 1;
+  const pts = vals.map((v, i) => [i * W / (vals.length - 1), H - pad - (v - min) / span * (H - pad * 2)]);
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for(let i = 1; i < pts.length; i++){                 // hladká křivka
+    const [x0, y0] = pts[i-1], [x1, y1] = pts[i], cx = (x0 + x1) / 2;
+    d += ` C${cx},${y0} ${cx},${y1} ${x1},${y1}`;
+  }
+  const [ex, ey] = pts[pts.length - 1];
+  el.innerHTML = `<defs><linearGradient id="spf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".28"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient>
+    <filter id="spg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+    <path d="${d} L${W},${H} L0,${H} Z" fill="url(#spf)"/>
+    <path d="${d}" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round"/>
+    <circle cx="${ex}" cy="${ey}" r="7" fill="currentColor" opacity=".45" filter="url(#spg)"/>
+    <circle cx="${ex}" cy="${ey}" r="3.5" fill="currentColor"/>`;
 }
 
 function renderFriends(){
@@ -1319,7 +1375,7 @@ const darkMQ = matchMedia('(prefers-color-scheme: dark)');
 function applyTheme(t){
   const r = t === 'system' ? (darkMQ.matches ? 'dark' : 'light') : (t === 'dark' ? 'dark' : 'light');
   document.documentElement.dataset.theme = r;
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', r === 'dark' ? '#0A0F18' : '#E4E8ED');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', r === 'dark' ? '#03060F' : '#E3E6EA');
   $$('#themeSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === t));
 }
 applyTheme(store.get('theme', 'light'));
