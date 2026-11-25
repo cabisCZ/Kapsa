@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="editor.css">
 </head>
 <body>
-<header>
+<header class="bar">
   <div class="brand">
-    <span class="logo"><img src="brand/logo.svg" alt=""></span>
+    <span class="app-ico"><img src="brand/logo.svg" alt=""></span>
     <b>Napovídač</b>
   </div>
   <div id="live" class="live">
@@ -18,99 +18,134 @@
     <span class="meter"><i id="meterFill"></i><b id="meterThr"></b></span>
   </div>
   <div class="actions">
-    <button id="hRestart" class="btn ghost" title="Ctrl+Alt+Home">Od začátku</button>
-    <button id="hShow" class="btn ghost" title="Ctrl+Alt+H">Zobrazit / skrýt</button>
-    <button id="hPlay" class="btn primary" title="Ctrl+Alt+Mezerník"><span id="hPlayText">Spustit</span></button>
+    <button id="hRestart" class="cap" title="Ctrl+Alt+Home">
+      <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg>Od začátku
+    </button>
+    <button id="hShow" class="cap" title="Ctrl+Alt+H">
+      <svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Zobrazit
+    </button>
+    <button id="hPlay" class="cap primary" title="Ctrl+Alt+Mezerník">
+      <svg class="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg><span id="hPlayText">Spustit</span>
+    </button>
   </div>
 </header>
 
 <main>
-  <aside class="cues">
-    <h3>Sekce</h3>
-    <ol id="cueList"></ol>
-    <p class="hint">Řádek začínající <code>#</code> je nová sekce. Mezi sekcemi skáčete <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>←</kbd><kbd>→</kbd>.</p>
-    <p class="hint"><code>[poznámka]</code> se zobrazí šedě, <code>**důraz**</code> tučně.</p>
+  <aside class="sidebar">
+    <h4>Sekce</h4>
+    <ol id="cueList" class="nav"></ol>
+    <p class="note">Řádek začínající <code>#</code> je nová sekce. Mezi sekcemi skáčete <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>←</kbd><kbd>→</kbd>.</p>
+    <p class="note"><code>[poznámka]</code> se zobrazí šedě, <code>**důraz**</code> tučně.</p>
   </aside>
 
   <section class="editor">
-    <textarea id="script" spellcheck="true" placeholder="# Úvod&#10;Sem napište text, který chcete říct…"></textarea>
-    <div class="foot"><span id="stats"></span><span id="saved">Uloženo</span></div>
+    <div class="sheet">
+      <textarea id="script" spellcheck="true" placeholder="# Úvod&#10;Sem napište text, který chcete říct…"></textarea>
+      <div class="foot"><span id="stats"></span><span id="saved">Uloženo</span></div>
+    </div>
   </section>
 
   <aside class="settings">
-    <div class="group">
-      <h3>Posouvání</h3>
-      <div class="seg" data-key="mode">
-        <button data-v="voice">Hlasem</button><button data-v="constant">Plynule</button><button data-v="manual">Ručně</button>
+    <div class="sec">
+      <h4>Posouvání</h4>
+      <div class="list">
+        <div class="cell"><div class="seg" data-key="mode">
+          <button data-v="voice">Hlasem</button><button data-v="constant">Plynule</button><button data-v="manual">Ručně</button>
+        </div></div>
+        <div class="cell col">
+          <div class="kv"><span>Rychlost</span><output data-out="speed"></output></div>
+          <input type="range" data-key="speed" min="5" max="200" step="1">
+        </div>
+        <div class="cell col">
+          <div class="kv"><span>Odpočet před startem</span><output data-out="countdown" data-suffix=" s"></output></div>
+          <input type="range" data-key="countdown" min="0" max="5" step="1">
+        </div>
+        <label class="cell"><span>Pauza po najetí myší</span><input type="checkbox" class="switch" data-key="hoverPause"></label>
       </div>
-      <p class="hint" id="modeHint"></p>
-      <label class="row"><span>Rychlost</span><output data-out="speed"></output></label>
-      <input type="range" data-key="speed" min="5" max="200" step="1">
-      <label class="row"><span>Odpočet před startem</span><output data-out="countdown" data-suffix=" s"></output></label>
-      <input type="range" data-key="countdown" min="0" max="5" step="1">
-      <label class="toggle"><input type="checkbox" data-key="hoverPause"><span>Pauza, když na text najedu myší</span></label>
+      <p class="foot-note" id="modeHint"></p>
     </div>
 
-    <div class="group" id="voiceGroup">
-      <h3>Hlas</h3>
-      <label class="row"><span>Mikrofon</span></label>
-      <select id="mic" data-key="micDeviceId"><option value="">Výchozí mikrofon</option></select>
-      <label class="row"><span>Citlivost</span><output data-out="sensitivity" data-suffix=" %"></output></label>
-      <input type="range" data-key="sensitivity" min="0" max="100" step="1">
-      <p class="hint">Mluvte normálně: modrý pruh nahoře musí přeskočit bílou značku. Když se text rozjíždí sám od šumu, citlivost snižte.</p>
-      <label class="row"><span>Zastavit po odmlce</span><output data-out="holdMs" data-suffix=" ms"></output></label>
-      <input type="range" data-key="holdMs" min="250" max="2500" step="50">
-      <label class="toggle"><input type="checkbox" data-key="useSystemAudio"><span>Nereagovat na druhou stranu hovoru</span></label>
-      <p class="hint" id="sysHint"></p>
-    </div>
-
-    <div class="group">
-      <h3>Vzhled</h3>
-      <div class="seg" data-key="layout">
-        <button data-v="notch">Pod kamerou</button><button data-v="float">Plovoucí okno</button>
+    <div class="sec" id="voiceGroup">
+      <h4>Hlas</h4>
+      <div class="list">
+        <label class="cell"><span>Mikrofon</span><select id="mic" data-key="micDeviceId"><option value="">Výchozí</option></select></label>
+        <div class="cell col">
+          <div class="kv"><span>Citlivost</span><output data-out="sensitivity" data-suffix=" %"></output></div>
+          <input type="range" data-key="sensitivity" min="0" max="100" step="1">
+        </div>
+        <div class="cell col">
+          <div class="kv"><span>Zastavit po odmlce</span><output data-out="holdMs" data-suffix=" ms"></output></div>
+          <input type="range" data-key="holdMs" min="250" max="2500" step="50">
+        </div>
+        <label class="cell"><span>Nereagovat na druhou stranu</span><input type="checkbox" class="switch" data-key="useSystemAudio"></label>
       </div>
-      <label class="row"><span>Velikost písma</span><output data-out="fontSize" data-suffix=" px"></output></label>
-      <input type="range" data-key="fontSize" min="14" max="80" step="1">
-      <label class="row"><span>Řádkování</span><output data-out="lineHeight"></output></label>
-      <input type="range" data-key="lineHeight" min="1" max="2" step="0.05">
-      <label class="row"><span>Šířka</span><output data-out="width" data-suffix=" px"></output></label>
-      <input type="range" data-key="width" min="320" max="1600" step="10">
-      <label class="row"><span>Výška</span><output data-out="height" data-suffix=" px"></output></label>
-      <input type="range" data-key="height" min="90" max="900" step="5">
-      <label class="row"><span>Krytí pozadí</span><output data-out="opacity" data-pct></output></label>
-      <input type="range" data-key="opacity" min="0.4" max="1" step="0.01">
-      <label class="row"><span>Barva textu</span></label>
-      <div class="swatches" id="colors"></div>
-      <div class="seg small" data-key="align">
-        <button data-v="left">Vlevo</button><button data-v="center">Na střed</button>
+      <p class="foot-note">Mluvte normálně: pruh nahoře musí přeskočit bílou značku. Když text jede sám od šumu, citlivost snižte.</p>
+      <p class="foot-note" id="sysHint"></p>
+    </div>
+
+    <div class="sec">
+      <h4>Vzhled</h4>
+      <div class="list">
+        <div class="cell"><div class="seg" data-key="layout">
+          <button data-v="notch">Pod kamerou</button><button data-v="float">Plovoucí okno</button>
+        </div></div>
+        <div class="cell col">
+          <div class="kv"><span>Velikost písma</span><output data-out="fontSize" data-suffix=" px"></output></div>
+          <input type="range" data-key="fontSize" min="14" max="80" step="1">
+        </div>
+        <div class="cell col">
+          <div class="kv"><span>Řádkování</span><output data-out="lineHeight"></output></div>
+          <input type="range" data-key="lineHeight" min="1" max="2" step="0.05">
+        </div>
+        <div class="cell col">
+          <div class="kv"><span>Šířka</span><output data-out="width" data-suffix=" px"></output></div>
+          <input type="range" data-key="width" min="320" max="1600" step="10">
+        </div>
+        <div class="cell col">
+          <div class="kv"><span>Výška</span><output data-out="height" data-suffix=" px"></output></div>
+          <input type="range" data-key="height" min="90" max="900" step="5">
+        </div>
+        <div class="cell col">
+          <div class="kv"><span>Krytí pozadí</span><output data-out="opacity" data-pct></output></div>
+          <input type="range" data-key="opacity" min="0.4" max="1" step="0.01">
+        </div>
+        <div class="cell"><span>Barva textu</span><div class="swatches" id="colors"></div></div>
+        <div class="cell"><div class="seg" data-key="align">
+          <button data-v="left">Vlevo</button><button data-v="center">Na střed</button>
+        </div></div>
+        <label class="cell"><span>Zrcadlit</span><input type="checkbox" class="switch" data-key="mirror"></label>
       </div>
-      <label class="toggle"><input type="checkbox" data-key="mirror"><span>Zrcadlit (pro skleněný teleprompter)</span></label>
+      <p class="foot-note">Zrcadlení se hodí pro skleněný teleprompter před kamerou.</p>
     </div>
 
-    <div class="group">
-      <h3>Soukromí</h3>
-      <label class="toggle"><input type="checkbox" data-key="hideFromCapture"><span>Skrýt napovídač při sdílení obrazovky a na screenshotech</span></label>
-      <label class="toggle"><input type="checkbox" data-key="hideEditorFromCapture"><span>Skrýt i toto okno editoru</span></label>
-      <p class="hint">Funguje v Teams, Zoomu, Meetu i při nahrávání (Windows 10 verze 2004 a novější, Windows 11). Vy text vidíte, ostatní ne.</p>
+    <div class="sec">
+      <h4>Soukromí</h4>
+      <div class="list">
+        <label class="cell"><span>Skrýt při sdílení obrazovky</span><input type="checkbox" class="switch" data-key="hideFromCapture"></label>
+        <label class="cell"><span>Skrýt i editor</span><input type="checkbox" class="switch" data-key="hideEditorFromCapture"></label>
+      </div>
+      <p class="foot-note">Funguje v Teams, Zoomu, Meetu, při nahrávání i na screenshotech (Windows 10 verze 2004 a novější, Windows 11). Vy text vidíte, ostatní ne.</p>
     </div>
 
-    <div class="group">
-      <h3>Ovladač v iPhonu</h3>
-      <label class="toggle"><input type="checkbox" data-key="remoteEnabled"><span>Ovládat z telefonu přes Wi-Fi</span></label>
+    <div class="sec">
+      <h4>Ovladač v iPhonu</h4>
+      <div class="list">
+        <label class="cell"><span>Ovládat z telefonu přes Wi-Fi</span><input type="checkbox" class="switch" data-key="remoteEnabled"></label>
+      </div>
       <div id="remoteBox" class="remote"></div>
     </div>
 
-    <div class="group">
-      <h3>Klávesové zkratky</h3>
-      <dl class="keys">
-        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Mezerník</kbd></dt><dd>Spustit / pauza</dd>
-        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>↑</kbd><kbd>↓</kbd></dt><dd>Rychlost</dd>
-        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>←</kbd><kbd>→</kbd></dt><dd>Předchozí / další sekce</dd>
-        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Home</kbd></dt><dd>Od začátku</dd>
-        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>H</kbd></dt><dd>Zobrazit / skrýt</dd>
-        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>E</kbd></dt><dd>Tento editor</dd>
-        <dt>Kolečko myši</dt><dd>Posun textu ručně</dd>
-      </dl>
+    <div class="sec">
+      <h4>Klávesové zkratky</h4>
+      <div class="list keys">
+        <div class="cell"><span>Spustit / pauza</span><span><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Mezerník</kbd></span></div>
+        <div class="cell"><span>Rychlost</span><span><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>↑</kbd><kbd>↓</kbd></span></div>
+        <div class="cell"><span>Sekce</span><span><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>←</kbd><kbd>→</kbd></span></div>
+        <div class="cell"><span>Od začátku</span><span><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Home</kbd></span></div>
+        <div class="cell"><span>Zobrazit / skrýt</span><span><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>H</kbd></span></div>
+        <div class="cell"><span>Editor</span><span><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>E</kbd></span></div>
+        <div class="cell"><span>Ruční posun</span><span class="muted">kolečko myši</span></div>
+      </div>
     </div>
   </aside>
 </main>

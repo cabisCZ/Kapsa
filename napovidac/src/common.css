@@ -8,23 +8,36 @@
 @font-face { font-family: Onest; font-weight: 800; src: url(fonts/onest-latin-800-normal.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2212; }
 
 :root {
-  --bg: #040820;
-  --panel: rgba(16, 28, 84, .42);
-  --panel-2: rgba(40, 64, 170, .28);
-  --line: rgba(150, 180, 255, .16);
-  --text: #f2f5ff;
-  --muted: #93a2d6;
-  --me: #5b8cff;        /* modrá z loga */
-  --me-2: #2a5cff;
-  --glow: #e9e4ff;      /* světlá záře z vlnek */
-  --accent: #f28bd9;    /* akcent: růžovo-fialový odlesk z vlnek */
-  --accent-2: #b98cff;
-  --accent-ink: #2a0b45;
-  --accent-grad: linear-gradient(135deg, #ffb0e4 0%, #f28bd9 45%, #b98cff 100%);
-  --accent-grad-h: linear-gradient(135deg, #ffc4ec 0%, #f7a0e2 45%, #c9a4ff 100%);
-  --other: #ffc46b;     /* jantarová = mluví druhá strana */
-  --ok: #5ef0b0;
+  /* Paleta z předlohy: noc → půlnoc → královská → led */
+  --c-night: #050614;
+  --c-ink: #0a0f2b;
+  --c-navy: #0d1b4f;
+  --c-deep: #12276b;
+  --c-cobalt: #183594;
+  --c-royal: #1f47bc;
+  --c-blue: #3061e0;
+  --c-sky: #5b86ea;
+  --c-ice: #a9c4f5;
+  --c-frost: #e6eeff;
+
+  --bg: var(--c-night);
+  --text: #ffffff;
+  --muted: rgba(235, 240, 255, .6);        /* iOS secondaryLabel */
+  --hair: rgba(200, 215, 255, .14);        /* iOS separator */
+  --fill: rgba(150, 175, 255, .16);        /* iOS tertiary fill */
+  --material: rgba(10, 18, 52, .55);       /* „ultra thin material“ */
+  --material-2: rgba(18, 32, 90, .5);
+
+  --me: var(--c-blue);
+  --me-2: var(--c-royal);
+  --glow: var(--c-frost);
+  --accent: #ffffff;                       /* hlavní akce: bílá kapsle s modrým textem */
+  --accent-ink: var(--c-royal);
+  --on: var(--c-blue);                     /* zapnutý přepínač */
+  --other: #ff9f0a;                        /* iOS oranžová = mluví druhá strana */
+  --ok: #30d158;                           /* iOS zelená */
+  --bad: #ff453a;                          /* iOS červená */
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; font-family: Onest, 'Segoe UI', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; font-family: -apple-system, 'SF Pro Text', Onest, 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
 button { font: inherit; color: inherit; }

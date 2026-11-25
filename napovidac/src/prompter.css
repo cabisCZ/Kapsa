@@ -38,7 +38,7 @@ html, body { width: 100%; height: 100%; background: transparent; overflow: hidde
 #text p { margin: 0 0 .55em; text-wrap: pretty; }
 #text .cue {
   margin: .6em 0 .35em; font-size: max(11px, calc(var(--fs) * .38)); font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase; color: #8fb0ff; opacity: .9;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--c-ice); opacity: .9;
 }
 #text .cue:first-child { margin-top: 0; }
 #text .note { color: var(--muted); font-style: italic; font-size: .8em; }
@@ -55,8 +55,8 @@ html, body { width: 100%; height: 100%; background: transparent; overflow: hidde
 #beam i {
   display: block; height: 100%; width: calc(var(--lvl, 0) * 100%); min-width: 0;
   border-radius: 3px;
-  background: linear-gradient(90deg, transparent, var(--me-2), var(--me), var(--glow), var(--me), var(--me-2), transparent);
-  box-shadow: 0 0 12px var(--me), 0 0 28px rgba(91,140,255,.6);
+  background: linear-gradient(90deg, transparent, var(--c-royal), var(--c-blue), var(--c-ice), var(--c-frost), var(--c-ice), var(--c-blue), var(--c-royal), transparent);
+  box-shadow: 0 0 12px var(--c-blue), 0 0 28px rgba(48,97,224,.65);
   transition: width .08s linear, opacity .25s;
   opacity: .25;
 }
@@ -68,7 +68,7 @@ html, body { width: 100%; height: 100%; background: transparent; overflow: hidde
 
 #countdown {
   position: absolute; inset: 0; display: grid; place-items: center;
-  font-size: min(90px, 60vh); font-weight: 800; color: var(--me);
+  font-size: min(90px, 60vh); font-weight: 700; color: #fff;
   background: rgba(0,0,0,.55); opacity: 0; pointer-events: none; transition: opacity .2s;
 }
 #countdown.on { opacity: 1; }
@@ -77,13 +77,13 @@ html, body { width: 100%; height: 100%; background: transparent; overflow: hidde
 #chip {
   position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
   display: flex; align-items: center; gap: 6px; padding: 3px 9px 3px 7px;
-  border-radius: 99px; background: rgba(14,22,60,.9); box-shadow: inset 0 0 0 1px rgba(150,180,255,.14);
+  border-radius: 99px; background: rgba(40,50,90,.72); backdrop-filter: blur(20px) saturate(180%); box-shadow: inset 0 0 0 .5px rgba(230,238,255,.18);
   font-size: 11px; font-weight: 600; color: #cfcfd6; letter-spacing: .02em;
   opacity: 0; transition: opacity .25s; pointer-events: none; white-space: nowrap;
 }
 #chip .dot { width: 7px; height: 7px; border-radius: 50%; background: #666; }
 #shell.paused #chip, #shell.other #chip, #shell.hover #chip, #shell.warn #chip { opacity: 1; }
-#shell.speaking #chip .dot { background: var(--me); box-shadow: 0 0 8px var(--me); }
+#shell.speaking #chip .dot { background: var(--c-ice); box-shadow: 0 0 8px var(--c-ice); }
 #shell.other #chip .dot { background: var(--other); box-shadow: 0 0 8px var(--other); }
 #shell.warn #chip .dot { background: #ff4d4d; }
 
@@ -91,27 +91,27 @@ html, body { width: 100%; height: 100%; background: transparent; overflow: hidde
 #controls {
   position: absolute; left: 50%; bottom: 10px; transform: translate(-50%, 6px);
   display: flex; align-items: center; gap: 2px; padding: 4px;
-  background: rgba(10,16,48,.95); border: 1px solid rgba(150,180,255,.18);
-  border-radius: 14px; opacity: 0; transition: opacity .18s, transform .18s; pointer-events: none;
+  background: rgba(30,40,80,.78); backdrop-filter: blur(30px) saturate(180%); border: 0; box-shadow: inset 0 0 0 .5px rgba(230,238,255,.2), 0 8px 24px rgba(0,0,0,.35);
+  border-radius: 99px; opacity: 0; transition: opacity .18s, transform .18s; pointer-events: none;
   white-space: nowrap;
 }
 #shell.hover #controls { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
-.ico { width: 28px; height: 28px; display: grid; place-items: center; border: 0; background: transparent; border-radius: 9px; cursor: pointer; color: #e8e8ee; }
+.ico { width: 28px; height: 28px; display: grid; place-items: center; border: 0; background: transparent; border-radius: 50%; cursor: pointer; color: #e8e8ee; }
 .ico:hover { background: rgba(255,255,255,.09); }
 .ico svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 #grip svg { fill: currentColor; stroke: none; }
 #grip { display: none; cursor: grab; -webkit-app-region: drag; }
 #shell.float #grip { display: grid; }
-.ico.play { background: var(--accent-grad); color: var(--accent-ink); width: 34px; box-shadow: 0 2px 12px rgba(242,139,217,.45), inset 0 1px 0 rgba(255,255,255,.45); }
-.ico.play:hover { background: var(--accent-grad-h); }
+.ico.play { background: #fff; color: var(--c-royal); width: 30px; height: 30px; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,.3); }
+.ico.play:hover { background: var(--c-frost); }
 .ico.play svg { fill: currentColor; stroke-width: 2.6; }
 .ico.play .i-pause { display: none; fill: none; }
 #shell.playing .ico.play .i-play { display: none; }
 #shell.playing .ico.play .i-pause { display: block; }
 .sep { width: 1px; height: 16px; background: rgba(255,255,255,.1); margin: 0 4px; }
 #speed { min-width: 26px; text-align: center; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: #cfcfd6; }
-.pill { height: 26px; padding: 0 10px; border: 0; border-radius: 8px; background: rgba(255,255,255,.08); font-size: 12px; font-weight: 600; cursor: pointer; }
-.pill:hover { background: rgba(255,255,255,.14); }
+.pill { height: 26px; padding: 0 11px; border: 0; border-radius: 99px; background: rgba(230,238,255,.14); font-size: 12px; font-weight: 600; cursor: pointer; }
+.pill:hover { background: rgba(230,238,255,.22); }
 
 #resize { position: absolute; right: 0; bottom: 0; width: 18px; height: 18px; cursor: nwse-resize; opacity: 0; }
 #shell.hover #resize { opacity: 1; background: linear-gradient(135deg, transparent 55%, rgba(255,255,255,.25) 56%, rgba(255,255,255,.25) 62%, transparent 63%, transparent 72%, rgba(255,255,255,.25) 73%, rgba(255,255,255,.25) 79%, transparent 80%); }

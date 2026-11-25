@@ -1,6 +1,7 @@
 (async function () {
   const $ = id => document.getElementById(id);
-  const COLORS = ['#ffffff', '#dfe7ff', '#a9c1ff', '#fff3c4', '#b8f5c8'];
+  const COLORS = ['#ffffff', '#e6eeff', '#a9c4f5', '#fff3c4', '#b8f5c8'];
+  const fillRange = el => el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100) + '%');
   let state = await api.getState();
   let S = state.settings;
   const ta = $('script');
@@ -35,7 +36,7 @@
   // ---------- Nastavení ----------
   const set = p => api.setState({ settings: p });
   function fill() {
-    document.querySelectorAll('input[type=range][data-key]').forEach(el => { el.value = S[el.dataset.key]; });
+    document.querySelectorAll('input[type=range][data-key]').forEach(el => { el.value = S[el.dataset.key]; fillRange(el); });
     document.querySelectorAll('input[type=checkbox][data-key]').forEach(el => { el.checked = !!S[el.dataset.key]; });
     document.querySelectorAll('.seg[data-key]').forEach(seg => {
       seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === S[seg.dataset.key]));
@@ -54,7 +55,7 @@
     }[S.mode];
   }
   document.querySelectorAll('input[type=range][data-key]').forEach(el => {
-    el.addEventListener('input', () => set({ [el.dataset.key]: +el.value }));
+    el.addEventListener('input', () => { fillRange(el); set({ [el.dataset.key]: +el.value }); });
   });
   document.querySelectorAll('input[type=checkbox][data-key]').forEach(el => {
     el.addEventListener('change', () => set({ [el.dataset.key]: el.checked }));
@@ -69,7 +70,7 @@
   async function listMics() {
     try {
       const devs = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'audioinput' && d.deviceId !== 'default' && d.deviceId !== 'communications');
-      $('mic').innerHTML = '<option value="">Výchozí mikrofon</option>' +
+      $('mic').innerHTML = '<option value="">Výchozí</option>' +
         devs.map((d, i) => `<option value="${d.deviceId}">${(d.label || 'Mikrofon ' + (i + 1)).replace(/</g, '&lt;')}</option>`).join('');
       $('mic').value = S.micDeviceId || '';
     } catch {}
@@ -96,6 +97,7 @@
     $('meterThr').style.left = Math.round((st.threshold || .5) * 100) + '%';
     $('meterThr').style.display = st.mode === 'voice' ? '' : 'none';
     $('hPlayText').textContent = st.playing ? 'Pauza' : 'Spustit';
+    $('hPlay').classList.toggle('playing', !!st.playing);
     if (st.cue !== cueIdx) { cueIdx = st.cue; renderCues(); }
     $('sysHint').innerHTML = !S.useSystemAudio
       ? 'Vypnuto: rozlišení druhé strany jen přes potlačení ozvěny mikrofonu. Doporučeno se sluchátky.'
