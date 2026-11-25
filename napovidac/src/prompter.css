@@ -1,0 +1,118 @@
+html, body { width: 100%; height: 100%; background: transparent; overflow: hidden; user-select: none; }
+
+#shell {
+  --op: .92;
+  --fs: 30px;
+  --lh: 1.35;
+  --color: #fff;
+  --read: 36%;
+  position: absolute; inset: 0 14px 0 14px;
+  background: rgba(0, 0, 0, var(--op));
+  color: var(--color);
+  overflow: hidden;
+  border-radius: 0 0 28px 28px;
+}
+#shell.float { inset: 0; border-radius: 22px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+
+/* „Uši“ jako u výřezu MacBooku: plynulé napojení na horní hranu obrazovky. */
+.ear { position: fixed; top: 0; width: 14px; height: 14px; pointer-events: none; }
+.ear-l { left: 0;  background: radial-gradient(circle at 0 100%, transparent 13.5px, rgba(0,0,0,var(--op)) 14px); }
+.ear-r { right: 0; background: radial-gradient(circle at 100% 100%, transparent 13.5px, rgba(0,0,0,var(--op)) 14px); }
+#shell.float .ear { display: none; }
+
+#viewport {
+  position: absolute; inset: 0 22px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 70%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 70%, transparent 100%);
+}
+#shell.mirror #viewport { transform: scaleX(-1); }
+#text {
+  position: absolute; left: 0; right: 0; top: 0;
+  font-size: var(--fs); line-height: var(--lh); font-weight: 500;
+  letter-spacing: -.005em;
+  text-align: var(--align, center);
+  will-change: transform;
+  padding-bottom: 70vh;
+}
+#text p { margin: 0 0 .55em; text-wrap: pretty; }
+#text .cue {
+  margin: .6em 0 .35em; font-size: max(11px, calc(var(--fs) * .38)); font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--me); opacity: .85;
+}
+#text .cue:first-child { margin-top: 0; }
+#text .note { color: var(--muted); font-style: italic; font-size: .8em; }
+#text b { font-weight: 800; }
+
+/* Jemná značka čtecí linky */
+#reader { position: absolute; left: 6px; right: 6px; top: var(--read); height: 0; pointer-events: none; }
+#reader i, #reader::after { content: ''; position: absolute; top: -5px; width: 0; height: 0; border: 5px solid transparent; }
+#reader i { left: 0; border-left-color: rgba(255,255,255,.35); }
+#reader::after { right: 0; border-right-color: rgba(255,255,255,.35); }
+
+/* Paprsek reagující na hlas */
+#beam { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; display: flex; justify-content: center; pointer-events: none; }
+#beam i {
+  display: block; height: 100%; width: calc(var(--lvl, 0) * 100%); min-width: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, var(--me-2), var(--me), var(--me-2), transparent);
+  box-shadow: 0 0 12px var(--me), 0 0 26px rgba(255,159,28,.55);
+  transition: width .08s linear, opacity .25s;
+  opacity: .25;
+}
+#shell.speaking #beam i { opacity: 1; }
+#shell.other #beam i { background: linear-gradient(90deg, transparent, var(--other), transparent); box-shadow: 0 0 12px var(--other); opacity: .55; width: 34% !important; }
+
+#progress { position: absolute; right: 7px; top: 18%; bottom: 18%; width: 2px; background: rgba(255,255,255,.07); border-radius: 2px; pointer-events: none; }
+#progress i { position: absolute; left: 0; right: 0; top: 0; height: var(--p, 0%); background: rgba(255,255,255,.35); border-radius: 2px; }
+
+#countdown {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: min(90px, 60vh); font-weight: 800; color: var(--me);
+  background: rgba(0,0,0,.55); opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+#countdown.on { opacity: 1; }
+
+/* Stavový štítek */
+#chip {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 6px; padding: 3px 9px 3px 7px;
+  border-radius: 99px; background: rgba(30,30,36,.85);
+  font-size: 11px; font-weight: 600; color: #cfcfd6; letter-spacing: .02em;
+  opacity: 0; transition: opacity .25s; pointer-events: none; white-space: nowrap;
+}
+#chip .dot { width: 7px; height: 7px; border-radius: 50%; background: #666; }
+#shell.paused #chip, #shell.other #chip, #shell.hover #chip, #shell.warn #chip { opacity: 1; }
+#shell.speaking #chip .dot { background: var(--me); box-shadow: 0 0 8px var(--me); }
+#shell.other #chip .dot { background: var(--other); box-shadow: 0 0 8px var(--other); }
+#shell.warn #chip .dot { background: #ff4d4d; }
+
+/* Ovládací lišta – ukáže se po najetí myší */
+#controls {
+  position: absolute; left: 50%; bottom: 10px; transform: translate(-50%, 6px);
+  display: flex; align-items: center; gap: 2px; padding: 4px;
+  background: rgba(24,24,30,.94); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px; opacity: 0; transition: opacity .18s, transform .18s; pointer-events: none;
+  white-space: nowrap;
+}
+#shell.hover #controls { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.ico { width: 28px; height: 28px; display: grid; place-items: center; border: 0; background: transparent; border-radius: 9px; cursor: pointer; color: #e8e8ee; }
+.ico:hover { background: rgba(255,255,255,.09); }
+.ico svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#grip svg { fill: currentColor; stroke: none; }
+#grip { display: none; cursor: grab; -webkit-app-region: drag; }
+#shell.float #grip { display: grid; }
+.ico.play { background: var(--me); color: #1a0d00; width: 34px; }
+.ico.play:hover { background: #ffb24a; }
+.ico.play svg { fill: currentColor; stroke-width: 2.6; }
+.ico.play .i-pause { display: none; fill: none; }
+#shell.playing .ico.play .i-play { display: none; }
+#shell.playing .ico.play .i-pause { display: block; }
+.sep { width: 1px; height: 16px; background: rgba(255,255,255,.1); margin: 0 4px; }
+#speed { min-width: 26px; text-align: center; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: #cfcfd6; }
+.pill { height: 26px; padding: 0 10px; border: 0; border-radius: 8px; background: rgba(255,255,255,.08); font-size: 12px; font-weight: 600; cursor: pointer; }
+.pill:hover { background: rgba(255,255,255,.14); }
+
+#resize { position: absolute; right: 0; bottom: 0; width: 18px; height: 18px; cursor: nwse-resize; opacity: 0; }
+#shell.hover #resize { opacity: 1; background: linear-gradient(135deg, transparent 55%, rgba(255,255,255,.25) 56%, rgba(255,255,255,.25) 62%, transparent 63%, transparent 72%, rgba(255,255,255,.25) 73%, rgba(255,255,255,.25) 79%, transparent 80%); }
+#shell.notch #resize { right: 6px; bottom: 4px; }

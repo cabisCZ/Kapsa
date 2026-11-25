@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'">
+<title>Napovídač</title>
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="prompter.css">
+</head>
+<body>
+<div id="shell" class="notch">
+  <span class="ear ear-l"></span><span class="ear ear-r"></span>
+
+  <div id="viewport">
+    <div id="text"></div>
+  </div>
+  <div id="reader"><i></i></div>
+
+  <div id="beam"><i></i></div>
+  <div id="progress"><i></i></div>
+
+  <div id="countdown"></div>
+
+  <div id="chip"><span class="dot"></span><span id="chipText">Pauza</span></div>
+
+  <div id="controls">
+    <button id="grip" class="ico" title="Přesunout">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
+    </button>
+    <button id="bRestart" class="ico" title="Od začátku (Ctrl+Alt+Home)">
+      <svg viewBox="0 0 24 24"><path d="M4 5v14M20 6 9 12l11 6z"/></svg>
+    </button>
+    <button id="bPrev" class="ico" title="Předchozí sekce (Ctrl+Alt+←)">
+      <svg viewBox="0 0 24 24"><path d="M15 6 9 12l6 6"/></svg>
+    </button>
+    <button id="bPlay" class="ico play" title="Spustit / pauza (Ctrl+Alt+Mezerník)">
+      <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+      <svg class="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></svg>
+    </button>
+    <button id="bNext" class="ico" title="Další sekce (Ctrl+Alt+→)">
+      <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </button>
+    <span class="sep"></span>
+    <button id="bSlow" class="ico" title="Pomaleji (Ctrl+Alt+↓)"><svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
+    <span id="speed">40</span>
+    <button id="bFast" class="ico" title="Rychleji (Ctrl+Alt+↑)"><svg viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></svg></button>
+    <span class="sep"></span>
+    <button id="bMode" class="pill" title="Režim posouvání">Hlas</button>
+    <button id="bEdit" class="ico" title="Editor a nastavení (Ctrl+Alt+E)">
+      <svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>
+    </button>
+    <button id="bHide" class="ico" title="Skrýt (Ctrl+Alt+H)">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
+  <div id="resize" title="Změnit velikost"></div>
+</div>
+<script src="script.js"></script>
+<script src="voice.js"></script>
+<script src="prompter.js"></script>
+</body>
+</html>

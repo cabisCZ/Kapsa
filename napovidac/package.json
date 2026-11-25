@@ -1,0 +1,51 @@
+{
+  "name": "napovidac",
+  "version": "1.0.0",
+  "description": "Teleprompter pro Windows: neviditelný při sdílení obrazovky, posouvá text, jen když mluvíte vy.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable nsis --x64",
+    "dist:zip": "electron-builder --win zip --x64"
+  },
+  "author": "Tomáš Cáb",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "productName": "Napovídač",
+  "private": true,
+  "build": {
+    "appId": "cz.cab.napovidac",
+    "productName": "Napovídač",
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "build/icon.png"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        "portable",
+        "nsis"
+      ],
+      "artifactName": "Napovidac-${version}-win.${ext}"
+    },
+    "portable": {
+      "artifactName": "Napovidac-${version}-portable.exe"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "artifactName": "Napovidac-${version}-instalace.exe",
+      "shortcutName": "Napovídač"
+    },
+    "executableName": "Napovidac"
+  }
+}

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:">
+<title>Napovídač</title>
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="editor.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <span class="logo"><i></i></span>
+    <b>Napovídač</b>
+  </div>
+  <div id="live" class="live">
+    <span class="dot"></span><span id="liveText">Pauza</span>
+    <span class="meter"><i id="meterFill"></i><b id="meterThr"></b></span>
+  </div>
+  <div class="actions">
+    <button id="hRestart" class="btn ghost" title="Ctrl+Alt+Home">Od začátku</button>
+    <button id="hShow" class="btn ghost" title="Ctrl+Alt+H">Zobrazit / skrýt</button>
+    <button id="hPlay" class="btn primary" title="Ctrl+Alt+Mezerník"><span id="hPlayText">Spustit</span></button>
+  </div>
+</header>
+
+<main>
+  <aside class="cues">
+    <h3>Sekce</h3>
+    <ol id="cueList"></ol>
+    <p class="hint">Řádek začínající <code>#</code> je nová sekce. Mezi sekcemi skáčete <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>←</kbd><kbd>→</kbd>.</p>
+    <p class="hint"><code>[poznámka]</code> se zobrazí šedě, <code>**důraz**</code> tučně.</p>
+  </aside>
+
+  <section class="editor">
+    <textarea id="script" spellcheck="true" placeholder="# Úvod&#10;Sem napište text, který chcete říct…"></textarea>
+    <div class="foot"><span id="stats"></span><span id="saved">Uloženo</span></div>
+  </section>
+
+  <aside class="settings">
+    <div class="group">
+      <h3>Posouvání</h3>
+      <div class="seg" data-key="mode">
+        <button data-v="voice">Hlasem</button><button data-v="constant">Plynule</button><button data-v="manual">Ručně</button>
+      </div>
+      <p class="hint" id="modeHint"></p>
+      <label class="row"><span>Rychlost</span><output data-out="speed"></output></label>
+      <input type="range" data-key="speed" min="5" max="200" step="1">
+      <label class="row"><span>Odpočet před startem</span><output data-out="countdown" data-suffix=" s"></output></label>
+      <input type="range" data-key="countdown" min="0" max="5" step="1">
+      <label class="toggle"><input type="checkbox" data-key="hoverPause"><span>Pauza, když na text najedu myší</span></label>
+    </div>
+
+    <div class="group" id="voiceGroup">
+      <h3>Hlas</h3>
+      <label class="row"><span>Mikrofon</span></label>
+      <select id="mic" data-key="micDeviceId"><option value="">Výchozí mikrofon</option></select>
+      <label class="row"><span>Citlivost</span><output data-out="sensitivity" data-suffix=" %"></output></label>
+      <input type="range" data-key="sensitivity" min="0" max="100" step="1">
+      <p class="hint">Mluvte normálně: oranžový pruh nahoře musí přeskočit bílou značku. Když se text rozjíždí sám od šumu, citlivost snižte.</p>
+      <label class="row"><span>Zastavit po odmlce</span><output data-out="holdMs" data-suffix=" ms"></output></label>
+      <input type="range" data-key="holdMs" min="250" max="2500" step="50">
+      <label class="toggle"><input type="checkbox" data-key="useSystemAudio"><span>Nereagovat na druhou stranu hovoru</span></label>
+      <p class="hint" id="sysHint"></p>
+    </div>
+
+    <div class="group">
+      <h3>Vzhled</h3>
+      <div class="seg" data-key="layout">
+        <button data-v="notch">Pod kamerou</button><button data-v="float">Plovoucí okno</button>
+      </div>
+      <label class="row"><span>Velikost písma</span><output data-out="fontSize" data-suffix=" px"></output></label>
+      <input type="range" data-key="fontSize" min="14" max="80" step="1">
+      <label class="row"><span>Řádkování</span><output data-out="lineHeight"></output></label>
+      <input type="range" data-key="lineHeight" min="1" max="2" step="0.05">
+      <label class="row"><span>Šířka</span><output data-out="width" data-suffix=" px"></output></label>
+      <input type="range" data-key="width" min="320" max="1600" step="10">
+      <label class="row"><span>Výška</span><output data-out="height" data-suffix=" px"></output></label>
+      <input type="range" data-key="height" min="90" max="900" step="5">
+      <label class="row"><span>Krytí pozadí</span><output data-out="opacity" data-pct></output></label>
+      <input type="range" data-key="opacity" min="0.4" max="1" step="0.01">
+      <label class="row"><span>Barva textu</span></label>
+      <div class="swatches" id="colors"></div>
+      <div class="seg small" data-key="align">
+        <button data-v="left">Vlevo</button><button data-v="center">Na střed</button>
+      </div>
+      <label class="toggle"><input type="checkbox" data-key="mirror"><span>Zrcadlit (pro skleněný teleprompter)</span></label>
+    </div>
+
+    <div class="group">
+      <h3>Soukromí</h3>
+      <label class="toggle"><input type="checkbox" data-key="hideFromCapture"><span>Skrýt napovídač při sdílení obrazovky a na screenshotech</span></label>
+      <label class="toggle"><input type="checkbox" data-key="hideEditorFromCapture"><span>Skrýt i toto okno editoru</span></label>
+      <p class="hint">Funguje v Teams, Zoomu, Meetu i při nahrávání (Windows 10 verze 2004 a novější, Windows 11). Vy text vidíte, ostatní ne.</p>
+    </div>
+
+    <div class="group">
+      <h3>Ovladač v iPhonu</h3>
+      <label class="toggle"><input type="checkbox" data-key="remoteEnabled"><span>Ovládat z telefonu přes Wi-Fi</span></label>
+      <div id="remoteBox" class="remote"></div>
+    </div>
+
+    <div class="group">
+      <h3>Klávesové zkratky</h3>
+      <dl class="keys">
+        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Mezerník</kbd></dt><dd>Spustit / pauza</dd>
+        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>↑</kbd><kbd>↓</kbd></dt><dd>Rychlost</dd>
+        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>←</kbd><kbd>→</kbd></dt><dd>Předchozí / další sekce</dd>
+        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Home</kbd></dt><dd>Od začátku</dd>
+        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>H</kbd></dt><dd>Zobrazit / skrýt</dd>
+        <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>E</kbd></dt><dd>Tento editor</dd>
+        <dt>Kolečko myši</dt><dd>Posun textu ručně</dd>
+      </dl>
+    </div>
+  </aside>
+</main>
+<script src="vendor/qrcode.js"></script>
+<script src="script.js"></script>
+<script src="editor.js"></script>
+</body>
+</html>

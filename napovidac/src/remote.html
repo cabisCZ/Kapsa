@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b0b0d">
+<title>Napovídač – ovladač</title>
+<style>
+  :root { --me: #ff9f1c; --me2: #f04a23; --other: #6c8cff; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; background: #0b0b0d; color: #f3f3f5; font-family: -apple-system, system-ui, sans-serif; }
+  body { display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top) + 14px) 16px calc(env(safe-area-inset-bottom) + 16px); gap: 14px; user-select: none; -webkit-user-select: none; }
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .top b { font-size: 17px; }
+  .chip { display: flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 99px; background: #18181d; font-size: 13px; color: #cfcfd6; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; }
+  .speaking .dot { background: var(--me); box-shadow: 0 0 8px var(--me); }
+  .other .dot { background: var(--other); box-shadow: 0 0 8px var(--other); }
+  .off .dot { background: #ff4d4d; }
+  .beam { height: 4px; border-radius: 4px; background: #1c1c22; overflow: hidden; }
+  .beam i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--me2), var(--me)); transition: width .1s; }
+  .prog { height: 3px; border-radius: 3px; background: #1c1c22; } .prog i { display: block; height: 100%; width: 0; background: #666; border-radius: 3px; }
+  .play { flex: none; height: 34vh; max-height: 260px; border: 0; border-radius: 28px; background: var(--me); color: #1a0d00; font-size: 22px; font-weight: 800; display: grid; place-items: center; }
+  .play.on { background: #24242b; color: #fff; }
+  .play:active { transform: scale(.98); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .grid button { height: 62px; border: 0; border-radius: 18px; background: #18181d; color: #fff; font-size: 15px; font-weight: 600; }
+  .grid button:active { background: #24242b; }
+  .speed { grid-column: span 2; display: grid; place-items: center; font-size: 13px; color: #8b8b96; }
+  .speed b { font-size: 22px; color: #fff; }
+  .pad { flex: 1; min-height: 90px; border-radius: 18px; background: #131317; display: grid; place-items: center; color: #55555f; font-size: 13px; touch-action: none; }
+  ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; overflow-x: auto; flex: none; }
+  ol li { flex: none; padding: 10px 14px; border-radius: 14px; background: #18181d; font-size: 14px; white-space: nowrap; }
+  ol li.on { background: #2a2016; color: var(--me); }
+</style>
+</head>
+<body>
+  <div class="top"><b>Napovídač</b><div class="chip" id="chip"><span class="dot"></span><span id="st">Připojuji…</span></div></div>
+  <div class="beam"><i id="lvl"></i></div>
+  <button class="play" id="play">Spustit</button>
+  <div class="grid">
+    <button data-c="prevCue">‹ Sekce</button>
+    <div class="speed"><span>Rychlost</span><b id="spd">–</b></div>
+    <button data-c="nextCue">Sekce ›</button>
+    <button data-c="restart">⟲</button>
+    <button data-c="speedDown">−</button>
+    <button data-c="speedUp">+</button>
+    <button data-c="toggleVisible">👁</button>
+  </div>
+  <ol id="cues"></ol>
+  <div class="pad" id="pad">Táhněte prstem pro ruční posun</div>
+  <div class="prog"><i id="prog"></i></div>
+<script>
+  const send = (type, extra) => fetch('/cmd', { method: 'POST', body: JSON.stringify(Object.assign({ type }, extra || {})) }).catch(() => {});
+  document.getElementById('play').onclick = () => send('togglePlay');
+  document.querySelectorAll('[data-c]').forEach(b => b.onclick = () => send(b.dataset.c));
+  document.getElementById('cues').onclick = e => { const li = e.target.closest('li'); if (li) send('jumpCue', { index: +li.dataset.i }); };
+  let lastY = null, acc = 0, tm = null;
+  const pad = document.getElementById('pad');
+  pad.addEventListener('pointerdown', e => { lastY = e.clientY; pad.setPointerCapture(e.pointerId); });
+  pad.addEventListener('pointermove', e => {
+    if (lastY === null) return;
+    acc += (lastY - e.clientY) * 1.6; lastY = e.clientY;
+    if (!tm) tm = setTimeout(() => { send('nudge', { delta: acc }); acc = 0; tm = null; }, 40);
+  });
+  pad.addEventListener('pointerup', () => { lastY = null; });
+  let cuesKey = '';
+  function connect() {
+    const es = new EventSource('/events');
+    es.onmessage = ev => {
+      const s = JSON.parse(ev.data);
+      const chip = document.getElementById('chip');
+      chip.className = 'chip' + (s.speaking && s.playing ? ' speaking' : s.other ? ' other' : '');
+      document.getElementById('st').textContent = !s.playing ? 'Pauza' : s.mode !== 'voice' ? 'Běží' : s.speaking ? 'Mluvíte' : s.other ? 'Mluví druhá strana' : 'Čekám na hlas';
+      const p = document.getElementById('play');
+      p.textContent = s.playing ? 'Pauza' : 'Spustit'; p.classList.toggle('on', !!s.playing);
+      document.getElementById('spd').textContent = s.speed;
+      document.getElementById('lvl').style.width = Math.round((s.level || 0) * 100) + '%';
+      document.getElementById('prog').style.width = Math.round((s.progress || 0) * 100) + '%';
+      const key = (s.cues || []).join('\u0001');
+      const ol = document.getElementById('cues');
+      if (key !== cuesKey) { cuesKey = key; ol.innerHTML = (s.cues || []).map((c, i) => '<li data-i="' + i + '"></li>').join(''); [...ol.children].forEach((li, i) => li.textContent = s.cues[i]); }
+      [...ol.children].forEach((li, i) => li.classList.toggle('on', i === s.cue));
+    };
+    es.onerror = () => { document.getElementById('st').textContent = 'Odpojeno'; document.getElementById('chip').className = 'chip off'; es.close(); setTimeout(connect, 1500); };
+  }
+  connect();
+</script>
+</body>
+</html>

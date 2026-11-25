@@ -1,0 +1,42 @@
+name: Napovídač – sestavení pro Windows
+
+on:
+  push:
+    paths: ['napovidac/**', '.github/workflows/napovidac.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: napovidac
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: napovidac/package-lock.json
+      - run: npm ci
+      - run: npx electron-builder --win portable nsis --x64 --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Napovidac-Windows
+          path: |
+            napovidac/dist/*.exe
+      - name: Zveřejnit v Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: napovidac-latest
+          name: Napovídač pro Windows
+          prerelease: true
+          make_latest: false
+          body: |
+            Teleprompter pro Windows: neviditelný při sdílení obrazovky, text jede jen když mluvíte vy.
+            **Instalace:** stáhněte `Napovidac-…-instalace.exe` a spusťte. Nebo `…-portable.exe` bez instalace.
+            Windows SmartScreen může upozornit na neznámého vydavatele: Další informace → Přesto spustit.
+          files: napovidac/dist/*.exe
