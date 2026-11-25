@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs><mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
-    <polygon points="7,7 40,7 62,45 62,7 93,7 93,93 60,93 38,55 38,93 7,93" fill="#fff" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
-    <line x1="17" y1="11" x2="83" y2="89" stroke="#000" stroke-width="6.5" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="48 48 727 722">
+  <defs><mask id="n" maskUnits="userSpaceOnUse" x="0" y="0" width="823" height="818">
+    <rect x="48" y="48" width="727" height="722" rx="58" fill="#fff"/>
+    <path d="M99,137 L312,580 Q322,600 312,620 L228,800 L490,800 L143,117 A23,23 0 0 0 99,137 Z" fill="#000"/>
+    <path d="M99,137 L312,580 Q322,600 312,620 L228,800 L490,800 L143,117 A23,23 0 0 0 99,137 Z" fill="#000" transform="rotate(180 411.5 409)"/>
   </mask></defs>
-  <rect width="100" height="100" fill="#fff" mask="url(#m)"/>
+  <rect x="0" y="0" width="823" height="818" fill="#fff" mask="url(#n)"/>
 </svg>

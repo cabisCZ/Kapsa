@@ -235,7 +235,7 @@ function startRemote() {
     if (req.method === 'GET' && url.pathname === '/') {
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); return res.end(page);
     }
-    const assets = { '/brand/logo.svg': ['src/brand/logo.svg', 'image/svg+xml'], '/brand/waves.svg': ['src/brand/waves.svg', 'image/svg+xml'], '/icon.png': ['build/icon.png', 'image/png'] };
+    const assets = { '/brand/logo.svg': ['src/brand/logo.svg', 'image/svg+xml'], '/brand/waves.jpg': ['src/brand/waves.jpg', 'image/jpeg'], '/icon.png': ['build/icon.png', 'image/png'] };
     if (req.method === 'GET' && assets[url.pathname]) {
       const [file, type] = assets[url.pathname];
       res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'max-age=86400' });

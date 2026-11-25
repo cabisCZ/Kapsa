@@ -1,5 +1,5 @@
 html, body { height: 100%; background: var(--bg); color: var(--text); }
-html { background: linear-gradient(180deg, rgba(3,6,26,.88) 0%, rgba(3,6,26,.78) 55%, rgba(3,6,26,.5) 100%), url(brand/waves.svg) center bottom / cover no-repeat, var(--bg); }
+html { background: linear-gradient(180deg, rgba(3,6,26,.66) 0%, rgba(3,6,26,.5) 55%, rgba(3,6,26,.18) 100%), url(brand/waves.jpg) center bottom / cover no-repeat, var(--bg); }
 body { background: transparent; }
 body { display: flex; flex-direction: column; font-size: 14px; }
 
@@ -80,3 +80,5 @@ select { width: 100%; height: 34px; border-radius: 9px; border: 1px solid var(--
 .keys { display: grid; grid-template-columns: auto 1fr; gap: 7px 10px; margin: 0; font-size: 12px; align-items: center; }
 .keys dd { margin: 0; color: var(--muted); }
 ::-webkit-scrollbar { width: 10px; } ::-webkit-scrollbar-thumb { background: rgba(150,180,255,.2); border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; }
+.editor { background: linear-gradient(180deg, rgba(4,8,32,.25), rgba(4,8,32,.45)); }
+.foot { color: #dfe6ff; text-shadow: 0 1px 6px rgba(3,6,26,.7); }
