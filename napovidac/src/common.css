@@ -8,35 +8,35 @@
 @font-face { font-family: Onest; font-weight: 800; src: url(fonts/onest-latin-800-normal.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2212; }
 
 :root {
-  /* Paleta z předlohy: noc → půlnoc → královská → led */
-  --c-night: #050614;
-  --c-ink: #0a0f2b;
-  --c-navy: #0d1b4f;
-  --c-deep: #12276b;
-  --c-cobalt: #183594;
-  --c-royal: #1f47bc;
-  --c-blue: #3061e0;
-  --c-sky: #5b86ea;
-  --c-ice: #a9c4f5;
-  --c-frost: #e6eeff;
+  /* Paleta z předlohy: černá + elektrická modrá */
+  --c-night: #040404;
+  --c-ink: #0a0a10;
+  --c-navy: #0b0a52;       /* inkoustová modrá */
+  --c-deep: #0b0a52;
+  --c-cobalt: #100ed7;
+  --c-royal: #1d1bff;      /* elektrická modrá – hlavní barva značky */
+  --c-blue: #2f2dff;
+  --c-sky: #6b6aff;
+  --c-ice: #a9a8ff;
+  --c-frost: #ebebff;
 
   --bg: var(--c-night);
   --text: #ffffff;
-  --muted: rgba(235, 240, 255, .6);        /* iOS secondaryLabel */
-  --hair: rgba(200, 215, 255, .14);        /* iOS separator */
-  --fill: rgba(150, 175, 255, .16);        /* iOS tertiary fill */
-  --material: rgba(10, 18, 52, .55);       /* „ultra thin material“ */
-  --material-2: rgba(18, 32, 90, .5);
+  --muted: rgba(235, 235, 245, .6);        /* iOS secondaryLabel (tmavý režim) */
+  --hair: rgba(255, 255, 255, .12);        /* iOS separator */
+  --fill: rgba(118, 118, 128, .24);        /* iOS tertiary fill */
+  --material: rgba(18, 18, 22, .62);       /* materiál s rozmazáním */
+  --material-2: rgba(28, 28, 32, .72);     /* buňky seznamu */
 
-  --me: var(--c-blue);
-  --me-2: var(--c-royal);
-  --glow: var(--c-frost);
-  --accent: #ffffff;                       /* hlavní akce: bílá kapsle s modrým textem */
-  --accent-ink: var(--c-royal);
-  --on: var(--c-blue);                     /* zapnutý přepínač */
+  --me: var(--c-royal);
+  --me-2: var(--c-cobalt);
+  --glow: var(--c-ice);
+  --accent: var(--c-royal);                /* hlavní akce: elektrická modrá */
+  --accent-ink: #ffffff;
+  --on: var(--c-royal);                    /* zapnutý přepínač */
   --other: #ff9f0a;                        /* iOS oranžová = mluví druhá strana */
-  --ok: #30d158;                           /* iOS zelená */
-  --bad: #ff453a;                          /* iOS červená */
+  --ok: #30d158;
+  --bad: #ff453a;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; font-family: -apple-system, 'SF Pro Text', Onest, 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }

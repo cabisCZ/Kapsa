@@ -10,7 +10,7 @@ Teleprompter pro Windows. Sedí nahoře pod webkamerou, takže při čtení kouk
 - Sekce (`# Nadpis`), skoky mezi nimi, odpočet, zrcadlení, barva a velikost písma.
 - **Ovladač v iPhonu:** zapněte ho v nastavení, naskenujte QR kód a ovládejte přes Wi-Fi v Safari.
 - Vše zůstává v počítači. Nic se nikam neposílá.
-- Vzhled: modré logo N na skleněné kartě a vlnky. Podklady generuje `node tools/brand.js`.
+- Vzhled: logo N ze dvou uvozovek, černá s elektricky modrou září (#1d1bff). Pozadí a ikonu generuje `node tools/brand.js`.
 
 ## AI asistent (napovídání odpovědí)
 Když druhá strana položí otázku, Napovídač ji přepíše a Claude podle scénáře a záložky **Podklady pro AI** (ceník, FAQ, fakta) napíše krátkou odpověď. Ta se hned objeví v napovídači a vy ji přečtete.

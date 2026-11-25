@@ -9,26 +9,26 @@
 <link rel="apple-touch-icon" href="/icon.png">
 <title>Napovídač – ovladač</title>
 <style>
-  :root { --night: #050614; --navy: #0d1b4f; --royal: #1f47bc; --blue: #3061e0; --ice: #a9c4f5; --frost: #e6eeff; --other: #ff9f0a; --muted: rgba(235,240,255,.6); }
+  :root { --night: #040404; --navy: #0b0a52; --royal: #1d1bff; --blue: #2f2dff; --ice: #a9a8ff; --frost: #ebebff; --other: #ff9f0a; --muted: rgba(235,235,245,.6); }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html { background: linear-gradient(180deg, rgba(5,6,20,.6), rgba(5,6,20,.1)), url(/brand/waves.jpg) center bottom / cover no-repeat, var(--night); min-height: 100%; }
+  html { background: url(/brand/bg.jpg) center / cover no-repeat fixed, var(--night); min-height: 100%; }
   html, body { margin: 0; height: 100%; color: #fff; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; letter-spacing: -.01em; }
   body { display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top) + 10px) 16px calc(env(safe-area-inset-bottom) + 14px); gap: 14px; user-select: none; -webkit-user-select: none; }
-  .glass { background: rgba(18,32,90,.45); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: inset 0 0 0 .5px rgba(230,238,255,.18); }
+  .glass { background: rgba(28,28,34,.45); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: inset 0 0 0 .5px rgba(255,255,255,.18); }
   .top { display: flex; justify-content: space-between; align-items: center; padding-top: 4px; }
   .top b { font-size: 28px; font-weight: 700; letter-spacing: -.03em; display: flex; align-items: center; gap: 10px; }
-  .top b img { width: 32px; height: 32px; padding: 7px; border-radius: 9px; background: linear-gradient(170deg, rgba(31,71,188,.9), rgba(48,97,224,.7)); box-shadow: inset 0 0 0 .5px rgba(230,238,255,.55); }
+  .top b img { width: 34px; height: 34px; border-radius: 9px; box-shadow: inset 0 0 0 .5px rgba(255,255,255,.2); }
   .chip { display: flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 99px; font-size: 13px; font-weight: 500; color: var(--frost); }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(230,238,255,.35); }
-  .speaking .dot { background: var(--ice); box-shadow: 0 0 8px var(--ice); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.35); }
+  .speaking .dot { background: var(--royal); box-shadow: 0 0 8px var(--royal), 0 0 2px #fff; }
   .other .dot { background: var(--other); box-shadow: 0 0 8px var(--other); }
   .off .dot { background: #ff453a; }
-  .beam { height: 4px; border-radius: 4px; background: rgba(230,238,255,.15); overflow: hidden; }
-  .beam i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--blue), var(--ice)); transition: width .1s; }
-  .prog { height: 3px; border-radius: 3px; background: rgba(230,238,255,.15); } .prog i { display: block; height: 100%; width: 0; background: #fff; border-radius: 3px; }
-  .play { flex: none; height: 30vh; max-height: 240px; border: 0; border-radius: 30px; background: #fff; color: var(--royal); font-size: 22px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 12px 40px rgba(5,6,20,.4); transition: transform .12s; }
+  .beam { height: 4px; border-radius: 4px; background: rgba(255,255,255,.15); overflow: hidden; }
+  .beam i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--royal), var(--ice)); box-shadow: 0 0 10px var(--royal); transition: width .1s; }
+  .prog { height: 3px; border-radius: 3px; background: rgba(255,255,255,.15); } .prog i { display: block; height: 100%; width: 0; background: var(--royal); border-radius: 3px; }
+  .play { flex: none; height: 30vh; max-height: 240px; border: 0; border-radius: 30px; background: var(--royal); color: #fff; font-size: 22px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 12px 44px rgba(29,27,255,.5); transition: transform .12s; }
   .play svg { width: 30px; height: 30px; fill: currentColor; }
-  .play.on { background: rgba(18,32,90,.5); color: #fff; -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px); box-shadow: inset 0 0 0 .5px rgba(230,238,255,.3); }
+  .play.on { background: rgba(28,28,34,.5); color: #fff; -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px); box-shadow: inset 0 0 0 .5px rgba(255,255,255,.3); }
   .play:active, .grid button:active { transform: scale(.97); }
   .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
   .grid button { height: 60px; border: 0; border-radius: 18px; color: #fff; font-size: 15px; font-weight: 600; transition: transform .12s; }
@@ -36,12 +36,12 @@
   .speed b { font-size: 22px; color: #fff; font-variant-numeric: tabular-nums; }
   .pad { flex: 1; min-height: 90px; border-radius: 22px; display: grid; place-items: center; color: var(--muted); font-size: 13px; touch-action: none; }
   ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; overflow-x: auto; flex: none; scrollbar-width: none; }
-  ol li { flex: none; padding: 9px 15px; border-radius: 99px; font-size: 14px; font-weight: 500; white-space: nowrap; background: rgba(18,32,90,.45); -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px); box-shadow: inset 0 0 0 .5px rgba(230,238,255,.18); }
-  ol li.on { background: #fff; color: var(--navy); font-weight: 600; }
+  ol li { flex: none; padding: 9px 15px; border-radius: 99px; font-size: 14px; font-weight: 500; white-space: nowrap; background: rgba(28,28,34,.45); -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px); box-shadow: inset 0 0 0 .5px rgba(255,255,255,.18); }
+  ol li.on { background: var(--royal); color: #fff; font-weight: 600; }
 </style>
 </head>
 <body>
-  <div class="top"><b><img src="/brand/logo.svg" alt="">Napovídač</b><div class="chip glass" id="chip"><span class="dot"></span><span id="st">Připojuji…</span></div></div>
+  <div class="top"><b><img src="/icon.png" alt="">Napovídač</b><div class="chip glass" id="chip"><span class="dot"></span><span id="st">Připojuji…</span></div></div>
   <div class="beam"><i id="lvl"></i></div>
   <button class="play" id="play"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg><span id="playText">Spustit</span></button>
   <div class="grid">

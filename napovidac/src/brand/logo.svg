@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="48 48 727 722">
-  <defs><mask id="n" maskUnits="userSpaceOnUse" x="0" y="0" width="823" height="818">
-    <rect x="48" y="48" width="727" height="722" rx="58" fill="#fff"/>
-    <path d="M99,137 L312,580 Q322,600 312,620 L228,800 L490,800 L143,117 A23,23 0 0 0 99,137 Z" fill="#000"/>
-    <path d="M99,137 L312,580 Q322,600 312,620 L228,800 L490,800 L143,117 A23,23 0 0 0 99,137 Z" fill="#000" transform="rotate(180 411.5 409)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="30 30 1080 810">
+  <defs><mask id="n" maskUnits="userSpaceOnUse" x="0" y="0" width="1140" height="880">
+    <path fill="#fff" d="M30,260 A230,230 0 0 1 260,30 L1096,30 Q1110,30 1110,44 L1110,610 A230,230 0 0 1 880,840 L44,840 Q30,840 30,826 Z"/>
+    <path fill="#000" d="M212,238 Q212,212 238,212 L340,212 A214,228 0 0 1 554,440 L400,440 L400,662 L212,662 Z"/>
+    <path fill="#000" d="M554,440 L726,440 L726,212 L926,212 L926,632 Q926,662 896,662 L788,662 A234,222 0 0 1 554,440 Z"/>
   </mask></defs>
-  <rect x="0" y="0" width="823" height="818" fill="#fff" mask="url(#n)"/>
+  <rect x="0" y="0" width="1140" height="880" fill="#fff" mask="url(#n)"/>
 </svg>
