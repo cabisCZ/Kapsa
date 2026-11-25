@@ -1,6 +1,6 @@
 (async function () {
   const $ = id => document.getElementById(id);
-  const COLORS = ['#ffffff', '#fff3c4', '#ffd08a', '#b8f5c8', '#a9d4ff'];
+  const COLORS = ['#ffffff', '#dfe7ff', '#a9c1ff', '#fff3c4', '#b8f5c8'];
   let state = await api.getState();
   let S = state.settings;
   const ta = $('script');

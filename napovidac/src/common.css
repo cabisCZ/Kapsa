@@ -8,16 +8,17 @@
 @font-face { font-family: Onest; font-weight: 800; src: url(fonts/onest-latin-800-normal.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2212; }
 
 :root {
-  --bg: #0b0b0d;
-  --panel: #141418;
-  --panel-2: #1b1b21;
-  --line: #26262e;
-  --text: #f3f3f5;
-  --muted: #8b8b96;
-  --me: #ff9f1c;
-  --me-2: #f04a23;
-  --other: #6c8cff;
-  --ok: #3ddc84;
+  --bg: #040820;
+  --panel: rgba(16, 28, 84, .42);
+  --panel-2: rgba(40, 64, 170, .28);
+  --line: rgba(150, 180, 255, .16);
+  --text: #f2f5ff;
+  --muted: #93a2d6;
+  --me: #5b8cff;        /* modrá z loga */
+  --me-2: #2a5cff;
+  --glow: #e9e4ff;      /* světlá záře z vlnek */
+  --other: #f29be0;     /* růžový odlesk = druhá strana */
+  --ok: #5ef0b0;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; font-family: Onest, 'Segoe UI', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }

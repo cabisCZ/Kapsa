@@ -10,6 +10,7 @@ Teleprompter pro Windows. Sedí nahoře pod webkamerou, takže při čtení kouk
 - Sekce (`# Nadpis`), skoky mezi nimi, odpočet, zrcadlení, barva a velikost písma.
 - **Ovladač v iPhonu:** zapněte ho v nastavení, naskenujte QR kód a ovládejte přes Wi-Fi v Safari.
 - Vše zůstává v počítači. Nic se nikam neposílá.
+- Vzhled: modré logo N na skleněné kartě a vlnky. Podklady generuje `node tools/brand.js`.
 
 ## Zkratky
 | | |
