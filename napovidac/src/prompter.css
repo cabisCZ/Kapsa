@@ -116,3 +116,30 @@ html, body { width: 100%; height: 100%; background: transparent; overflow: hidde
 #resize { position: absolute; right: 0; bottom: 0; width: 18px; height: 18px; cursor: nwse-resize; opacity: 0; }
 #shell.hover #resize { opacity: 1; background: linear-gradient(135deg, transparent 55%, rgba(255,255,255,.25) 56%, rgba(255,255,255,.25) 62%, transparent 63%, transparent 72%, rgba(255,255,255,.25) 73%, rgba(255,255,255,.25) 79%, transparent 80%); }
 #shell.notch #resize { right: 6px; bottom: 4px; }
+
+/* ---------- AI odpověď ---------- */
+#caption {
+  position: absolute; top: 34px; left: 40px; right: 40px; text-align: center;
+  font-size: 12px; color: rgba(255,200,120,.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  opacity: 0; transition: opacity .3s; pointer-events: none;
+}
+#caption.on { opacity: 1; }
+#qbar {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 60px);
+  display: none; align-items: center; gap: 7px; padding: 3px 11px 3px 4px; border-radius: 99px;
+  background: rgba(40,50,90,.8); backdrop-filter: blur(20px) saturate(180%); box-shadow: inset 0 0 0 .5px rgba(230,238,255,.2);
+  font-size: 11.5px; font-weight: 500; color: var(--c-frost); white-space: nowrap; pointer-events: none;
+}
+#qText { overflow: hidden; text-overflow: ellipsis; }
+.ai-badge { flex: none; padding: 1px 7px; border-radius: 99px; background: #fff; color: var(--c-royal); font-size: 10px; font-weight: 800; letter-spacing: .04em; }
+#shell.answer #qbar { display: flex; }
+#shell.answer #chip { display: none; }
+#shell.answer #text { color: var(--c-frost); }
+#shell.answer #text .thinking { color: var(--c-ice); opacity: .8; }
+#text .thinking::after { content: ''; animation: dots 1.2s steps(4) infinite; }
+@keyframes dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
+.pill.back { display: none; background: #fff; color: var(--c-royal); }
+.pill.back:hover { background: var(--c-frost); }
+#shell.answer .pill.back { display: inline-block; }
+#bAsk { display: none; }
+#shell.ai #bAsk { display: grid; }

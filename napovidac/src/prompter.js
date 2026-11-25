@@ -12,6 +12,7 @@
   let counting = false;
   let cueTops = [];
   let lastScript = null;
+  let answerMode = false, answerText = '', scriptY = 0, answerDone = true;
 
   // ---------- Hlas ----------
   const vd = new VoiceDetector({ sensitivity: S.sensitivity, holdMs: S.holdMs, useSystemAudio: S.useSystemAudio, deviceId: S.micDeviceId });
@@ -39,13 +40,14 @@
     document.documentElement.style.setProperty('--op', S.opacity);
     $('speed').textContent = S.speed;
     $('bMode').textContent = MODES[S.mode] || 'Hlas';
-    if (state.script !== lastScript) {
+    if (!answerMode && state.script !== lastScript) {
       lastScript = state.script;
       const r = Script.render(state.script);
       textEl.innerHTML = r.html || '<p class="note">Napište text v editoru (Ctrl+Alt+E).</p>';
     }
     requestAnimationFrame(measure);
     ensureVoice();
+    ensureListener();
     classes();
   }
   function measure() {
@@ -65,6 +67,8 @@
     shell.classList.toggle('other', playing && other);
     const warn = S.mode === 'voice' && !vd.micOk && !!vdKey;
     shell.classList.toggle('warn', warn);
+    shell.classList.toggle('answer', answerMode);
+    shell.classList.toggle('ai', !!S.aiEnabled);
     let t = 'Pauza';
     if (warn) t = 'Mikrofon nedostupný';
     else if (counting) t = 'Připravte se';
@@ -87,7 +91,7 @@
     if (Math.abs(v) < 0.05 && target === 0) v = 0;
     y += v * dt;
     const m = maxY();
-    if (y > m) { y = m; if (playing && S.mode !== 'manual') { playing = false; } }
+    if (y > m) { y = m; if (playing && S.mode !== 'manual' && answerDone) { playing = false; } }
     if (y < 0) y = 0;
     textEl.style.transform = `translateY(${(readLine() - y).toFixed(2)}px)`;
     $('progress').style.setProperty('--p', (m ? (y / m) * 100 : 0) + '%');
@@ -158,9 +162,54 @@
       case 'prevCue': jumpCue(-1); break;
       case 'jumpCue': measure(); if (cueTops[c.index] !== undefined) scrollTo(cueTops[c.index]); break;
       case 'nudge': y = Math.max(0, Math.min(maxY(), y + (c.delta || 0))); break;
+      case 'closeAnswer': closeAnswer(); break;
     }
   });
   api.onState(s => { state = s; apply(); });
+
+  // ---------- AI: poslech druhé strany a odpovědi ----------
+  const tap = new LoopbackTap();
+  let tapOn = false;
+  async function ensureListener() {
+    const want = !!S.aiEnabled;
+    if (want === tapOn) return;
+    tapOn = want;
+    if (want) { try { await tap.start(); } catch (e) { tapOn = false; console.warn(e); } }
+    else tap.stop();
+  }
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function renderAnswer(thinking) {
+    const paras = answerText.trim().split(/\n\s*\n/).map(p => `<p>${esc(p.trim())}</p>`).join('');
+    textEl.innerHTML = paras || (thinking ? '<p class="thinking">Píšu odpověď</p>' : '');
+  }
+  function openAnswer(question) {
+    if (!answerMode) { scriptY = y; answerMode = true; }
+    answerText = ''; answerDone = false;
+    $('qText').textContent = question;
+    cancelAnimationFrame(anim); y = 0; v = 0;
+    renderAnswer(true);
+    if (!playing && !counting && S.mode !== 'manual') playing = true;   // odpověď hned připravená ke čtení
+  }
+  function closeAnswer() {
+    if (!answerMode) return;
+    answerMode = false; answerDone = true; lastScript = null;
+    apply();
+    y = scriptY; v = 0;
+  }
+  let capTimer = null;
+  api.on('ai-partial', text => {
+    if (!text) return;
+    const c = $('caption'); c.textContent = '„' + text.slice(-90) + '“'; c.classList.add('on');
+    clearTimeout(capTimer); capTimer = setTimeout(() => c.classList.remove('on'), 2500);
+  });
+  api.on('ai-answer', a => {
+    if (a.phase === 'start') openAnswer(a.question);
+    else if (a.phase === 'delta' && answerMode) { answerText += a.text; renderAnswer(false); }
+    else if (a.phase === 'error' && answerMode) { answerText = a.error; answerDone = true; renderAnswer(false); }
+    else if (a.phase === 'done') answerDone = true;
+  });
+  $('bBack').onclick = () => api.cmd('closeAnswer');
+  $('bAsk').onclick = () => api.cmd('aiAnswerNow');
 
   $('bPlay').onclick = toggle;
   $('bRestart').onclick = () => { pause(); scrollTo(0); };
@@ -180,6 +229,7 @@
   window.addEventListener('wheel', e => { cancelAnimationFrame(anim); y = Math.max(0, Math.min(maxY(), y + e.deltaY * 0.6)); }, { passive: true });
   window.addEventListener('keydown', e => {
     if (e.code === 'Space') { e.preventDefault(); toggle(); }
+    if (e.code === 'Escape') api.cmd('closeAnswer');
     if (e.code === 'ArrowDown') y += 40;
     if (e.code === 'ArrowUp') y = Math.max(0, y - 40);
   });
@@ -202,7 +252,7 @@
       playing: playing || counting, counting, mode: S.mode,
       speaking: vd.speaking, other: vd.other, level: vd.level, threshold: vd.threshold,
       micOk: vd.micOk, systemOk: vd.systemOk, voiceOn: !!vdKey, error: vd.error,
-      progress: maxY() ? y / maxY() : 0, cue: currentCue(),
+      progress: maxY() ? y / maxY() : 0, cue: answerMode ? -1 : currentCue(), answer: answerMode,
     });
   }, 100);
 

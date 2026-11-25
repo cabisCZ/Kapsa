@@ -126,3 +126,20 @@ select option { background: var(--c-navy); }
 .keys .cell { font-size: 14px; }
 
 ::-webkit-scrollbar { width: 10px; } ::-webkit-scrollbar-thumb { background: rgba(230,238,255,.18); border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; }
+
+/* ---------- AI ---------- */
+.tabs { flex: none; max-width: 300px; margin-bottom: 16px; }
+#notes { flex: 1; width: 100%; resize: none; border: 0; outline: 0; background: transparent; color: #fff; font: 400 16px/1.6 Onest, sans-serif; padding: 0; }
+#notes::placeholder { color: rgba(169,196,245,.45); }
+.cell.key { cursor: pointer; }
+.cell.key:hover { background: rgba(150,175,255,.08); }
+.kstate { color: var(--muted); font-size: 14px; display: flex; align-items: center; gap: 6px; }
+.kstate.ok { color: var(--ok); }
+.kstate::after { content: '›'; color: var(--muted); font-size: 18px; margin-left: 2px; }
+.keyedit { display: flex; gap: 8px; padding: 0 16px 12px; }
+.keyedit input { flex: 1; height: 34px; border: 0; border-radius: 9px; background: var(--fill); color: #fff; padding: 0 10px; font: inherit; font-size: 14px; outline: none; }
+.keyedit button { height: 34px; padding: 0 14px; border: 0; border-radius: 99px; background: #fff; color: var(--c-royal); font-weight: 600; cursor: pointer; }
+.transcript { list-style: none; margin: 0; padding: 0 4px; display: flex; flex-direction: column; gap: 6px; }
+.transcript li { font-size: 12.5px; line-height: 1.4; color: var(--c-frost); padding: 7px 10px; border-radius: 12px 12px 12px 4px; background: var(--fill); }
+.transcript li.q { background: rgba(255,159,10,.2); }
+.transcript li.q { background: rgba(255,159,10,.22); box-shadow: inset 3px 0 0 var(--other); }

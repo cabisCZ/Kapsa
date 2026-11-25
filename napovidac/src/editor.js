@@ -124,9 +124,68 @@
   }
   api.onRemoteInfo(renderRemote);
 
+  // ---------- Záložky Scénář / Podklady ----------
+  const notes = $('notes');
+  notes.value = state.notes || '';
+  let tn = null;
+  notes.addEventListener('input', () => {
+    clearTimeout(tn); $('saved').classList.remove('on');
+    tn = setTimeout(() => { api.setState({ notes: notes.value }); $('saved').classList.add('on'); }, 400);
+  });
+  $('tabs').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    const isNotes = b.dataset.tab === 'notes';
+    ta.hidden = isNotes; notes.hidden = !isNotes;
+    (isNotes ? notes : ta).focus();
+  });
+
+  // ---------- AI asistent ----------
+  let aiSt = {};
+  function renderAI() {
+    document.querySelectorAll('.cell.key').forEach(cell => {
+      const has = cell.dataset.keyName === 'anthropic' ? aiSt.hasClaudeKey : aiSt.hasSttKey;
+      const k = cell.querySelector('.kstate');
+      k.textContent = has ? 'Uloženo' : 'Zadat'; k.classList.toggle('ok', !!has);
+    });
+    let hint = '';
+    if (S.aiEnabled) {
+      if (!aiSt.hasSttKey || !aiSt.hasClaudeKey) hint = '<span class="bad">● Doplňte oba API klíče.</span>';
+      else if (aiSt.listening) hint = '<span class="ok">● Poslouchám druhou stranu.</span>';
+      else hint = '● Připojuji přepis…';
+    }
+    $('aiHint').innerHTML = hint;
+    $('transcriptBox').hidden = !S.aiEnabled;
+  }
+  document.querySelectorAll('.cell.key').forEach(cell => {
+    cell.addEventListener('click', () => {
+      const next = cell.nextElementSibling;
+      if (next && next.classList.contains('keyedit')) { next.remove(); return; }
+      const box = document.createElement('div'); box.className = 'keyedit';
+      box.innerHTML = '<input type="password" placeholder="Vložte klíč" autocomplete="off"><button>Uložit</button>';
+      cell.after(box);
+      const inp = box.querySelector('input'); inp.focus();
+      const save = () => { api.aiSetKey(cell.dataset.keyName, inp.value); box.remove(); };
+      box.querySelector('button').onclick = save;
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') save(); if (e.key === 'Escape') box.remove(); });
+    });
+  });
+  api.on('ai-status', st => { aiSt = st || {}; renderAI(); });
+  api.aiStatus().then(st => { aiSt = st || {}; renderAI(); });
+  const addLine = (text, cls) => {
+    const li = document.createElement('li'); li.textContent = text; if (cls) li.className = cls;
+    const ol = $('transcript'); ol.append(li);
+    while (ol.children.length > 30) ol.firstChild.remove();
+    li.scrollIntoView({ block: 'nearest' });
+  };
+  api.on('ai-line', text => addLine(text));
+  api.on('ai-answer', a => { if (a.phase === 'start') { const last = $('transcript').lastElementChild; if (last) last.classList.add('q'); } });
+  api.on('ai-error', msg => { $('aiHint').innerHTML = '<span class="bad">● ' + msg.replace(/</g, '&lt;') + '</span>'; });
+
   api.onState(s => {
     const remoteChanged = s.settings.remoteEnabled !== S.remoteEnabled;
-    state = s; S = s.settings; fill();
+    state = s; S = s.settings; fill(); renderAI();
+    if ((s.notes || '') !== notes.value && document.activeElement !== notes) notes.value = s.notes || '';
     if (s.script !== ta.value && document.activeElement !== ta) { ta.value = s.script; renderCues(); stats(); }
     if (remoteChanged) api.remoteInfo().then(renderRemote);
   });

@@ -22,6 +22,8 @@
   <div id="countdown"></div>
 
   <div id="chip"><span class="dot"></span><span id="chipText">Pauza</span></div>
+  <div id="caption"></div>
+  <div id="qbar"><span class="ai-badge">AI</span><span id="qText"></span></div>
 
   <div id="controls">
     <button id="grip" class="ico" title="Přesunout">
@@ -45,6 +47,8 @@
     <span id="speed">40</span>
     <button id="bFast" class="ico" title="Rychleji (Ctrl+Alt+↑)"><svg viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></svg></button>
     <span class="sep"></span>
+    <button id="bBack" class="pill back" title="Zpět ke scénáři (Ctrl+Alt+Q)">Zpět ke scénáři</button>
+    <button id="bAsk" class="ico" title="Odpovědět na poslední větu druhé strany (Ctrl+Alt+A)"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.6L12 15l-1.8-4.4L5.5 9l4.7-1.4z"/><path d="M19 15l.8 2 2 .8-2 .7L19 21l-.8-2.5-2-.7 2-.8z"/></svg></button>
     <button id="bMode" class="pill" title="Režim posouvání">Hlas</button>
     <button id="bEdit" class="ico" title="Editor a nastavení (Ctrl+Alt+E)">
       <svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>
@@ -58,6 +62,7 @@
 </div>
 <script src="script.js"></script>
 <script src="voice.js"></script>
+<script src="listener.js"></script>
 <script src="prompter.js"></script>
 </body>
 </html>

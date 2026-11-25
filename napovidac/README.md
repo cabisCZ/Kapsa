@@ -12,6 +12,14 @@ Teleprompter pro Windows. Sedí nahoře pod webkamerou, takže při čtení kouk
 - Vše zůstává v počítači. Nic se nikam neposílá.
 - Vzhled: modré logo N na skleněné kartě a vlnky. Podklady generuje `node tools/brand.js`.
 
+## AI asistent (napovídání odpovědí)
+Když druhá strana položí otázku, Napovídač ji přepíše a Claude podle scénáře a záložky **Podklady pro AI** (ceník, FAQ, fakta) napíše krátkou odpověď. Ta se hned objeví v napovídači a vy ji přečtete.
+- Přepis hlasu druhé strany: ElevenLabs Scribe v2 Realtime (čeština). Poslouchá jen zvuk z reproduktorů, ne váš mikrofon.
+- Odpověď: Claude Opus 5.5 (`claude-opus-5-5`, nízké úsilí kvůli rychlosti, streamování). Záložní model při odmítnutí je zapnutý (`fallbacks: "default"`).
+- Automaticky na rozpoznané otázky, nebo ručně `Ctrl+Alt+A`. Zpět ke scénáři: `Ctrl+Alt+Q` nebo Esc.
+- Potřebuje dva API klíče: Anthropic (console.anthropic.com) a ElevenLabs (elevenlabs.io → API Keys). Ukládají se šifrovaně přes Windows (DPAPI).
+- Hlas druhé strany se posílá do ElevenLabs a text do Anthropic. Dejte protistraně vědět, že si hovor přepisujete.
+
 ## Zkratky
 | | |
 |---|---|
@@ -21,6 +29,8 @@ Teleprompter pro Windows. Sedí nahoře pod webkamerou, takže při čtení kouk
 | Ctrl+Alt+Home | od začátku |
 | Ctrl+Alt+H | zobrazit / skrýt |
 | Ctrl+Alt+E | editor |
+| Ctrl+Alt+A | AI: odpovědět na poslední větu druhé strany |
+| Ctrl+Alt+Q | zpět ke scénáři |
 
 ## Spuštění ze zdrojáků
 ```

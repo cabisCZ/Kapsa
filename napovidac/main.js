@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const http = require('http');
 const os = require('os');
+const { createAI } = require('./ai');
 
 if (!app.requestSingleInstanceLock()) { app.quit(); }
 
@@ -25,6 +26,7 @@ Pošlu vám shrnutí e-mailem a domluvíme další krok. Děkuji a hezký den.`;
 
 const DEFAULTS = {
   script: DEFAULT_SCRIPT,
+  notes: '',                  // podklady pro AI odpovědi (ceník, FAQ, fakta)
   settings: {
     mode: 'voice',            // voice | constant | manual
     speed: 40,                // px za sekundu
@@ -47,6 +49,9 @@ const DEFAULTS = {
     micDeviceId: '',
     remoteEnabled: false,
     remotePort: 8765,
+    aiEnabled: false,         // poslouchat druhou stranu a navrhovat odpovědi
+    aiAuto: true,             // odpovídat automaticky na rozpoznané otázky
+    aiLanguage: 'ces',
   },
   floatBounds: null,
 };
@@ -57,6 +62,7 @@ let editorWin = null;
 let tray = null;
 let remoteServer = null;
 let remoteStatus = {};
+let ai = null;
 const remoteClients = new Set();
 
 function loadState() {
@@ -174,6 +180,8 @@ function command(type, extra) {
     return;
   }
   if (type === 'openEditor') return createEditor();
+  if (type === 'aiAnswerNow') { if (ai) ai.answer(''); return; }
+  if (type === 'closeAnswer' && ai) ai.cancel();
   if (type === 'speedUp' || type === 'speedDown') {
     const d = type === 'speedUp' ? 5 : -5;
     state.settings.speed = Math.max(5, Math.min(300, state.settings.speed + d));
@@ -193,6 +201,8 @@ function registerShortcuts() {
     'CommandOrControl+Alt+Home': 'restart',
     'CommandOrControl+Alt+H': 'toggleVisible',
     'CommandOrControl+Alt+E': 'openEditor',
+    'CommandOrControl+Alt+A': 'aiAnswerNow',
+    'CommandOrControl+Alt+Q': 'closeAnswer',
   };
   for (const [acc, type] of Object.entries(map)) {
     try { globalShortcut.register(acc, () => command(type)); } catch (e) { console.warn('Zkratka', acc, e); }
@@ -288,6 +298,7 @@ ipcMain.handle('remote-info', () => remoteInfo());
 ipcMain.on('set-state', (_e, patch) => {
   const before = state.settings;
   if (patch.script !== undefined) state.script = String(patch.script);
+  if (patch.notes !== undefined) state.notes = String(patch.notes);
   if (patch.settings) state.settings = { ...state.settings, ...patch.settings };
   const s = state.settings;
   if (prompterWin) {
@@ -298,11 +309,15 @@ ipcMain.on('set-state', (_e, patch) => {
   if (before.remoteEnabled !== s.remoteEnabled || before.remotePort !== s.remotePort) {
     if (s.remoteEnabled) startRemote(); else { stopRemote(); broadcast('remote-info', remoteInfo()); }
   }
+  if (ai && before.aiEnabled !== s.aiEnabled) ai.setListening(s.aiEnabled);
   saveState();
   broadcast('state', state);
   pushRemote();
 });
 ipcMain.on('cmd', (_e, msg) => command(msg.type, msg));
+ipcMain.handle('ai-status', () => ai && ai.status());
+ipcMain.on('ai-audio', (_e, buf) => ai && ai.audio(buf));
+ipcMain.on('ai-set-key', (_e, { name, value }) => { if (ai && ['anthropic', 'elevenlabs'].includes(name)) { ai.setKey(name, value); if (name === 'elevenlabs') ai.setListening(state.settings.aiEnabled); } });
 ipcMain.on('status', (_e, st) => {
   remoteStatus = st;
   send(editorWin, 'status', st);
@@ -341,6 +356,9 @@ app.whenReady().then(() => {
       callback(sources[0] ? { video: sources[0], audio: 'loopback' } : {});
     }).catch(() => callback({}));
   });
+
+  ai = createAI({ getState: () => state, emit: broadcast });
+  ai.setListening(state.settings.aiEnabled);
 
   createPrompter();
   createEditor();

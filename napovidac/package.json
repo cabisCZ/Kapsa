@@ -21,6 +21,7 @@
     "productName": "Napovídač",
     "files": [
       "main.js",
+      "ai.js",
       "preload.js",
       "src/**/*",
       "build/icon.png"
@@ -47,5 +48,9 @@
       "shortcutName": "Napovídač"
     },
     "executableName": "Napovidac"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.14.0",
+    "ws": "^8.23.0"
   }
 }

@@ -11,5 +11,9 @@ contextBridge.exposeInMainWorld('api', {
   resizeTo: (w, h) => ipcRenderer.send('resize-to', { w, h }),
   ignoreMouse: v => ipcRenderer.send('ignore-mouse', v),
   remoteInfo: () => ipcRenderer.invoke('remote-info'),
+  aiStatus: () => ipcRenderer.invoke('ai-status'),
+  aiAudio: buf => ipcRenderer.send('ai-audio', buf),
+  aiSetKey: (name, value) => ipcRenderer.send('ai-set-key', { name, value }),
+  on: (channel, fn) => { if (/^ai-/.test(channel)) ipcRenderer.on(channel, (_e, d) => fn(d)); },
   onRemoteInfo: fn => ipcRenderer.on('remote-info', (_e, r) => fn(r)),
 });

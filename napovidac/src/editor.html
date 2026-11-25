@@ -36,11 +36,17 @@
     <ol id="cueList" class="nav"></ol>
     <p class="note">Řádek začínající <code>#</code> je nová sekce. Mezi sekcemi skáčete <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>←</kbd><kbd>→</kbd>.</p>
     <p class="note"><code>[poznámka]</code> se zobrazí šedě, <code>**důraz**</code> tučně.</p>
+    <div id="transcriptBox" hidden>
+      <h4>Druhá strana</h4>
+      <ol id="transcript" class="transcript"></ol>
+    </div>
   </aside>
 
   <section class="editor">
     <div class="sheet">
+      <div class="seg tabs" id="tabs"><button data-tab="script" class="on">Scénář</button><button data-tab="notes">Podklady pro AI</button></div>
       <textarea id="script" spellcheck="true" placeholder="# Úvod&#10;Sem napište text, který chcete říct…"></textarea>
+      <textarea id="notes" spellcheck="true" hidden placeholder="Fakta, ze kterých má AI při odpovědích vycházet: ceník, termíny, reference, časté otázky a odpovědi, co slibovat a co ne…"></textarea>
       <div class="foot"><span id="stats"></span><span id="saved">Uloženo</span></div>
     </div>
   </section>
@@ -81,6 +87,19 @@
       </div>
       <p class="foot-note">Mluvte normálně: pruh nahoře musí přeskočit bílou značku. Když text jede sám od šumu, citlivost snižte.</p>
       <p class="foot-note" id="sysHint"></p>
+    </div>
+
+    <div class="sec">
+      <h4>AI asistent</h4>
+      <div class="list">
+        <label class="cell"><span>Napovídat odpovědi na otázky</span><input type="checkbox" class="switch" data-key="aiEnabled"></label>
+        <label class="cell"><span>Odpovídat automaticky</span><input type="checkbox" class="switch" data-key="aiAuto"></label>
+        <div class="cell key" data-key-name="anthropic"><span>Claude API klíč</span><span class="kstate"></span></div>
+        <div class="cell key" data-key-name="elevenlabs"><span>ElevenLabs API klíč</span><span class="kstate"></span></div>
+      </div>
+      <p class="foot-note" id="aiHint"></p>
+      <p class="foot-note">Když druhá strana položí otázku, Claude podle scénáře a podkladů napíše odpověď a ta se hned objeví v napovídači. Ručně: <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>A</kbd>, zpět ke scénáři <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Q</kbd>.</p>
+      <p class="foot-note">Hlas druhé strany se posílá k přepisu do ElevenLabs a text do Claude. Klíče jsou v počítači šifrované. Dejte protistraně vědět, že si hovor přepisujete.</p>
     </div>
 
     <div class="sec">
