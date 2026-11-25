@@ -17,7 +17,12 @@
   --me: #5b8cff;        /* modrá z loga */
   --me-2: #2a5cff;
   --glow: #e9e4ff;      /* světlá záře z vlnek */
-  --other: #f29be0;     /* růžový odlesk = druhá strana */
+  --accent: #f28bd9;    /* akcent: růžovo-fialový odlesk z vlnek */
+  --accent-2: #b98cff;
+  --accent-ink: #2a0b45;
+  --accent-grad: linear-gradient(135deg, #ffb0e4 0%, #f28bd9 45%, #b98cff 100%);
+  --accent-grad-h: linear-gradient(135deg, #ffc4ec 0%, #f7a0e2 45%, #c9a4ff 100%);
+  --other: #ffc46b;     /* jantarová = mluví druhá strana */
   --ok: #5ef0b0;
 }
 * { box-sizing: border-box; }

@@ -102,8 +102,8 @@ html, body { width: 100%; height: 100%; background: transparent; overflow: hidde
 #grip svg { fill: currentColor; stroke: none; }
 #grip { display: none; cursor: grab; -webkit-app-region: drag; }
 #shell.float #grip { display: grid; }
-.ico.play { background: linear-gradient(160deg, #6f9bff, var(--me-2)); color: #fff; width: 34px; box-shadow: inset 0 0 0 1px rgba(200,215,255,.35); }
-.ico.play:hover { background: linear-gradient(160deg, #86acff, #3a6aff); }
+.ico.play { background: var(--accent-grad); color: var(--accent-ink); width: 34px; box-shadow: 0 2px 12px rgba(242,139,217,.45), inset 0 1px 0 rgba(255,255,255,.45); }
+.ico.play:hover { background: var(--accent-grad-h); }
 .ico.play svg { fill: currentColor; stroke-width: 2.6; }
 .ico.play .i-pause { display: none; fill: none; }
 #shell.playing .ico.play .i-play { display: none; }
